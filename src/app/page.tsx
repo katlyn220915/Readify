@@ -6,7 +6,6 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <Navbar />
-      <Link href="/mylibrary">MyLibrary</Link>
     </main>
   );
 }
