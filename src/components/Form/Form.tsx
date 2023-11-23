@@ -20,12 +20,7 @@ export default function Form({ purpose }: FormProps) {
         </div>
       )}
       <div className={styles.form__data}>
-        <input
-          type="email"
-          id="email"
-          className={styles.form__input}
-          required
-        />
+        <input type="text" id="email" className={styles.form__input} required />
         <label htmlFor="email" className={styles.form__label}>
           Email
         </label>
