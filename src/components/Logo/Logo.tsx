@@ -9,8 +9,8 @@ export default function Logo() {
       <Image
         src="/image/logo-light.png"
         alt="readify"
-        width={120}
-        height={100}
+        width={100}
+        height={80}
       />
     </Link>
   );
