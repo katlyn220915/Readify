@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import Navbar from "@/components/Navbar/Navbar";

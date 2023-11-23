@@ -12,6 +12,7 @@ export default function Logo() {
         alt="readify"
         width={100}
         height={80}
+        priority={false}
       />
     </Link>
   );

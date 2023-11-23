@@ -52,3 +52,9 @@
 .form div[data-custombtn] {
   justify-self: center;
 }
+
+.error_message {
+  position: absolute;
+  right: 0;
+  color: var(--color-red-500);
+}
