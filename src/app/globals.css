@@ -54,6 +54,16 @@
   /* For dark mode */
   --image-grayscale: 0;
   --image-opacity: 100%;
+
+  /* Font */
+  --font-size-extra: 6.2rem;
+  --font-size-large: 4.2rem;
+  --font-size-medium: 2.4rem;
+  --font-size-regular: 1.6rem;
+  --font-size-small: 1.6rem;
+
+  /* letter spacing */
+  --letter-spacing-tight: -0.025em;
 }
 
 *,
