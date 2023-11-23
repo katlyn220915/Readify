@@ -1,0 +1,5 @@
+.main {
+  height: 100%;
+  background-color: var(--color-blue-bg);
+  padding: 2.5rem 5rem;
+}

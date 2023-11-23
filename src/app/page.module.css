@@ -1,6 +1,5 @@
 .main {
-  height: calc(100vh - 5rem);
-  margin: 2.5rem;
+  height: 100%;
   padding: 2.5rem 5rem;
   background: linear-gradient(rgba(36, 42, 46, 0.8), rgba(36, 42, 46, 0.8)),
     url(/image/banner-compressed.png);

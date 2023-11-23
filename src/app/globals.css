@@ -24,6 +24,7 @@
   --color-blue-800: #1e40af;
   --color-blue-900: #1e3a8a;
   --color-blue-950: #172554;
+  --color-blue-bg: #2d3439;
 
   --color-blue-100: #e0f2fe;
   --color-blue-700: #0369a1;
@@ -139,4 +140,9 @@ img {
 .btn {
   border: none;
   padding: 1rem;
+}
+
+.wrapper {
+  height: calc(100vh - 5rem);
+  margin: 2.5rem;
 }
