@@ -1,12 +1,16 @@
 import React from "react";
-import Link from "next/link";
 import styles from "./ButtonCta.module.css";
 import ButtonCtaProps from "@/types/ButtonCtaProps";
 
-export default function ButtonCta({ path, children }: ButtonCtaProps) {
+export default function ButtonCta({ children, color }: ButtonCtaProps) {
   return (
-    <div className={styles.btn}>
-      <Link href={path}>{children}</Link>
+    <div
+      className={`btn__form ${styles.btn} ${
+        color === "blue" && styles.btn_blue
+      } ${color === "green" && styles.btn_green}`}
+      data-custombtn
+    >
+      <button>{children}</button>
     </div>
   );
 }

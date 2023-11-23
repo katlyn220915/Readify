@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 
 import Link from "next/link";
+import LogoProps from "@/types/LogoProps";
 
 export default function Logo() {
   return (

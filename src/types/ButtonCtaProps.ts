@@ -1,6 +1,6 @@
 type ButtonCtaProps = {
-  path: string;
   children: React.ReactNode;
+  color: "blue" | "green";
 };
 
 export default ButtonCtaProps;

@@ -7,7 +7,7 @@
   font-weight: 700;
 }
 
-.btn a {
+.btn button {
   position: absolute;
   top: 0;
   left: 0;
@@ -29,11 +29,11 @@
   backdrop-filter: blur(15px);
 }
 
-.btn:hover a {
+.btn:hover button {
   letter-spacing: 0.3rem;
 }
 
-.btn a::before {
+.btn button::before {
   content: "";
   position: absolute;
   top: 0;
@@ -45,7 +45,7 @@
   transition: 0.5s;
 }
 
-.btn:hover a::before {
+.btn:hover button::before {
   transform: skewX(45deg) translateX(200%);
 }
 
@@ -57,14 +57,9 @@
   bottom: -5px;
   width: 3rem;
   height: 1rem;
-  background: #f00;
   border-radius: 10px;
   transition: 0.5s;
   transition-delay: 0s;
-
-  background: var(--color-blue-400);
-  box-shadow: 0 0 5px var(--color-blue-400), 0 0 15px var(--color-blue-400),
-    0 0 30px var(--color-blue-400), 0 0 60px var(--color-blue-400);
 }
 
 .btn:hover::before {
@@ -83,14 +78,9 @@
   top: -5px;
   width: 3rem;
   height: 1rem;
-  background: #f00;
   border-radius: 10px;
   transition: 0.5s;
   transition-delay: 0s;
-
-  background: var(--color-blue-400);
-  box-shadow: 0 0 5px var(--color-blue-400), 0 0 15px var(--color-blue-400),
-    0 0 30px var(--color-blue-400), 0 0 60px var(--color-blue-400);
 }
 
 .btn:hover::after {
@@ -99,4 +89,31 @@
   width: 80%;
   border-radius: 30px;
   transition-delay: 0.5s;
+}
+
+/* Blue */
+
+.btn_blue::after {
+  background: var(--color-blue-400);
+  box-shadow: 0 0 5px var(--color-blue-400), 0 0 15px var(--color-blue-400),
+    0 0 30px var(--color-blue-400), 0 0 60px var(--color-blue-400);
+}
+
+.btn_blue::before {
+  background: var(--color-blue-400);
+  box-shadow: 0 0 5px var(--color-blue-400), 0 0 15px var(--color-blue-400),
+    0 0 30px var(--color-blue-400), 0 0 60px var(--color-blue-400);
+}
+
+/* Green */
+.btn_green::after {
+  background: var(--color-green-400);
+  box-shadow: 0 0 5px var(--color-green-400), 0 0 15px var(--color-green-400),
+    0 0 30px var(--color-green-400), 0 0 60px var(--color-green-400);
+}
+
+.btn_green::before {
+  background: var(--color-green-400);
+  box-shadow: 0 0 5px var(--color-green-400), 0 0 15px var(--color-green-400),
+    0 0 30px var(--color-green-400), 0 0 60px var(--color-green-400);
 }

@@ -29,6 +29,7 @@
   --color-blue-100: #e0f2fe;
   --color-blue-700: #0369a1;
   --color-green-100: #dcfce7;
+  --color-green-400: #34d399;
   --color-green-700: #15803d;
   --color-yellow-100: #fef9c3;
   --color-yellow-700: #a16207;
@@ -83,7 +84,7 @@ html {
 }
 
 body {
-  color: var(--color-grey-700);
+  color: var(--color-grey-200);
 
   transition: color 0.3s, background-color 0.3s;
   min-height: 100vh;
@@ -137,6 +138,11 @@ img {
   max-width: 100%;
 }
 
+button {
+  border: none;
+  background: none;
+}
+
 .btn {
   border: none;
   padding: 1rem;
@@ -145,4 +151,8 @@ img {
 .wrapper {
   height: calc(100vh - 5rem);
   margin: 2.5rem;
+}
+
+.font-strong {
+  font-weight: 700;
 }
