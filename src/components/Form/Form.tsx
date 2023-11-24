@@ -9,9 +9,16 @@ import styles from "./Form.module.css";
 import ButtonCta from "../ButtonCta/ButtonCta";
 import FormProps from "@/types/FormProps";
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import useFirebaseAuth from "@/hooks/firebase_auth/firebase_auth";
+
+type dataType = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 export default function Form({ purpose }: FormProps) {
+  const firebaseAuth = useFirebaseAuth();
   const dynamicSchema = yup.object().shape({
     email: yup.string().email("Invalid email").required("Email is required"),
     password: yup
@@ -31,11 +38,18 @@ export default function Form({ purpose }: FormProps) {
     resolver: yupResolver(dynamicSchema),
   });
 
+  const onSubmit: SubmitHandler<dataType> = ({
+    email,
+    password,
+    name = "",
+  }) => {
+    if (purpose === "signup") {
+      firebaseAuth.userSignUp(email, password);
+    }
+  };
+
   return (
-    <form
-      className={styles.form}
-      onSubmit={handleSubmit((data) => console.log(data))}
-    >
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       {purpose === "signup" && (
         <div className={styles.form__data}>
           <input
