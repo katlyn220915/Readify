@@ -9,22 +9,26 @@ import styles from "./Form.module.css";
 import ButtonCta from "../ButtonCta/ButtonCta";
 import FormProps from "@/types/FormProps";
 
-const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
-  email: yup.string().email("Invalid email").required("Email is required"),
-  password: yup
-    .string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
-});
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export default function Form({ purpose }: FormProps) {
+  const dynamicSchema = yup.object().shape({
+    email: yup.string().email("Invalid email").required("Email is required"),
+    password: yup
+      .string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+    ...(purpose === "signup" && {
+      name: yup.string().required("Name is required"),
+    }),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(dynamicSchema),
   });
 
   return (
