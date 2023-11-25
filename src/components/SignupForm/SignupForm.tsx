@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -34,6 +35,8 @@ export default function SignupForm() {
   const firebaseAuth = useFirebaseAuth();
   const firestore = useFireStore();
 
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -53,7 +56,8 @@ export default function SignupForm() {
           data.email,
           data.password
         );
-        console.log(isUserSignIn);
+        if (isUserSignIn) router.push("/");
+        if (!isUserSignIn) setErrorMessage("Please sign in manually");
       } else {
         setErrorMessage(
           "A user is already registered with this e-mail address."
