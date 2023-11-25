@@ -1,5 +1,9 @@
 import app from "../../lib/firebase/initialize";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 const useFirebaseAuth = () => {
   const auth = getAuth(app);
@@ -18,8 +22,23 @@ const useFirebaseAuth = () => {
       });
     return userUid;
   };
+  const userSignin = async (email: string, password: string) => {
+    // let errorMessage;
+    const isUserLogin = await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        return true;
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(errorCode);
+        return false;
+      });
+    return isUserLogin;
+  };
 
-  return { userSignUp };
+  return { userSignUp, userSignin };
 };
 
 export default useFirebaseAuth;

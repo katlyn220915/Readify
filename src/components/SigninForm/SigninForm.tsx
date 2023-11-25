@@ -67,7 +67,7 @@ export default function SigninForm() {
         )}
       </div>
 
-      <ButtonCta color="blue">Sign up</ButtonCta>
+      <ButtonCta color="blue">Sign in</ButtonCta>
     </form>
   );
 }

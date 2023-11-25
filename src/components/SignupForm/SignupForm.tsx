@@ -7,6 +7,7 @@ import * as yup from "yup";
 
 import styles from "./SignupForm.module.css";
 import ButtonCta from "../ButtonCta/ButtonCta";
+import Spinner from "../Spinner/Spinner";
 
 import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 import useFireStore from "@/hooks/firebase_db/useFirestore";
@@ -48,8 +49,15 @@ export default function SignupForm() {
       const userUid = await firebaseAuth.userSignUp(data.email, data.password);
       if (userUid !== undefined) {
         await firestore.setDocument("users", userUid, data);
+        const isUserSignIn = await firebaseAuth.userSignin(
+          data.email,
+          data.password
+        );
+        console.log(isUserSignIn);
       } else {
-        setErrorMessage("Email has already registered.");
+        setErrorMessage(
+          "A user is already registered with this e-mail address."
+        );
       }
     } catch (e) {
       console.error(e);
@@ -59,54 +67,60 @@ export default function SignupForm() {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <div className={styles.form__data}>
-        <input
-          type="text"
-          id="name"
-          className={styles.form__input}
-          {...register("firstName")}
-        />
-        <label htmlFor="name" className={styles.form__label}>
-          Name
-        </label>
-        {errors.firstName && (
-          <p className={styles.error_message}>{errors.firstName.message}</p>
-        )}
-      </div>
-      <div className={styles.form__data}>
-        <input
-          type="text"
-          id="email"
-          className={styles.form__input}
-          {...register("email")}
-        />
-        <label htmlFor="email" className={styles.form__label}>
-          Email
-        </label>
-        {errors.email && (
-          <p className={styles.error_message}>{errors.email.message}</p>
-        )}
-      </div>
+    <>
+      {isProcessing ? (
+        <Spinner />
+      ) : (
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <div className={styles.form__data}>
+            <input
+              type="text"
+              id="name"
+              className={styles.form__input}
+              {...register("firstName")}
+            />
+            <label htmlFor="name" className={styles.form__label}>
+              Name
+            </label>
+            {errors.firstName && (
+              <p className={styles.error_message}>{errors.firstName.message}</p>
+            )}
+          </div>
+          <div className={styles.form__data}>
+            <input
+              type="text"
+              id="email"
+              className={styles.form__input}
+              {...register("email")}
+            />
+            <label htmlFor="email" className={styles.form__label}>
+              Email
+            </label>
+            {errors.email && (
+              <p className={styles.error_message}>{errors.email.message}</p>
+            )}
+          </div>
 
-      <div className={styles.form__data}>
-        <input
-          type="password"
-          id="password"
-          {...register("password")}
-          className={styles.form__input}
-        />
-        <label htmlFor="password" className={styles.form__label}>
-          Password
-        </label>
-        {errors.password && (
-          <p className={styles.error_message}>{errors.password.message}</p>
-        )}
-      </div>
-      {errorMessage && (
-        <p className={styles.error_message_firebase}>{errorMessage}</p>
+          <div className={styles.form__data}>
+            <input
+              type="password"
+              id="password"
+              {...register("password")}
+              className={styles.form__input}
+            />
+            <label htmlFor="password" className={styles.form__label}>
+              Password
+            </label>
+            {errors.password && (
+              <p className={styles.error_message}>{errors.password.message}</p>
+            )}
+          </div>
+          {errorMessage && (
+            <p className={styles.error_message_firebase}>{errorMessage}</p>
+          )}
+          <ButtonCta color="green">Sign up</ButtonCta>
+        </form>
       )}
-      <ButtonCta color="green">Sign up</ButtonCta>
-    </form>
+    </>
   );
 }
