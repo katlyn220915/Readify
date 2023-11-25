@@ -4,13 +4,17 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 
-import styles from "./Form.module.css";
+import styles from "./SigninForm.module.css";
 import ButtonCta from "../ButtonCta/ButtonCta";
-import FormProps from "@/types/FormProps";
 
-const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
+type dataType = {
+  email: string;
+  password: string;
+};
+
+const dynamicSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup
     .string()
@@ -18,36 +22,21 @@ const schema = yup.object().shape({
     .required("Password is required"),
 });
 
-export default function Form({ purpose }: FormProps) {
+export default function SigninForm() {
+  const firebaseAuth = useFirebaseAuth();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(dynamicSchema),
   });
 
+  const onSubmit: SubmitHandler<dataType> = ({ email, password }) => {};
+
   return (
-    <form
-      className={styles.form}
-      onSubmit={handleSubmit((data) => console.log(data))}
-    >
-      {purpose === "signup" && (
-        <div className={styles.form__data}>
-          <input
-            type="text"
-            id="name"
-            className={styles.form__input}
-            {...register("name")}
-          />
-          <label htmlFor="name" className={styles.form__label}>
-            Name
-          </label>
-          {errors.name && (
-            <p className={styles.error_message}>{errors.name.message}</p>
-          )}
-        </div>
-      )}
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <div className={styles.form__data}>
         <input
           type="text"
@@ -78,9 +67,7 @@ export default function Form({ purpose }: FormProps) {
         )}
       </div>
 
-      <ButtonCta color={`${purpose === "signup" ? "green" : "blue"}`}>
-        {purpose === "signup" ? "Sign up" : "Sign in"}
-      </ButtonCta>
+      <ButtonCta color="blue">Sign up</ButtonCta>
     </form>
   );
 }

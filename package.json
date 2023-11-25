@@ -10,8 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
-    "@supabase/ssr": "^0.0.10",
-    "@supabase/supabase-js": "^2.38.5",
+    "firebase": "^10.6.0",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",
