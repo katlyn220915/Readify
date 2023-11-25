@@ -46,6 +46,7 @@ export default function SigninForm() {
       setErrorMessage(null);
       const loginResult = await firebaseAuth.userSignin(email, password);
       if (loginResult === true) router.push("/");
+      console.log(loginResult);
       if (loginResult === "auth/invalid-login-credentials")
         setErrorMessage("Wrong Email or Password");
     } catch {
@@ -89,10 +90,10 @@ export default function SigninForm() {
             {errors.password && (
               <p className={styles.error_message}>{errors.password.message}</p>
             )}
+            {errorMessage && (
+              <p className={styles.error_message_firebase}>{errorMessage}</p>
+            )}
           </div>
-          {errorMessage && (
-            <p className={styles.error_message_firebase}>{errorMessage}</p>
-          )}
           <ButtonCta color="blue">Sign in</ButtonCta>
           <div className={styles.guide_to_signup}>
             <Link href="/signup">Don&apos;t have an account? Sign up</Link>

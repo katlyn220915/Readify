@@ -74,6 +74,7 @@
 }
 
 .error_message_firebase {
-  bottom: calc(7rem + (3.9rem / 2));
-  right: 15%;
+  width: 100%;
+  bottom: -4rem;
+  text-align: center;
 }

@@ -119,10 +119,11 @@ export default function SignupForm() {
             {errors.password && (
               <p className={styles.error_message}>{errors.password.message}</p>
             )}
+            {errorMessage && (
+              <p className={styles.error_message_firebase}>{errorMessage}</p>
+            )}
           </div>
-          {errorMessage && (
-            <p className={styles.error_message_firebase}>{errorMessage}</p>
-          )}
+
           <ButtonCta color="green">Sign up</ButtonCta>
           <div className={styles.guide_to_signin}>
             <Link href="/signin">Already have a Readify account? Sign in</Link>
