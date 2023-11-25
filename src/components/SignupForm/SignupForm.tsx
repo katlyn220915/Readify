@@ -57,6 +57,7 @@ export default function SignupForm() {
           data.email,
           data.password
         );
+        await firebaseAuth.userUpdateFirstName(data.firstName);
         if (isUserSignIn) router.push("/");
         if (!isUserSignIn) setErrorMessage("Please sign in manually");
       } else {

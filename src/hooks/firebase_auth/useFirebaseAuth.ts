@@ -3,43 +3,79 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 
 const useFirebaseAuth = () => {
   const auth = getAuth(app);
 
   const userSignUp = async (email: string, password: string) => {
-    const userUid = await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.info("Firebase/Auth: User Signed up");
-        return user.uid;
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error(errorCode);
-      });
-    return userUid;
+    try {
+      const userUid = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.info("Firebase/Auth: User Signed up");
+          return user.uid;
+        })
+        .catch((error) => {
+          console.error(error.code);
+        });
+      return userUid;
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const userSignin = async (email: string, password: string) => {
     let errorMessage = "unKnown Error";
-    const isUserLogin = await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        return true;
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        errorMessage = error.code;
-        return false;
-      });
-    if (!isUserLogin) return errorMessage;
-    return isUserLogin;
+    try {
+      const isUserLogin = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+        .then((userCredential) => {
+          return true;
+        })
+        .catch((error) => {
+          errorMessage = error.code;
+          return false;
+        });
+      if (!isUserLogin) return errorMessage;
+      return isUserLogin;
+    } catch (e) {
+      console.error(e);
+    }
   };
 
-  return { userSignUp, userSignin };
+  const userUpdateFirstName = async (firstName: string) => {
+    let errorMessage = "UnKnown Error";
+    try {
+      const user = auth.currentUser;
+      if (user === null) {
+        errorMessage = "User hasn't login.";
+        return errorMessage;
+      }
+      updateProfile(user, {
+        displayName: firstName,
+      })
+        .then(() => {
+          console.log(user);
+          console.info("Firebase: User firstName updated !");
+        })
+        .catch((e) => {
+          console.error(e.code);
+        });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  return { userSignUp, userSignin, userUpdateFirstName };
 };
 
 export default useFirebaseAuth;
