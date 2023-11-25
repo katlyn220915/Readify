@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -123,6 +124,9 @@ export default function SignupForm() {
             <p className={styles.error_message_firebase}>{errorMessage}</p>
           )}
           <ButtonCta color="green">Sign up</ButtonCta>
+          <div className={styles.guide_to_signin}>
+            <Link href="/signin">Already have a Readify account? Sign in</Link>
+          </div>
         </form>
       )}
     </>

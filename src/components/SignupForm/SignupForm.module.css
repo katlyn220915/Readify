@@ -54,6 +54,15 @@
   justify-self: center;
 }
 
+.guide_to_signin {
+  text-align: center;
+  transition: all 0.5s;
+}
+
+.guide_to_signin:hover {
+  text-decoration: underline;
+}
+
 .error_message,
 .error_message_firebase {
   position: absolute;

@@ -16,13 +16,3 @@
   gap: 1.8rem;
   margin-bottom: 5.2rem;
 }
-
-.container .guide_to_signup {
-  text-align: center;
-  margin-top: 3.2rem;
-  transition: all 0.5s;
-}
-
-.container .guide_to_signup:hover {
-  text-decoration: underline;
-}

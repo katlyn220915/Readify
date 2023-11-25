@@ -23,9 +23,6 @@ export default function Signin() {
           </div>
         </div>
         <SigninForm />
-        <div className={styles.guide_to_signup}>
-          <Link href="/signup">Don&apos;t have an account? Sign up</Link>
-        </div>
       </div>
     </Suspense>
   );
