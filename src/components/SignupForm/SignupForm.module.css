@@ -4,6 +4,7 @@
   gap: 3.9rem;
 
   color: #fff;
+  position: relative;
 }
 
 .form__data {
@@ -53,8 +54,18 @@
   justify-self: center;
 }
 
-.error_message {
+.error_message,
+.error_message_firebase {
   position: absolute;
-  right: 0;
   color: var(--color-red-500);
+}
+
+.error_message {
+  right: 1rem;
+  top: 25%;
+}
+
+.error_message_firebase {
+  bottom: calc(7rem + (3.9rem / 2));
+  right: 15%;
 }

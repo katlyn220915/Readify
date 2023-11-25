@@ -4,7 +4,7 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import useFirebaseAuth from "@/hooks/firebase_auth/firebase_auth";
+import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 
 import styles from "./SigninForm.module.css";
 import ButtonCta from "../ButtonCta/ButtonCta";

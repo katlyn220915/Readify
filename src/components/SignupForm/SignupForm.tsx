@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -8,7 +8,8 @@ import * as yup from "yup";
 import styles from "./SignupForm.module.css";
 import ButtonCta from "../ButtonCta/ButtonCta";
 
-import useFirebaseAuth from "@/hooks/firebase_auth/firebase_auth";
+import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
+import useFireStore from "@/hooks/firebase_db/useFirestore";
 
 type dataType = {
   firstName: string;
@@ -26,7 +27,11 @@ const schema = yup.object().shape({
 });
 
 export default function SignupForm() {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+
   const firebaseAuth = useFirebaseAuth();
+  const firestore = useFireStore();
 
   const {
     register,
@@ -36,12 +41,21 @@ export default function SignupForm() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<dataType> = ({
-    email,
-    password,
-    firstName,
-  }) => {
-    firebaseAuth.userSignUp(email, password);
+  const onSubmit: SubmitHandler<dataType> = async (data) => {
+    setIsProcessing(true);
+    setErrorMessage(null);
+    try {
+      const userUid = await firebaseAuth.userSignUp(data.email, data.password);
+      if (userUid !== undefined) {
+        await firestore.setDocument("users", userUid, data);
+      } else {
+        setErrorMessage("Email has already registered.");
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -89,7 +103,9 @@ export default function SignupForm() {
           <p className={styles.error_message}>{errors.password.message}</p>
         )}
       </div>
-
+      {errorMessage && (
+        <p className={styles.error_message_firebase}>{errorMessage}</p>
+      )}
       <ButtonCta color="green">Sign up</ButtonCta>
     </form>
   );
