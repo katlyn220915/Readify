@@ -1,20 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 
 import styles from "./SigninForm.module.css";
 import ButtonCta from "../ButtonCta/ButtonCta";
+
+import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 
 type dataType = {
   email: string;
   password: string;
 };
 
-const dynamicSchema = yup.object().shape({
+const schema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup
     .string()
@@ -23,17 +25,28 @@ const dynamicSchema = yup.object().shape({
 });
 
 export default function SigninForm() {
+  const [errorMessage, setErrorMessage] = useState<null | string>(null);
   const firebaseAuth = useFirebaseAuth();
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(dynamicSchema),
+    resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<dataType> = ({ email, password }) => {};
+  const onSubmit: SubmitHandler<dataType> = async ({ email, password }) => {
+    try {
+      const loginResult = await firebaseAuth.userSignin(email, password);
+      if (loginResult === true) router.push("/");
+      if (loginResult === "auth/invalid-login-credentials")
+        setErrorMessage("Wrong Email or Password");
+    } catch {
+      throw new Error("Unknown error");
+    }
+  };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>

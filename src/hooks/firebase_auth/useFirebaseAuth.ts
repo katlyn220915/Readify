@@ -7,11 +7,11 @@ import {
 
 const useFirebaseAuth = () => {
   const auth = getAuth(app);
+
   const userSignUp = async (email: string, password: string) => {
     const userUid = await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user.uid);
         console.info("Firebase/Auth: User Signed up");
         return user.uid;
       })
@@ -22,8 +22,9 @@ const useFirebaseAuth = () => {
       });
     return userUid;
   };
+
   const userSignin = async (email: string, password: string) => {
-    // let errorMessage;
+    let errorMessage = "unKnown Error";
     const isUserLogin = await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -31,10 +32,10 @@ const useFirebaseAuth = () => {
       })
       .catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error(errorCode);
+        errorMessage = error.code;
         return false;
       });
+    if (!isUserLogin) return errorMessage;
     return isUserLogin;
   };
 
