@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Lora } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar/Navbar";
+
+import { AuthProvider } from "@/context/AuthContext";
 
 const lora = Lora({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={lora.className}>
-        <div className="wrapper">{children}</div>
+        <div className="wrapper">
+          <AuthProvider>{children}</AuthProvider>
+        </div>
       </body>
     </html>
   );

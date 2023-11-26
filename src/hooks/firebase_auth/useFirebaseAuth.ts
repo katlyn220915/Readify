@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
+  signOut,
 } from "firebase/auth";
 
 const useFirebaseAuth = () => {
@@ -52,6 +53,29 @@ const useFirebaseAuth = () => {
     }
   };
 
+  const userSignout = async () => {
+    try {
+      signOut(auth)
+        .then(() => {
+          console.info("Firebase/Auth: user signed out");
+        })
+        .catch((e) => {
+          console.log(e.code);
+        });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getCurrentUser = async () => {
+    try {
+      const user = auth.currentUser;
+      return user;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const userUpdateFirstName = async (firstName: string) => {
     let errorMessage = "UnKnown Error";
     try {
@@ -75,7 +99,13 @@ const useFirebaseAuth = () => {
     }
   };
 
-  return { userSignUp, userSignin, userUpdateFirstName };
+  return {
+    userSignUp,
+    userSignin,
+    userSignout,
+    userUpdateFirstName,
+    getCurrentUser,
+  };
 };
 
 export default useFirebaseAuth;

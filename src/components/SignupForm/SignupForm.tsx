@@ -13,6 +13,7 @@ import Spinner from "../Spinner/Spinner";
 
 import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 import useFireStore from "@/hooks/firebase_db/useFirestore";
+import { useAuth } from "@/context/AuthContext";
 
 type dataType = {
   firstName: string;
@@ -32,6 +33,7 @@ const schema = yup.object().shape({
 export default function SignupForm() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const { setIsLogin } = useAuth();
 
   const firebaseAuth = useFirebaseAuth();
   const firestore = useFireStore();
@@ -58,7 +60,10 @@ export default function SignupForm() {
           data.password
         );
         await firebaseAuth.userUpdateFirstName(data.firstName);
-        if (isUserSignIn) router.push("/");
+        if (isUserSignIn) {
+          setIsLogin(true);
+          router.push("/");
+        }
         if (!isUserSignIn) setErrorMessage("Please sign in manually");
       } else {
         setErrorMessage(

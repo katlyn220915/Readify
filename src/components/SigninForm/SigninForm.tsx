@@ -11,6 +11,7 @@ import styles from "./SigninForm.module.css";
 import ButtonCta from "../ButtonCta/ButtonCta";
 
 import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
+import { useAuth } from "@/context/AuthContext";
 import Spinner from "../Spinner/Spinner";
 
 type dataType = {
@@ -29,6 +30,7 @@ const schema = yup.object().shape({
 export default function SigninForm() {
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const { setIsLogin } = useAuth();
   const firebaseAuth = useFirebaseAuth();
   const router = useRouter();
 
@@ -45,7 +47,10 @@ export default function SigninForm() {
       setIsProcessing(true);
       setErrorMessage(null);
       const loginResult = await firebaseAuth.userSignin(email, password);
-      if (loginResult === true) router.push("/");
+      if (loginResult === true) {
+        setIsLogin(true);
+        router.push("/");
+      }
       console.log(loginResult);
       if (loginResult === "auth/invalid-login-credentials")
         setErrorMessage("Wrong Email or Password");
