@@ -38,6 +38,7 @@ export default function SigninForm() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -58,6 +59,7 @@ export default function SigninForm() {
       throw new Error("Unknown error");
     } finally {
       setIsProcessing(false);
+      reset();
     }
   };
 

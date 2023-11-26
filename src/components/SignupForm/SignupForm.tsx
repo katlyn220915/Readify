@@ -44,6 +44,7 @@ export default function SignupForm() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -74,6 +75,7 @@ export default function SignupForm() {
       console.error(e);
     } finally {
       setIsProcessing(false);
+      reset();
     }
   };
 
