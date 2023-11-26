@@ -2,7 +2,6 @@ import React, { Suspense } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import SigninForm from "@/components/SigninForm/SigninForm";
-import Link from "next/link";
 import Loading from "../loading";
 
 export default function Signin() {

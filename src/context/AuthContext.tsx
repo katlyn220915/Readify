@@ -2,20 +2,22 @@
 
 import {
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useState,
   Dispatch,
   SetStateAction,
 } from "react";
-import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
+
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+import app from "@/lib/firebase/initialize";
 
 interface defultValue {
   currentUserName: null | string;
   isLogin: boolean;
   setIsLogin: Dispatch<SetStateAction<boolean>>;
   setCurrentUserName: Dispatch<SetStateAction<string | null>>;
+  pending: boolean;
 }
 
 const AuthContext = createContext<defultValue>({
@@ -23,17 +25,41 @@ const AuthContext = createContext<defultValue>({
   isLogin: false,
   setIsLogin: () => {},
   setCurrentUserName: () => {},
+  pending: false,
 });
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUserName, setCurrentUserName] = useState<string | null>(null);
   const [isLogin, setIsLogin] = useState(false);
+  const [pending, setPending] = useState(true);
+  const auth = getAuth(app);
+
+  useEffect(() => {
+    try {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          console.log("context is processing: " + user);
+          setIsLogin(true);
+          setCurrentUserName(user.displayName);
+        } else {
+          setIsLogin(false);
+          setCurrentUserName(null);
+          console.log("context is processing: " + "no user");
+        }
+      });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setPending(false);
+    }
+  }, [isLogin, auth]);
 
   const contextValue: defultValue = {
     currentUserName,
     isLogin,
     setIsLogin,
     setCurrentUserName,
+    pending,
   };
 
   return (
