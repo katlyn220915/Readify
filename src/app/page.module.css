@@ -29,3 +29,9 @@
 .description {
   font-weight: 400;
 }
+
+.main .banner div[data-custombtn] {
+  bottom: -3rem;
+  left: calc(50% + 5rem);
+  transform: translateX(-100%);
+}

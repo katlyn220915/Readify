@@ -3,3 +3,9 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.navigation .nav_list {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}

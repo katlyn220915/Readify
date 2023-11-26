@@ -2,7 +2,6 @@ import React, { Suspense } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import SigninForm from "@/components/SigninForm/SigninForm";
-import Link from "next/link";
 import Loading from "../loading";
 
 export default function Signin() {
@@ -23,9 +22,6 @@ export default function Signin() {
           </div>
         </div>
         <SigninForm />
-        <div className={styles.guide_to_signup}>
-          <Link href="/signup">Don&apos;t have an account? Sign up</Link>
-        </div>
       </div>
     </Suspense>
   );

@@ -24,9 +24,6 @@ export default function Signup() {
           </div>
         </div>
         <SignupForm />
-        <div className={styles.guide_to_signup}>
-          <Link href="/signin">Already have a Readify account? Sign in</Link>
-        </div>
       </div>
     </Suspense>
   );
