@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "./topbar.module.css";
+import styles from "./Topbar.module.css";
 import { usePathname } from "next/navigation";
 
 import Icon from "@/components/Icon/Icon";
