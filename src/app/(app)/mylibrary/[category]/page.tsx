@@ -9,6 +9,9 @@ export default function Category() {
   return (
     <div>
       <Topbar />
+      <ul>
+        <li></li>
+      </ul>
     </div>
   );
 }

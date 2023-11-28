@@ -6,7 +6,32 @@
   margin: 2rem 0;
 }
 
-.ul li {
-  width: 3rem;
-  height: 3rem;
+.ul .li {
+  width: 4rem;
+  height: 4rem;
+  text-align: center;
+  border-radius: 0.5rem;
+
+  position: relative;
+}
+
+.ul .li::before {
+  content: "";
+  position: absolute;
+  width: 0.3rem;
+  height: 2rem;
+  left: -1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 0.3rem;
+}
+
+.ul .li a {
+  display: inline-block;
+  line-height: 4rem;
+}
+
+.ul .li:hover,
+.ul .li:hover.li::before {
+  background-color: rgba(14, 165, 233, 0.6);
 }

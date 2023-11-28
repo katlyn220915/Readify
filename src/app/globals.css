@@ -24,7 +24,7 @@
   --color-blue-800: #1e40af;
   --color-blue-900: #1e3a8a;
   --color-blue-950: #172554;
-  --color-blue-bg: #2d3439;
+  --color-blue-bg: #151c23;
 
   --color-blue-100: #e0f2fe;
   --color-blue-700: #0369a1;
@@ -159,18 +159,22 @@ button {
 }
 
 .icon {
-  font-size: 2.4rem;
+  font-size: 2rem;
   color: var(--color-grey-300);
 }
 
 .heading__primary {
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-extra);
 }
 
 .heading__secondary {
-  font-size: var(--font-size-medium);
+  font-size: var(--font-size-large);
 }
 
 .heading__tertiary {
+  font-size: var(--font-size-medium);
+}
+
+.heading__forth {
   font-size: var(--font-size-regular);
 }

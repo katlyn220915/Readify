@@ -44,7 +44,7 @@ export default function Mybooks() {
         <Topbar />
         <ul className={styles.books}>
           {bookList.map((item) => (
-            <li key={item.id} className={styles.book}>
+            <li key={item.id} className={`${styles.book}`}>
               <div className={styles.img_container}>
                 <Image
                   src={`${item.img}`}

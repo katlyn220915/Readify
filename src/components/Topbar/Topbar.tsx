@@ -5,7 +5,8 @@ import styles from "./Topbar.module.css";
 import { usePathname } from "next/navigation";
 
 import Icon from "@/components/Icon/Icon";
-import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookOpen, faTags } from "@fortawesome/free-solid-svg-icons";
 
 export default function Topbar() {
   const pathname = usePathname();
@@ -30,8 +31,10 @@ export default function Topbar() {
         <h3 className="heading__tertiary">{title}</h3>
       </div>
       <div className={styles.tools}>
-        <span>Manage tags</span>
-        <span>Filter</span>
+        <span>
+          <FontAwesomeIcon icon={faTags} className="icon" />
+          Manage tags
+        </span>
       </div>
     </div>
   );

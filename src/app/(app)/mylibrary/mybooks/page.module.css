@@ -4,6 +4,7 @@
 
 .books {
   margin: 1.5rem 0;
+  padding: 1rem;
 }
 
 .img_container {
@@ -18,8 +19,30 @@
 .book {
   display: flex;
   gap: 1.2rem;
-  padding: 1rem;
+  padding: 1rem 1rem 1rem 2rem;
   cursor: pointer;
+  border-radius: 1rem;
+
+  position: relative;
+}
+
+.book::before {
+  content: "";
+  position: absolute;
+  width: 0.5rem;
+  height: 100%;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  left: 0;
+  top: 0;
+}
+
+.book:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.book:hover.book::before {
+  background-color: var(--color-blue-700);
 }
 
 .book_intro {
