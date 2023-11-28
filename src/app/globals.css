@@ -63,7 +63,7 @@
   --font-size-large: 4.2rem;
   --font-size-medium: 2.4rem;
   --font-size-regular: 1.6rem;
-  --font-size-small: 1.6rem;
+  --font-size-small: 1.4rem;
 
   /* letter spacing */
   --letter-spacing-tight: -0.025em;
@@ -156,4 +156,21 @@ button {
 
 .font-strong {
   font-weight: 700;
+}
+
+.icon {
+  font-size: 2.4rem;
+  color: var(--color-grey-300);
+}
+
+.heading__primary {
+  font-size: var(--font-size-large);
+}
+
+.heading__secondary {
+  font-size: var(--font-size-medium);
+}
+
+.heading__tertiary {
+  font-size: var(--font-size-regular);
 }

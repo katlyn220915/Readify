@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
-import { Lora } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { AuthProvider } from "@/context/AuthContext";
+import { headers } from "next/headers";
 
-const lora = Lora({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Readify",
@@ -16,10 +20,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const headerList = headers();
+  const pathname = headerList.get("x-pathname");
+  console.log(pathname);
+
   return (
     <html lang="en">
-      <body className={lora.className}>
-        <div className="wrapper">
+      <body className={inter.className}>
+        <div className={`${pathname === "/" ? "wrapper" : ""}`}>
           <AuthProvider>{children}</AuthProvider>
         </div>
       </body>

@@ -1,0 +1,59 @@
+.container {
+  width: 100%;
+}
+
+.books {
+  margin: 1.5rem 0;
+}
+
+.img_container {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.img_container img {
+  vertical-align: middle;
+}
+
+.book {
+  display: flex;
+  gap: 1.2rem;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.book_intro {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.book_intro h3 {
+  font-size: 1.6rem;
+  font-weight: 400;
+  letter-spacing: 0.2rem;
+
+  color: #fff;
+}
+
+.book_row p {
+  display: inline-block;
+}
+
+.book_row {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.book_row .author {
+  font-size: 1.5rem;
+  color: var(--color-grey-300);
+}
+
+.book_row .tag {
+  font-size: var(--font-size-small);
+  background-color: var(--color-blue-700);
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+}
