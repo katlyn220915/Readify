@@ -9,8 +9,11 @@ import Image from "next/image";
 import Spinner from "@/components/Spinner/Spinner";
 import Icon from "@/components/Icon/Icon";
 import Topbar from "@/components/Topbar/Topbar";
+import BookList from "@/components/BookList/BookList";
 
-const bookList = [
+import BookProps from "@/types/BookProps";
+
+const bookList: BookProps[] = [
   {
     id: "123235232",
     title: "原子習慣:細微改變帶來巨大成就的實證法則",
@@ -42,31 +45,7 @@ export default function Mybooks() {
     <>
       <div className={styles.container}>
         <Topbar />
-        <ul className={styles.books}>
-          {bookList.map((item) => (
-            <li key={item.id} className={`${styles.book}`}>
-              <div className={styles.img_container}>
-                <Image
-                  src={`${item.img}`}
-                  alt={`book-${item.title}`}
-                  width={80}
-                  height={80}
-                />
-              </div>
-              <div className={styles.book_intro}>
-                <h3>{item.title}</h3>
-                <div className={styles.book_row}>
-                  <p className={styles.author}>作者：{item.author}</p>
-                  {item.tags.map((tag, id) => (
-                    <span key={`${id}+ ${item.id}`} className={styles.tag}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <BookList bookList={bookList} />
       </div>
     </>
   );
