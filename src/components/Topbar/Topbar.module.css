@@ -1,0 +1,19 @@
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 7rem;
+}
+
+.topbar .title,
+.topbar .tools {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.topbar .title a {
+  width: 3rem;
+  height: 3rem;
+}
