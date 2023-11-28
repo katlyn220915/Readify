@@ -1,13 +1,30 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
 import styles from "./BookList.module.css";
 
 import BookListProps from "@/types/BookListProps";
 import BookProps from "@/types/BookProps";
+import Categorize from "../Categorize/Categorize";
 
 function Book({ book }: { book: BookProps }) {
+  const [isMouseEnter, setIsMouseEnter] = useState(false);
+
+  function handleMouseEnter() {
+    setIsMouseEnter(true);
+  }
+
+  function handleMouseLeave() {
+    setIsMouseEnter(false);
+  }
+
   return (
-    <li className={`${styles.book}`}>
+    <li
+      className={`${styles.book}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <div className={styles.img_container}>
         <Image
           src={book.img}
@@ -27,6 +44,7 @@ function Book({ book }: { book: BookProps }) {
           ))}
         </div>
       </div>
+      <Categorize isMouseEnter={isMouseEnter} />
     </li>
   );
 }
