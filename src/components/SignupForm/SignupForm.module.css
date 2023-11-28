@@ -4,6 +4,7 @@
   gap: 3.9rem;
 
   color: #fff;
+  position: relative;
 }
 
 .form__data {
@@ -53,8 +54,28 @@
   justify-self: center;
 }
 
-.error_message {
+.guide_to_signin {
+  text-align: center;
+  transition: all 0.5s;
+}
+
+.guide_to_signin:hover {
+  text-decoration: underline;
+}
+
+.error_message,
+.error_message_firebase {
   position: absolute;
-  right: 0;
   color: var(--color-red-500);
+}
+
+.error_message {
+  right: 1rem;
+  top: 25%;
+}
+
+.error_message_firebase {
+  width: 100%;
+  bottom: -5rem;
+  text-align: center;
 }
