@@ -9,21 +9,17 @@ import BookProps from "@/types/BookProps";
 import Categorize from "../Categorize/Categorize";
 
 function Book({ book }: { book: BookProps }) {
-  const [isMouseEnter, setIsMouseEnter] = useState(false);
-
-  function handleMouseEnter() {
-    setIsMouseEnter(true);
-  }
-
-  function handleMouseLeave() {
-    setIsMouseEnter(false);
-  }
+  const [isMouseEnter, setIsMouseEnter] = useState(true);
 
   return (
     <li
       className={`${styles.book}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => {
+        setIsMouseEnter(true);
+      }}
+      onMouseLeave={() => {
+        setIsMouseEnter(false);
+      }}
     >
       <div className={styles.img_container}>
         <Image

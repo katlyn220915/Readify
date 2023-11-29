@@ -16,6 +16,8 @@
 
   display: flex;
   gap: 1.3rem;
+
+  position: relative;
 }
 
 .categorize_container .btn_add_tag {
@@ -36,4 +38,8 @@
   top: 50%;
   height: 50%;
   transform: translate(-50%, -50%);
+}
+
+.more_act_box .li {
+  position: relative;
 }
