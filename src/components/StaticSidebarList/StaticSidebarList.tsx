@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { LiHTMLAttributes, useState } from "react";
 import styles from "./StaticSidebarList.module.css";
 import Icon from "../Icon/Icon";
 
@@ -11,6 +11,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import Prompt from "../Prompt/Prompt";
+
+import { usePathname } from "next/navigation";
 
 type ListItemProps = {
   item: { title: string; path: string; iconProp: any };
@@ -39,18 +41,21 @@ const staticList = [
   },
 ];
 
-function ListItem({ item }: ListItemProps) {
+function ListItem ({ item }: ListItemProps) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
+  const pathName = usePathname();
 
+  
   return (
     <li
-      className={styles.li}
+      className={`${styles.li}`}
       onMouseEnter={() => {
         setIsMouseEnter(true);
       }}
       onMouseLeave={() => {
         setIsMouseEnter(false);
       }}
+      data-iscurrentpath = {pathName === `/mylibrary${item.path}`}
     >
       <Icon path={`/mylibrary${item.path}`} iconProp={item.iconProp} />
       <Prompt isMouseEnter={isMouseEnter} position="right">

@@ -26,12 +26,18 @@
   border-radius: 0.3rem;
 }
 
+
 .ul .li a {
   display: inline-block;
   line-height: 4rem;
 }
 
-.ul .li:hover,
-.ul .li:hover.li::before {
+.ul .li:hover {
+  background-color: rgba(255, 255, 255, .3);
+}
+
+.ul .li[data-iscurrentpath='true'],
+.ul .li[data-iscurrentpath="true"]:before{
   background-color: rgba(14, 165, 233, 0.6);
 }
+
