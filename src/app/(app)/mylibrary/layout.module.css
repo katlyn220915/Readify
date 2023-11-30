@@ -1,10 +1,15 @@
 .container {
   display: flex;
   height: 100%;
+
+  position: relative;
 }
 
 .nav {
   padding: 1rem;
+
+  border-right: 0.05rem solid var(--color-grey-600);
+  background-color: #10161d;
 }
 
 .nav .ul {
@@ -22,5 +27,4 @@
 
 .middle_container {
   width: 100%;
-  padding: 1rem 2rem;
 }

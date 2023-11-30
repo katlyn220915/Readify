@@ -22,7 +22,6 @@ export default function RootLayout({
 }) {
   const headerList = headers();
   const pathname = headerList.get("x-pathname");
-  console.log(pathname);
 
   return (
     <html lang="en">

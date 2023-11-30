@@ -1,0 +1,22 @@
+.prompt {
+  display: inline-block;
+  position: absolute;
+  z-index: 100;
+
+  color: var(--color-blue-bg);
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 0.5rem 1.2rem;
+
+  text-wrap: nowrap;
+}
+
+.prompt__position_top {
+  /* transform: translateY(-4rem); */
+  left: -3rem;
+  top: -3rem;
+}
+
+.prompt__position_right {
+  transform: translateX(4rem);
+}

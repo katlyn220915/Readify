@@ -1,0 +1,15 @@
+.upload_container {
+    position: absolute;
+    bottom: 3rem;
+    right: 3rem;
+}
+
+
+
+.upload_container .btn {
+    background-color: var(--color-blue-500);
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+
+    cursor: pointer;
+}
