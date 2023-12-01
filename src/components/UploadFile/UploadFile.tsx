@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import styles from "./Upload.module.css";
+import Image from "next/image";
 
 import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
+import useEpubJs from "@/hooks/epubjs/useEpubJs";
+import getFileURL from "@/server-actions/getFile/getFile";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 export default function UploadFile() {
   const [file, setFile] = useState<File>();
+  const [src, setSrc] = useState<any>(null);
   const firebseAuth = useFirebaseAuth();
+  const epubJS = useEpubJs();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,6 +32,16 @@ export default function UploadFile() {
           },
         });
         if (!res.ok) throw new Error(await res.text());
+        const result = await res.json();
+        const cloudFileUrl = await getFileURL(
+          `${userUUID.uid}/books/${result.data.id}/${result.data.id}.epub`
+        );
+
+        if (cloudFileUrl !== undefined) {
+          const bookInfos = await epubJS.getBookInfos(cloudFileUrl);
+          console.log(bookInfos);
+          setSrc(bookInfos?.coverURL);
+        }
       } catch (e: any) {
         console.error(e);
       }
@@ -48,6 +63,7 @@ export default function UploadFile() {
           <FontAwesomeIcon icon={faArrowUpFromBracket} />
         </button>
       </form>
+      {src && <Image src={src} alt="photo" width={100} height={100} />}
     </div>
   );
 }

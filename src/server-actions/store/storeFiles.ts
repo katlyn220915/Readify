@@ -4,7 +4,7 @@ import app from "@/lib/firebase/initialize";
 const storage = getStorage(app);
 
 const storeFiles = () => {
-  const storeEpub = async (uuid: string, id: number, file: any) => {
+  const storeEpub = async (uuid: string, id: string, file: any) => {
     try {
       const spaceRef = ref(storage, `/${uuid}/books/${id}/${id}.epub`);
       uploadBytes(spaceRef, file).then((snapshot) => {
