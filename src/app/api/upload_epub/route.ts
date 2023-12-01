@@ -12,14 +12,19 @@ export async function POST(request: NextRequest) {
   const uuid = headersList.get("X-user-UUID");
   if (!uuid) return NextResponse.json({ success: false }, { status: 403 });
 
-  const timestemp = Date.now();
+  const timestemp = String(Date.now());
 
   try {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
+
     const store = storeFiles();
-    store.storeEpub(uuid, timestemp, buffer);
-    return NextResponse.json({ success: true }, { status: 200 });
+    const downloadURL = await store.storeEpub(uuid, timestemp, buffer);
+
+    return NextResponse.json(
+      { success: true, data: { downloadURL, id: timestemp } },
+      { status: 200 }
+    );
   } catch (e) {
     console.error(e);
   }
