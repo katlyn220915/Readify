@@ -5,9 +5,9 @@ const useEpubJs = () => {
     try {
       const newBook = await ePub(path);
       const bookInfos = await newBook.ready.then(async function () {
-        const title = (newBook as any).package.metadata.title;
-        const author = (newBook as any).package.metadata.creator;
-        const coverURL = await newBook.coverUrl();
+        const title: string = (newBook as any).package.metadata.title;
+        const author: string = (newBook as any).package.metadata.creator;
+        const coverURL: string | null = await newBook.coverUrl();
         return {
           title,
           author,

@@ -5,7 +5,8 @@ import app from "@/lib/firebase/initialize";
 const storage = getStorage(app);
 
 const getFileURL = async (path: string) => {
-  const fileRef = ref(storage, `${path}`);
+  const theFilePath = path;
+  const fileRef = ref(storage, theFilePath);
   try {
     const url = getDownloadURL(fileRef).then((url) => {
       return url;

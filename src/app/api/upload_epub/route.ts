@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 
 import storeFiles from "@/server-actions/store/storeFiles";
-import writeFileToLocal from "@/utils/writeData";
 
 export async function POST(request: NextRequest) {
   const data = await request.formData();
@@ -20,18 +19,10 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes);
 
     const store = storeFiles();
-    store.storeEpub(uuid, timestemp, buffer);
-
-    // writeFileToLocal(buffer, timestemp, uuid, (success) => {
-    //   if (success) {
-    //     console.log("Server: Write file to local successful");
-    //   } else {
-    //     console.log("Server: Write file to local fail");
-    //   }
-    // });
+    const downloadURL = await store.storeEpub(uuid, timestemp, buffer);
 
     return NextResponse.json(
-      { success: true, data: { id: timestemp } },
+      { success: true, data: { downloadURL, id: timestemp } },
       { status: 200 }
     );
   } catch (e) {
