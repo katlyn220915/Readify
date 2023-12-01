@@ -1,39 +1,66 @@
-import React from "react";
+"use client";
+
+import React, { LiHTMLAttributes, useState } from "react";
 import styles from "./StaticSidebarList.module.css";
 import Icon from "../Icon/Icon";
 
-import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBookOpen,
+  faBoxArchive,
+  faMagnifyingGlass,
+} from "@fortawesome/free-solid-svg-icons";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
-import { faBoxArchive } from "@fortawesome/free-solid-svg-icons";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import Prompt from "../Prompt/Prompt";
+
+import { usePathname } from "next/navigation";
 
 type ListItemProps = {
-  item: { path: string; iconProp: any };
+  item: { title: string; path: string; iconProp: any };
 };
 
 const staticList = [
   {
+    title: "My books",
     path: "/mybooks",
     iconProp: faBookOpen,
   },
   {
+    title: "Later",
     path: "/later",
     iconProp: faClock,
   },
   {
+    title: "Archive",
     path: "/archive",
     iconProp: faBoxArchive,
   },
   {
+    title: "Search",
     path: "/search",
     iconProp: faMagnifyingGlass,
   },
 ];
 
-function ListItem({ item }: ListItemProps) {
+function ListItem ({ item }: ListItemProps) {
+  const [isMouseEnter, setIsMouseEnter] = useState(false);
+  const pathName = usePathname();
+
+  
   return (
-    <li>
+    <li
+      className={`${styles.li}`}
+      onMouseEnter={() => {
+        setIsMouseEnter(true);
+      }}
+      onMouseLeave={() => {
+        setIsMouseEnter(false);
+      }}
+      data-iscurrentpath = {pathName === `/mylibrary${item.path}`}
+    >
       <Icon path={`/mylibrary${item.path}`} iconProp={item.iconProp} />
+      <Prompt isMouseEnter={isMouseEnter} position="right">
+        {item.title}
+      </Prompt>
     </li>
   );
 }

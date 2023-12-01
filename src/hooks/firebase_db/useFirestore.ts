@@ -8,7 +8,7 @@ const useFirestore = () => {
   const setDocument = async (
     collectionName: string,
     documentName: string,
-    data: object
+    data: any
   ) => {
     try {
       await setDoc(doc(db, collectionName, documentName), data);
