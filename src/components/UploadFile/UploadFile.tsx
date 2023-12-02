@@ -1,32 +1,31 @@
 import React, { useState } from "react";
 import styles from "./Upload.module.css";
-import Image from "next/image";
 
 import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import useEpubJs from "@/hooks/epubjs/useEpubJs";
-import getFileURL from "@/server-actions/getFile/getFile";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
 
-type infoProps = {
-  author: string;
-  coverURL: string | null;
-  title: string;
-};
-
 export default function UploadFile() {
   const [file, setFile] = useState<File>();
-  const [src, setSrc] = useState<string | null>();
   const firebseAuth = useFirebaseAuth();
   const firestore = useFirestore();
   const epubJS = useEpubJs();
 
   const storeBookInfos = async (url: string, bookId: string, uuid: string) => {
     const bookInfos = await epubJS.getBookInfos(url);
-    console.log("成功拿取書籍資訊：" + bookInfos);
-    firestore.setDocument(`users/${uuid}/books`, bookId, bookInfos);
+    console.log(
+      "Successfully got the book informations from epubJS：" + bookInfos
+    );
+    const newBookInfos = {
+      ...bookInfos,
+      bookId,
+      bookDownloadURL: url,
+      tags: [],
+    };
+    firestore.setDocument(`users/${uuid}/books`, bookId, newBookInfos);
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -49,7 +48,7 @@ export default function UploadFile() {
       });
       if (!res.ok) throw new Error(await res.text());
       const result = await res.json();
-      console.log("上傳成功，next server回應：", result);
+      console.log("Upload successfully, server response:", result);
       storeBookInfos(result.data.downloadURL, result.data.id, userUUID.uid);
     } catch (e: any) {
       console.error(e);
@@ -69,7 +68,6 @@ export default function UploadFile() {
           <FontAwesomeIcon icon={faArrowUpFromBracket} />
         </button>
       </form>
-      {src && <Image src={src} alt={"photo"} width={100} height={100} />}
     </div>
   );
 }
