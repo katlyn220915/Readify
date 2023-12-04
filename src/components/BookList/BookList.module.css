@@ -1,6 +1,15 @@
 .books {
+  max-height: calc(100vh - 8.5rem);
   margin: 1.5rem 0;
   padding: 1rem;
+
+  overflow-y: scroll;
+  scrollbar-width: thin; /* 隱藏滾動條，這是 Firefox 的寫法 */
+  -ms-overflow-style: none;
+}
+
+.books::-webkit-scrollbar {
+  width: 0.5em;
 }
 
 .img_container {
@@ -68,6 +77,10 @@
 .book_row .author {
   font-size: 1.5rem;
   color: var(--color-grey-300);
+}
+
+.book_row .author span {
+  margin-left: 0.5rem;
 }
 
 .book_row .tag {

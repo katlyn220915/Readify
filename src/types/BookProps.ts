@@ -1,9 +1,10 @@
 type BookProps = {
-  id: string;
-  title: string;
   author: string;
+  bookDownloadURL: string;
+  bookId: string;
+  coverURL: string | null;
+  title: string;
   tags: string[];
-  img: string;
 };
 
 export default BookProps;

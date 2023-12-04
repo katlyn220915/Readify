@@ -6,7 +6,6 @@ import Image from "next/image";
 
 import SidebarList from "@/components/StaticSidebarList/StaticSidebarList";
 import Icon from "@/components/Icon/Icon";
-import UploadFile from "@/components/UploadFile/UploadFile";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -24,7 +23,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </ul>
       </nav>
       <section className={styles.middle_container}>{children}</section>
-      <UploadFile />
     </div>
   );
 }

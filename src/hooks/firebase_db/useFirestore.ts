@@ -1,6 +1,6 @@
 import app from "../../lib/firebase/initialize";
 import { Firestore, getFirestore } from "firebase/firestore";
-import { collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { collection, addDoc, setDoc, doc, getDocs } from "firebase/firestore";
 
 const db = getFirestore(app);
 
@@ -14,10 +14,23 @@ const useFirestore = () => {
       await setDoc(doc(db, collectionName, documentName), data);
       console.info("Firestore: Already Set Document ");
     } catch (e) {
-      throw new Error("Firestore Set Data Error");
+      throw new Error("Firestore Set Data Error: " + e);
     }
   };
-  return { setDocument };
+
+  const getDocuments = async (path: string) => {
+    let data: any = [];
+    try {
+      const querySnapshot = await getDocs(collection(db, path));
+      querySnapshot.forEach((doc) => {
+        data.push(doc.data());
+      });
+    } catch (e) {
+      console.error(e);
+    }
+    return data;
+  };
+  return { setDocument, getDocuments };
 };
 
 export default useFirestore;

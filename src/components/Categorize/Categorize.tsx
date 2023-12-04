@@ -12,6 +12,9 @@ import {
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import Prompt from "../Prompt/Prompt";
 
+import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import { deleteBook } from "@/lib/redux/features/bookSlice";
+
 const staticItems = [
   {
     title: "Move to MyBooks",
@@ -27,11 +30,23 @@ const staticItems = [
   },
 ];
 
+function MoreActionList() {
+  return (
+    <ul className={styles.more_action_list}>
+      <li>Delete this book</li>
+      <li>Delete this book</li>
+      <li>Delete this book</li>
+    </ul>
+  );
+}
+
 function MoreActionBtn() {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useAppDispatch();
 
   return (
-    <div className={styles.more_act_box}>
+    <div className={styles.more_act_box} onClick={() => setIsOpen(!isOpen)}>
       <button
         className={styles.btn_add_tag}
         onMouseEnter={() => {
@@ -46,6 +61,7 @@ function MoreActionBtn() {
       <Prompt isMouseEnter={isMouseEnter} position="top">
         More actions
       </Prompt>
+      {isOpen && <MoreActionList />}
     </div>
   );
 }
