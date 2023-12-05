@@ -4,12 +4,20 @@
   padding: 1rem;
 
   overflow-y: scroll;
-  scrollbar-width: thin; /* 隱藏滾動條，這是 Firefox 的寫法 */
+  scrollbar-width: thin;
   -ms-overflow-style: none;
 }
 
 .books::-webkit-scrollbar {
-  width: 0.5em;
+  width: 0.5rem;
+}
+
+.books:hover.books::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.books:hover.books::-webkit-scrollbar-thumb {
+  background: var(--color-blue-400);
 }
 
 .img_container {
@@ -31,7 +39,12 @@
   position: relative;
 }
 
-.book::before {
+.book_active {
+  background-color: rgba(255, 255, 255, 0.05);
+  z-index: 100;
+}
+
+.book_active::before {
   content: "";
   position: absolute;
   width: 0.5rem;
@@ -40,13 +53,7 @@
   border-bottom-left-radius: 0.5rem;
   left: 0;
   top: 0;
-}
 
-.book:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.book:hover.book::before {
   background-color: var(--color-blue-700);
 }
 

@@ -1,8 +1,12 @@
 "use client";
-
 import React, { useState } from "react";
 import styles from "./Categorize.module.css";
 
+/* COMPONENT */
+import MoreActionList from "../MoreActionList/MoreActionList";
+import Prompt from "../Prompt/Prompt";
+
+/* THIRD_LIB */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBookOpen,
@@ -10,9 +14,10 @@ import {
   faEllipsis,
 } from "@fortawesome/free-solid-svg-icons";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
-import Prompt from "../Prompt/Prompt";
 
+/* CUSTOM HOOK */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import { setMoreActionBtn } from "@/lib/redux/features/moreActionSlice";
 import { deleteBook } from "@/lib/redux/features/bookSlice";
 
 const staticItems = [
@@ -30,23 +35,17 @@ const staticItems = [
   },
 ];
 
-function MoreActionList() {
-  return (
-    <ul className={styles.more_action_list}>
-      <li>Delete this book</li>
-      <li>Delete this book</li>
-      <li>Delete this book</li>
-    </ul>
-  );
-}
-
 function MoreActionBtn() {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
 
   return (
-    <div className={styles.more_act_box} onClick={() => setIsOpen(!isOpen)}>
+    <div
+      className={styles.more_act_box}
+      onClick={(e) => {
+        dispatch(setMoreActionBtn());
+      }}
+    >
       <button
         className={styles.btn_add_tag}
         onMouseEnter={() => {
@@ -61,7 +60,6 @@ function MoreActionBtn() {
       <Prompt isMouseEnter={isMouseEnter} position="top">
         More actions
       </Prompt>
-      {isOpen && <MoreActionList />}
     </div>
   );
 }
@@ -94,6 +92,7 @@ export default function Categorize({
 }: {
   isMouseEnter: boolean;
 }) {
+  const { isMoreActionBtnOpen } = useAppSelector((state) => state.moreAction);
   return (
     <>
       {isMouseEnter && (
@@ -104,6 +103,7 @@ export default function Categorize({
               <CategorizeItem item={item} key={item.title} />
             ))}
           </ul>
+          {isMoreActionBtnOpen && <MoreActionList />}
         </div>
       )}
     </>

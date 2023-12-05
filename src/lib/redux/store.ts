@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import uploadReducer from "./features/uploadSlice";
 import bookReducer from "./features/bookSlice";
+import moreActionReducer from "./features/moreActionSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       upload: uploadReducer,
       book: bookReducer,
+      moreAction: moreActionReducer,
     },
   });
 };

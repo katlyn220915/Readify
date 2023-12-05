@@ -2,18 +2,20 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import styles from "./page.module.css";
+
+/* custom hook */
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
+import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
+import { bookListInitialize } from "@/lib/redux/features/bookSlice";
 
+/* components */
 import Spinner from "@/components/Spinner/Spinner";
 import Icon from "@/components/Icon/Icon";
 import Topbar from "@/components/Topbar/Topbar";
 import BookList from "@/components/BookList/BookList";
 import UploadFile from "@/components/UploadFile/UploadFile";
-
-import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
-import { bookListInitialize } from "@/lib/redux/features/bookSlice";
 
 const tags = [
   {

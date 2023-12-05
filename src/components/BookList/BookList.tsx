@@ -1,26 +1,38 @@
 "use client";
-
 import React, { useState } from "react";
 import Image from "next/image";
 import styles from "./BookList.module.css";
 
+/* TYPE */
 import { BookListProps, BookProps } from "@/types/BookListProps";
+
+/* COMPONENT */
 import Categorize from "../Categorize/Categorize";
 
+/* THIRD-LIB */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFeather } from "@fortawesome/free-solid-svg-icons";
 
+/* CUSTOM-HOOKS */
+import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+
+/////////////////////////////////////////////////////////
+
 function Book({ book }: { book: BookProps }) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
+  const { isMoreActionBtnOpen, isOtherMoreActionBtnOpen } = useAppSelector(
+    (state) => state.moreAction
+  );
 
   return (
     <li
-      className={`${styles.book}`}
+      className={`${styles.book} ${isMouseEnter ? styles.book_active : ""}`}
       onMouseEnter={() => {
-        setIsMouseEnter(true);
+        if (!isMoreActionBtnOpen && !isOtherMoreActionBtnOpen)
+          setIsMouseEnter(true);
       }}
       onMouseLeave={() => {
-        setIsMouseEnter(false);
+        if (!isMoreActionBtnOpen) setIsMouseEnter(false);
       }}
     >
       <div className={styles.img_container}>
@@ -50,7 +62,7 @@ function Book({ book }: { book: BookProps }) {
           </p>
           {/* {book.tags.map((tag, id) => (
             <span key={`${id}+ ${book.bookId}`} className={styles.tag}>
-              {tag}
+            {tag}
             </span>
           ))} */}
         </div>
@@ -61,12 +73,13 @@ function Book({ book }: { book: BookProps }) {
 }
 
 export default function BookList({ bookList }: BookListProps) {
-  console.log(bookList);
   return (
-    <ul className={styles.books}>
-      {bookList.map((book) => (
-        <Book book={book} key={book.bookId} />
-      ))}
-    </ul>
+    <>
+      <ul className={styles.books}>
+        {bookList.map((book) => (
+          <Book book={book} key={book.bookId} />
+        ))}
+      </ul>
+    </>
   );
 }
