@@ -21,9 +21,7 @@ export default function MoreActionList({ bookId }: { bookId: string }) {
     );
 
     if (isDataDeletedFromStore) {
-      const isFileDeleted = await firestore.deleteFiles(
-        `${user.uid}/books/${bookId}/${bookId}`
-      );
+      await firestore.deleteFiles(`${user.uid}/books/${bookId}/${bookId}`);
       dispatch(deleteBook(bookId));
       setTimeout(() => dispatch(resetSuccessful()), 3000);
       dispatch(setMoreActionBtnClose());
@@ -33,6 +31,7 @@ export default function MoreActionList({ bookId }: { bookId: string }) {
 
   return (
     <ul className={styles.more_action}>
+      <li>Add new tag</li>
       <li className={styles.delete_btn} onClick={() => handleDelete()}>
         Delete this book
       </li>

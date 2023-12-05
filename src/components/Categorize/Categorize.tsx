@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { usePathname } from "next/navigation";
 import styles from "./Categorize.module.css";
 
 /* COMPONENT */
@@ -23,14 +24,17 @@ const staticItems = [
   {
     title: "Move to MyBooks",
     iconProp: faBookOpen,
+    path: "/mylibrary/mybooks",
   },
   {
     title: "Move to Later",
     iconProp: faClock,
+    path: "/mylibrary/later",
   },
   {
     title: "Move to Archive",
     iconProp: faArchive,
+    path: "/mylibrary/archive",
   },
 ];
 
@@ -63,11 +67,21 @@ function MoreActionBtn() {
   );
 }
 
-function CategorizeItem({ item }: { item: { title: string; iconProp: any } }) {
+function CategorizeItem({
+  item,
+}: {
+  item: { title: string; iconProp: any; path: string };
+}) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
+  const pathname = usePathname();
+
   return (
     <>
-      <li className={styles.li}>
+      <li
+        className={`${styles.li} ${
+          pathname === item.path ? styles.current_path : ""
+        }`}
+      >
         <button
           onMouseEnter={() => {
             setIsMouseEnter(true);
@@ -79,9 +93,11 @@ function CategorizeItem({ item }: { item: { title: string; iconProp: any } }) {
           <FontAwesomeIcon icon={item.iconProp} className="icon" />
         </button>
       </li>
-      <Prompt isMouseEnter={isMouseEnter} position="top">
-        {item.title}
-      </Prompt>
+      {pathname !== item.path && (
+        <Prompt isMouseEnter={isMouseEnter} position="top">
+          {item.title}
+        </Prompt>
+      )}
     </>
   );
 }
