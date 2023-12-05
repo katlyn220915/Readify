@@ -2,6 +2,11 @@
 import React, { useState } from "react";
 import styles from "./Upload.module.css";
 
+/* COMPONENT */
+import UploadingField from "../UploadingField/UploadingField";
+import ActionPrompt from "../ActionPrompt/ActionPrompt";
+
+/* CUSTOM_HOOK */
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import useEpubJs from "@/hooks/epubjs/useEpubJs";
 import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
@@ -15,9 +20,9 @@ import {
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
-import UploadingField from "../UploadingField/UploadingField";
-import UploadPrompt from "../UploadPrompt/UploadPrompt";
 import { useAuth } from "@/context/AuthContext";
+
+/*TYPE */
 import BookProps from "@/types/BookProps";
 
 type uploadFileProp = {
@@ -42,7 +47,6 @@ export default function UploadFile() {
       console.error("cannot parse the book: " + bookId);
       return;
     }
-    //把圖片上傳到firebase
     if (bookInfos.coverURL !== null) {
       imgUrl = await storeBookCoverImg(bookInfos?.coverURL, bookId);
     }
@@ -148,7 +152,12 @@ export default function UploadFile() {
         </form>
       </div>
       <UploadingField />
-      <UploadPrompt />
+      <ActionPrompt
+        isError={isError}
+        errorMes={errorMes}
+        isSuccessful={isSuccessful}
+        successfulMes="Upload successfully !"
+      />
     </>
   );
 }

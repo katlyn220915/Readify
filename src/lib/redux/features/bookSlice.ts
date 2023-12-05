@@ -10,12 +10,14 @@ type bookState = {
   isProcessing: boolean;
   isError: boolean;
   bookList: Array<BookProps>;
+  isSuccessful: boolean;
 };
 
 const initialState = {
   isProcessing: false,
   isError: false,
   bookList: [],
+  isSuccessful: false,
 } as bookState;
 
 export const book = createSlice({
@@ -32,11 +34,15 @@ export const book = createSlice({
       state.bookList = state.bookList.filter(
         (book) => book.bookId !== action.payload
       );
+      state.isSuccessful = true;
     },
-    addTag: (state, action) => {},
+    resetSuccessful: (state) => {
+      state.isSuccessful = false;
+    },
   },
 });
 
-export const { addNewBook, bookListInitialize, deleteBook } = book.actions;
+export const { addNewBook, bookListInitialize, deleteBook, resetSuccessful } =
+  book.actions;
 export const selectBook = (state: RootState) => state.book;
 export default book.reducer;

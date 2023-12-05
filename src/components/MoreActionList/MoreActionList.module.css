@@ -19,3 +19,7 @@
 .more_action li:hover {
   background-color: rgba(255, 255, 255, 0.05);
 }
+
+.more_action .delete_btn {
+  color: var(--color-red-700);
+}

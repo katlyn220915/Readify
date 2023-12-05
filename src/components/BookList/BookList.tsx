@@ -15,6 +15,7 @@ import { faFeather } from "@fortawesome/free-solid-svg-icons";
 
 /* CUSTOM-HOOKS */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import ActionPrompt from "../ActionPrompt/ActionPrompt";
 
 /////////////////////////////////////////////////////////
 
@@ -67,12 +68,13 @@ function Book({ book }: { book: BookProps }) {
           ))} */}
         </div>
       </div>
-      <Categorize isMouseEnter={isMouseEnter} />
+      <Categorize isMouseEnter={isMouseEnter} bookId={book.bookId} />
     </li>
   );
 }
 
 export default function BookList({ bookList }: BookListProps) {
+  const { isError, isSuccessful } = useAppSelector((state) => state.book);
   return (
     <>
       <ul className={styles.books}>
@@ -80,6 +82,13 @@ export default function BookList({ bookList }: BookListProps) {
           <Book book={book} key={book.bookId} />
         ))}
       </ul>
+
+      <ActionPrompt
+        isError={isError}
+        errorMes={isError ? "Delete file fail" : ""}
+        isSuccessful={isSuccessful}
+        successfulMes={isSuccessful ? "Delete successfully" : ""}
+      />
     </>
   );
 }

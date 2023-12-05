@@ -18,7 +18,6 @@ import { faClock } from "@fortawesome/free-regular-svg-icons";
 /* CUSTOM HOOK */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { setMoreActionBtn } from "@/lib/redux/features/moreActionSlice";
-import { deleteBook } from "@/lib/redux/features/bookSlice";
 
 const staticItems = [
   {
@@ -89,8 +88,10 @@ function CategorizeItem({ item }: { item: { title: string; iconProp: any } }) {
 
 export default function Categorize({
   isMouseEnter,
+  bookId,
 }: {
   isMouseEnter: boolean;
+  bookId: string;
 }) {
   const { isMoreActionBtnOpen } = useAppSelector((state) => state.moreAction);
   return (
@@ -103,7 +104,7 @@ export default function Categorize({
               <CategorizeItem item={item} key={item.title} />
             ))}
           </ul>
-          {isMoreActionBtnOpen && <MoreActionList />}
+          {isMoreActionBtnOpen && <MoreActionList bookId={bookId} />}
         </div>
       )}
     </>
