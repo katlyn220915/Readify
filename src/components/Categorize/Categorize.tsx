@@ -19,6 +19,10 @@ import { faClock } from "@fortawesome/free-regular-svg-icons";
 /* CUSTOM HOOK */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { setMoreActionBtn } from "@/lib/redux/features/moreActionSlice";
+import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
+import useFirestore from "@/hooks/firebase_db/useFirestore";
+import { useAuth } from "@/context/AuthContext";
+import BookProps from "@/types/BookProps";
 
 const staticItems = [
   {
@@ -69,18 +73,44 @@ function MoreActionBtn() {
 
 function CategorizeItem({
   item,
+  book,
 }: {
   item: { title: string; iconProp: any; path: string };
+  book: BookProps;
 }) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
+  const { user } = useAuth();
+  const firestore = useFirestore();
+  const dispatch = useAppDispatch();
   const pathname = usePathname();
 
+  const handleCategorizeBook = async () => {
+    if (pathname === item.path) return;
+    const arrPath = item.path.split("/");
+    const newCategory = arrPath[arrPath.length - 1];
+    const arrPathname = pathname.split("/");
+    const originCategory = arrPathname[arrPathname.length - 1];
+    const isSetDocSuccess = await firestore.setDocument(
+      `users/${user.uid}/${newCategory}`,
+      book.bookId,
+      book
+    );
+    const isDeleteDocSuccess = await firestore.deleteDocument(
+      `/users/${user.uid}/${originCategory}/${book.bookId}`
+    );
+
+    if (isSetDocSuccess && isDeleteDocSuccess) {
+      dispatch(deleteBook(book.bookId));
+      dispatch(resetSuccessful());
+    }
+  };
   return (
     <>
       <li
         className={`${styles.li} ${
           pathname === item.path ? styles.current_path : ""
         }`}
+        onClick={() => handleCategorizeBook()}
       >
         <button
           onMouseEnter={() => {
@@ -104,10 +134,10 @@ function CategorizeItem({
 
 export default function Categorize({
   isMouseEnter,
-  bookId,
+  book,
 }: {
   isMouseEnter: boolean;
-  bookId: string;
+  book: BookProps;
 }) {
   const { isMoreActionBtnOpen } = useAppSelector((state) => state.moreAction);
   return (
@@ -117,10 +147,10 @@ export default function Categorize({
           <MoreActionBtn />
           <ul className={styles.categorize_box}>
             {staticItems.map((item) => (
-              <CategorizeItem item={item} key={item.title} />
+              <CategorizeItem item={item} key={item.path} book={book} />
             ))}
           </ul>
-          {isMoreActionBtnOpen && <MoreActionList bookId={bookId} />}
+          {isMoreActionBtnOpen && <MoreActionList book={book} />}
         </div>
       )}
     </>

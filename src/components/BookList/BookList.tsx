@@ -68,7 +68,7 @@ function Book({ book }: { book: BookProps }) {
           ))} */}
         </div>
       </div>
-      <Categorize isMouseEnter={isMouseEnter} bookId={book.bookId} />
+      <Categorize isMouseEnter={isMouseEnter} book={book} />
     </li>
   );
 }

@@ -22,8 +22,10 @@ const useFirestore = () => {
     try {
       await setDoc(doc(db, collectionName, documentName), data);
       console.info("Firestore: Already Set Document ");
+      return true;
     } catch (e) {
-      throw new Error("Firestore Set Data Error: " + e);
+      // throw new Error("Firestore Set Data Error: " + e);
+      return false;
     }
   };
 
@@ -35,7 +37,7 @@ const useFirestore = () => {
         data.push(doc.data());
       });
     } catch (e) {
-      console.error(e);
+      throw new Error("Firestore get Documents Error: " + e);
     }
     return data;
   };
@@ -45,9 +47,9 @@ const useFirestore = () => {
       await deleteDoc(doc(db, path));
       return true;
     } catch (e) {
-      console.error(e);
+      // throw new Error("Firestore delete Document Error: " + e);
+      return false;
     }
-    return false;
   };
 
   const deleteFiles = async (path: string) => {

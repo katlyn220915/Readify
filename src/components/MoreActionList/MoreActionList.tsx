@@ -8,8 +8,9 @@ import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
 import { setMoreActionBtnClose } from "@/lib/redux/features/moreActionSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAuth } from "@/context/AuthContext";
+import BookProps from "@/types/BookProps";
 
-export default function MoreActionList({ bookId }: { bookId: string }) {
+export default function MoreActionList({ book }: { book: BookProps }) {
   const dispatch = useAppDispatch();
   const firestore = useFirestore();
   const { user } = useAuth();
@@ -17,12 +18,14 @@ export default function MoreActionList({ bookId }: { bookId: string }) {
   const handleDelete = async () => {
     console.log("delete");
     const isDataDeletedFromStore = await firestore.deleteDocument(
-      `users/${user.uid}/books/${bookId}`
+      `users/${user.uid}/books/${book.bookId}`
     );
 
     if (isDataDeletedFromStore) {
-      await firestore.deleteFiles(`${user.uid}/books/${bookId}/${bookId}`);
-      dispatch(deleteBook(bookId));
+      await firestore.deleteFiles(
+        `${user.uid}/books/${book.bookId}/${book.bookId}`
+      );
+      dispatch(deleteBook(book.bookId));
       setTimeout(() => dispatch(resetSuccessful()), 3000);
       dispatch(setMoreActionBtnClose());
     } else {
