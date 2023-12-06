@@ -1,11 +1,16 @@
+import { Dispatch, SetStateAction } from "react";
+
 interface BookListProps {
-  bookList: Array<{
-    id: string;
-    title: string;
-    author: string;
-    tags: string[];
-    img: string;
-  }>;
+  bookList: Array<BookProps>;
 }
 
-export default BookListProps;
+type BookProps = {
+  author: string;
+  bookDownloadURL: string;
+  bookId: string;
+  coverURL: string | null;
+  title: string;
+  tags: string[];
+};
+
+export type { BookListProps, BookProps };

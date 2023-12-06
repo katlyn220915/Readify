@@ -8,12 +8,16 @@ const useEpubJs = () => {
         const title: string = (newBook as any).package.metadata.title;
         const author: string = (newBook as any).package.metadata.creator;
         const coverURL: string | null = await newBook.coverUrl();
+        console.log(
+          "Successfully parsed e-book:" + title + " " + author + " " + coverURL
+        );
         return {
           title,
           author,
           coverURL,
         };
       });
+
       return bookInfos;
     } catch (e) {
       console.error(e);

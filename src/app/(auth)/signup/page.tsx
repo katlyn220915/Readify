@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 
 import Image from "next/image";
-import Link from "next/link";
 import styles from "./page.module.css";
 import SignupForm from "@/components/SignupForm/SignupForm";
 import Loading from "../loading";

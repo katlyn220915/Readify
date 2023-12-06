@@ -18,6 +18,7 @@ interface defultValue {
   setIsLogin: Dispatch<SetStateAction<boolean>>;
   setCurrentUserName: Dispatch<SetStateAction<string | null>>;
   pending: boolean;
+  user: any;
 }
 
 const AuthContext = createContext<defultValue>({
@@ -26,23 +27,27 @@ const AuthContext = createContext<defultValue>({
   setIsLogin: () => {},
   setCurrentUserName: () => {},
   pending: false,
+  user: null,
 });
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUserName, setCurrentUserName] = useState<string | null>(null);
   const [isLogin, setIsLogin] = useState(false);
   const [pending, setPending] = useState(true);
+  const [user, setUser] = useState<any>();
   const auth = getAuth(app);
 
   useEffect(() => {
     try {
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          console.log("context is processing: " + user);
           setIsLogin(true);
+          setUser(user);
           setCurrentUserName(user.displayName);
+          console.log(user);
         } else {
           setIsLogin(false);
+          setUser(null);
           setCurrentUserName(null);
           console.log("context is processing: " + "no user");
         }
@@ -60,6 +65,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLogin,
     setCurrentUserName,
     pending,
+    user,
   };
 
   return (

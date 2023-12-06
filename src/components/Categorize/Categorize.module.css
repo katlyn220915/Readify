@@ -40,6 +40,11 @@
   transform: translate(-50%, -50%);
 }
 
-.more_act_box .li {
-  position: relative;
+.li:hover.li button svg:not(.current_path button svg) {
+  color: var(--color-blue-300);
+}
+
+.current_path button svg {
+  cursor: default;
+  color: var(--color-grey-600);
 }
