@@ -5,7 +5,6 @@ import styles from "./layout.module.css";
 import Image from "next/image";
 
 import SidebarList from "@/components/StaticSidebarList/StaticSidebarList";
-import Icon from "@/components/Icon/Icon";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -18,9 +17,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           height={70}
         />
         <SidebarList />
-        <ul>
-          <li></li>
-        </ul>
       </nav>
       <section className={styles.middle_container}>{children}</section>
     </div>

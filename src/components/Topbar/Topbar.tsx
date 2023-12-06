@@ -22,8 +22,8 @@ export default function Topbar() {
   useEffect(() => {
     setTitle("");
     function changeTitle() {
-      if (pathname === "/mylibrary/mybooks") {
-        setTitle("My Books");
+      if (pathname === "/mylibrary") {
+        setTitle("My Library");
         setIcon(faBookOpen);
       }
       if (pathname === "/mylibrary/later") {

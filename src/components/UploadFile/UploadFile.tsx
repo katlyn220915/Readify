@@ -59,7 +59,7 @@ export default function UploadFile() {
       tags: [],
       coverURL: imgUrl,
     };
-    firestore.setDocument(`users/${uuid}/books`, bookId, newBookInfos);
+    firestore.setDocument(`users/${uuid}/mylibrary`, bookId, newBookInfos);
     dispatch(addNewBook(newBookInfos));
   };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "./page.module.css";
 
 /* custom hook */
@@ -24,40 +24,48 @@ const tags = [
   },
 ];
 
-export default function Mybooks() {
+export default function MyLibrary() {
   const { isLogin, pending, user } = useAuth();
   const router = useRouter();
-  const firestore = useFirestore();
   const [isLoading, setIsLoading] = useState(false);
-  // const [bookList, setBookList] = useState<BookProps[]>([]);
   const { bookList } = useAppSelector((state) => state.book);
   const dispatch = useAppDispatch();
 
+  //Solve the dispatch in effect dependency array problem
+  const dispatchCallback = useCallback(dispatch, [dispatch]);
+  const firestoreCallback = useCallback(useFirestore, [useFirestore]);
+
   useEffect(() => {
     const getBookList = async () => {
-      setIsLoading(true);
-      if (user) {
-        const bookList = await firestore.getDocuments(
-          `users/${user.uid}/books`
-        );
-        // setBookList(bookList);
-        dispatch(bookListInitialize(bookList));
+      try {
+        setIsLoading(true);
+        if (user) {
+          const bookList = await firestoreCallback().getDocuments(
+            `users/${user.uid}/mylibrary`
+          );
+          dispatchCallback(bookListInitialize(bookList));
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
     getBookList();
-  }, [user]);
-
-  // const handleAddBook = (newBook: BookProps) => {
-  //   setBookList((books) => [...books, newBook]);
-  // };
+  }, [user, dispatchCallback, firestoreCallback]);
 
   return (
     <>
       <div className={styles.container}>
         <Topbar />
-        {bookList !== undefined && !isLoading && (
+        {bookList.length !== 0 && !isLoading && (
           <BookList bookList={bookList} />
+        )}
+        {bookList.length === 0 && !isLoading && (
+          <p>
+            You have not upload any books yet! Click the upload button on the
+            right bottom cornor to upload!
+          </p>
         )}
         {isLoading && <Spinner />}
       </div>

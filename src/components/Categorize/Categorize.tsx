@@ -26,9 +26,9 @@ import BookProps from "@/types/BookProps";
 
 const staticItems = [
   {
-    title: "Move to MyBooks",
+    title: "Move to MyLibrary",
     iconProp: faBookOpen,
-    path: "/mylibrary/mybooks",
+    path: "/mylibrary",
   },
   {
     title: "Move to Later",
