@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import styles from "./Categorize.module.css";
 
@@ -18,7 +18,10 @@ import { faClock } from "@fortawesome/free-regular-svg-icons";
 
 /* CUSTOM HOOK */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import { setMoreActionBtn } from "@/lib/redux/features/moreActionSlice";
+import {
+  setMoreActionBtn,
+  setMoreActionBtnClose,
+} from "@/lib/redux/features/moreActionSlice";
 import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAuth } from "@/context/AuthContext";
@@ -33,12 +36,12 @@ const staticItems = [
   {
     title: "Move to Later",
     iconProp: faClock,
-    path: "/mylibrary/later",
+    path: "/later",
   },
   {
     title: "Move to Archive",
     iconProp: faArchive,
-    path: "/mylibrary/archive",
+    path: "/archive",
   },
 ];
 
@@ -50,6 +53,7 @@ function MoreActionBtn() {
     <div
       className={styles.more_act_box}
       onClick={(e) => {
+        e.stopPropagation();
         dispatch(setMoreActionBtn());
       }}
     >
@@ -84,7 +88,10 @@ function CategorizeItem({
   const dispatch = useAppDispatch();
   const pathname = usePathname();
 
-  const handleCategorizeBook = async () => {
+  const handleCategorizeBook = async (
+    e: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
     if (pathname === item.path) return;
     const arrPath = item.path.split("/");
     const newCategory = arrPath[arrPath.length - 1];
@@ -110,7 +117,7 @@ function CategorizeItem({
         className={`${styles.li} ${
           pathname === item.path ? styles.current_path : ""
         }`}
-        onClick={() => handleCategorizeBook()}
+        onClick={(e) => handleCategorizeBook(e)}
       >
         <button
           onMouseEnter={() => {

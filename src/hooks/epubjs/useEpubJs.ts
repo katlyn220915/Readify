@@ -1,4 +1,4 @@
-import ePub from "epubjs";
+import ePub, { Book } from "epubjs";
 
 const useEpubJs = () => {
   const getBookInfos = async (path: string) => {
@@ -24,7 +24,16 @@ const useEpubJs = () => {
     }
   };
 
-  return { getBookInfos };
+  const renderBook = async (path: string) => {
+    try {
+      const newBook = ePub(path);
+      return newBook;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  return { getBookInfos, renderBook };
 };
 
 export default useEpubJs;

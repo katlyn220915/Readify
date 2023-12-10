@@ -7,12 +7,14 @@ import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
 import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
 import { setMoreActionBtnClose } from "@/lib/redux/features/moreActionSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
+import useCloudStorage from "@/hooks/firebase_db/useCloudStorage";
 import { useAuth } from "@/context/AuthContext";
 import BookProps from "@/types/BookProps";
 
 export default function MoreActionList({ book }: { book: BookProps }) {
   const dispatch = useAppDispatch();
   const firestore = useFirestore();
+  const cloudStorage = useCloudStorage();
   const { user } = useAuth();
 
   const handleDelete = async () => {
@@ -22,7 +24,7 @@ export default function MoreActionList({ book }: { book: BookProps }) {
     );
 
     if (isDataDeletedFromStore) {
-      await firestore.deleteFiles(
+      await cloudStorage.deleteFiles(
         `${user.uid}/books/${book.bookId}/${book.bookId}`
       );
       dispatch(deleteBook(book.bookId));

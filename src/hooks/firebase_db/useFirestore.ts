@@ -1,17 +1,17 @@
 import app from "../../lib/firebase/initialize";
 import { Firestore, getFirestore } from "firebase/firestore";
-import { getStorage, ref, deleteObject } from "firebase/storage";
+
 import {
   collection,
   addDoc,
   setDoc,
   doc,
   getDocs,
+  getDoc,
   deleteDoc,
 } from "firebase/firestore";
 
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 const useFirestore = () => {
   const setDocument = async (
@@ -48,49 +48,30 @@ const useFirestore = () => {
       return true;
     } catch (e) {
       // throw new Error("Firestore delete Document Error: " + e);
+      console.error("Firestore error" + e);
       return false;
     }
   };
 
-  const deleteFiles = async (path: string) => {
+  const getDocumentById = async (path: string, bookId: string) => {
     try {
-      const desertRefImg = ref(storage, path + ".png");
-      const desertRefEpub = ref(storage, path + ".epub");
-
-      const isImgDeleted = await deleteObject(desertRefImg)
-        .then(() => {
-          console.log("deleted IMG");
-          return true;
-        })
-        .catch((error) => {
-          console.error(
-            "Firebase error: Uh-oh, an error occurred when deleting objects..." +
-              error
-          );
-          return false;
-        });
-
-      const isEpubDeleted = await deleteObject(desertRefEpub)
-        .then(() => {
-          console.log("deleted Epub");
-          return true;
-        })
-        .catch((error) => {
-          console.error(
-            "Firebase error: Uh-oh, an error occurred when deleting objects..." +
-              error
-          );
-          return false;
-        });
-      if (isImgDeleted && isEpubDeleted) return true;
-      return false;
+      const docRef = doc(db, path, bookId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        console.info("Document data :", docSnap.data());
+        const data = docSnap.data();
+        return data;
+      } else {
+        console.info("No such document");
+        return null;
+      }
     } catch (e) {
-      console.error("Uh-oh, an error occurred when deleting objects...");
-      return false;
+      console.error("Firestore error", e);
+      return null;
     }
   };
 
-  return { setDocument, getDocuments, deleteDocument, deleteFiles };
+  return { setDocument, getDocuments, deleteDocument, getDocumentById };
 };
 
 export default useFirestore;

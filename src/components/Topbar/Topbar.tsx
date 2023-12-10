@@ -26,15 +26,15 @@ export default function Topbar() {
         setTitle("My Library");
         setIcon(faBookOpen);
       }
-      if (pathname === "/mylibrary/later") {
+      if (pathname === "/later") {
         setTitle("Later");
         setIcon(faClock);
       }
-      if (pathname === "/mylibrary/archive") {
+      if (pathname === "/archive") {
         setTitle("Archive");
         setIcon(faBoxArchive);
       }
-      if (pathname === "/mylibrary/search") {
+      if (pathname === "/search") {
         setTitle("Search");
         setIcon(faMagnifyingGlass);
       }
