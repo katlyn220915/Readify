@@ -17,6 +17,7 @@ import {
   success,
   reset,
 } from "@/lib/redux/features/uploadSlice";
+import parseEpub from "@/server-actions/parseEpub/parseEpub";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
@@ -24,6 +25,7 @@ import { useAuth } from "@/context/AuthContext";
 
 /*TYPE */
 import BookProps from "@/types/BookProps";
+import storeFiles from "@/server-actions/store/storeFiles";
 
 type uploadFileProp = {
   onAddBook: (newBook: BookProps) => void;
@@ -36,6 +38,30 @@ export default function UploadFile() {
   const dispatch = useAppDispatch();
   const { isUploading, isError, errorMes, fileName, isSuccessful } =
     useAppSelector((state) => state.upload);
+  const parser = parseEpub();
+  const store = storeFiles();
+
+  const storeEpubAllImages = async (
+    url: string,
+    bookId: string,
+    uuid: string
+  ) => {
+    const images = await parser.getImages(url);
+    let map = new Map();
+    const imagesMap = await Promise.all(
+      images.map(async (item) => {
+        const downloadURL = await store.storeEpub(
+          item?.blob,
+          `${uuid}/books/${bookId}/${item?.fileName}`
+        );
+        map.set(item?.fileName, downloadURL);
+      })
+    );
+    console.log(map);
+    firestore.updateDocument(`/users/${uuid}/mylibrary/`, bookId, {
+      images: map,
+    });
+  };
 
   const storeBookInfos = async (url: string, bookId: string, uuid: string) => {
     const bookInfos = await epubJS.getBookInfos(url);
@@ -61,6 +87,7 @@ export default function UploadFile() {
     };
     firestore.setDocument(`users/${uuid}/mylibrary`, bookId, newBookInfos);
     dispatch(addNewBook(newBookInfos));
+    storeEpubAllImages(url, bookId, uuid);
   };
 
   const storeBookCoverImg = async (coverURL: string, id: string) => {

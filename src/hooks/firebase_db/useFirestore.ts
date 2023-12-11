@@ -1,5 +1,5 @@
 import app from "../../lib/firebase/initialize";
-import { Firestore, getFirestore } from "firebase/firestore";
+import { Firestore, getFirestore, updateDoc } from "firebase/firestore";
 
 import {
   collection,
@@ -71,7 +71,31 @@ const useFirestore = () => {
     }
   };
 
-  return { setDocument, getDocuments, deleteDocument, getDocumentById };
+  const updateDocument = async (
+    collection: string,
+    document: string,
+    data: any
+  ) => {
+    try {
+      console.log(collection, document, data);
+      const ref = doc(db, collection, document);
+      await updateDoc(ref, data)
+        .then(() => {})
+        .catch((e) => {
+          console.log(e);
+        });
+    } catch (e) {
+      throw new Error("Firebase Error, update document fail", e);
+    }
+  };
+
+  return {
+    setDocument,
+    getDocuments,
+    deleteDocument,
+    getDocumentById,
+    updateDocument,
+  };
 };
 
 export default useFirestore;

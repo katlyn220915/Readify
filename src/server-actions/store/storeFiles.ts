@@ -3,6 +3,7 @@ import {
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  uploadBytes,
 } from "firebase/storage";
 import app from "@/lib/firebase/initialize";
 
@@ -64,8 +65,16 @@ const storeFiles = () => {
       console.error("Firebase/storage: upload file error:", e);
     }
   };
+  const storeImage = async (file: any, path: string) => {
+    const storageRef = ref(storage, path);
+    try {
+      await uploadBytes(storageRef, file).then((snapshot) => {});
+    } catch (e) {
+      throw new Error("Firebase Error, upload fail");
+    }
+  };
 
-  return { storeEpub };
+  return { storeEpub, storeImage };
 };
 
 export default storeFiles;

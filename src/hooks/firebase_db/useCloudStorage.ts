@@ -4,6 +4,7 @@ import {
   ref,
   deleteObject,
   getDownloadURL,
+  uploadBytes,
 } from "firebase/storage";
 
 const storage = getStorage(app);

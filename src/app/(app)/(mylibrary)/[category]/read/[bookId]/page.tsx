@@ -6,7 +6,6 @@ export default function BookId() {
   return (
     <div className={styles.container}>
       <ReadingArea />
-      <div>notebook area</div>
     </div>
   );
 }
