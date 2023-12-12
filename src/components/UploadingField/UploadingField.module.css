@@ -5,6 +5,7 @@
   position: absolute;
   right: -30rem;
   bottom: 3rem;
+  z-index: 200;
 
   background-color: var(--color-grey-300);
   color: #000;

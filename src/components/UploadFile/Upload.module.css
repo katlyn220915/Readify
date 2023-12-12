@@ -1,5 +1,6 @@
 .upload_container {
   position: absolute;
+  z-index: 100;
   bottom: 5rem;
   right: 5rem;
 

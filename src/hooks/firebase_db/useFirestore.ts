@@ -11,16 +11,17 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 
-const db = getFirestore(app);
-
 const useFirestore = () => {
+  const db = getFirestore(app);
   const setDocument = async (
     collectionName: string,
     documentName: string,
     data: any
   ) => {
     try {
-      await setDoc(doc(db, collectionName, documentName), data);
+      await setDoc(doc(db, collectionName, documentName), data, {
+        merge: true,
+      });
       console.info("Firestore: Already Set Document ");
       return true;
     } catch (e) {
@@ -72,20 +73,15 @@ const useFirestore = () => {
   };
 
   const updateDocument = async (
-    collection: string,
-    document: string,
+    collectionName: string,
+    documentName: string,
     data: any
   ) => {
     try {
-      console.log(collection, document, data);
-      const ref = doc(db, collection, document);
-      await updateDoc(ref, data)
-        .then(() => {})
-        .catch((e) => {
-          console.log(e);
-        });
+      const ref = doc(db, collectionName, documentName);
+      await updateDoc(ref, data);
     } catch (e) {
-      throw new Error("Firebase Error, update document fail", e);
+      console.error(e);
     }
   };
 

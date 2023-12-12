@@ -24,12 +24,7 @@ import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "@/context/AuthContext";
 
 /*TYPE */
-import BookProps from "@/types/BookProps";
 import storeFiles from "@/server-actions/store/storeFiles";
-
-type uploadFileProp = {
-  onAddBook: (newBook: BookProps) => void;
-};
 
 export default function UploadFile() {
   const { user } = useAuth();
@@ -57,10 +52,12 @@ export default function UploadFile() {
         map.set(item?.fileName, downloadURL);
       })
     );
-    console.log(map);
-    firestore.updateDocument(`/users/${uuid}/mylibrary/`, bookId, {
-      images: map,
-    });
+    console.log("Origin map", map);
+    const updateData = {
+      images: Object.fromEntries(map),
+    };
+    console.log("update data: ", updateData);
+    firestore.updateDocument(`/users/${uuid}/mylibrary`, bookId, updateData);
   };
 
   const storeBookInfos = async (url: string, bookId: string, uuid: string) => {
@@ -84,6 +81,7 @@ export default function UploadFile() {
       bookDownloadURL: url,
       tags: [],
       coverURL: imgUrl,
+      images: {},
     };
     firestore.setDocument(`users/${uuid}/mylibrary`, bookId, newBookInfos);
     dispatch(addNewBook(newBookInfos));

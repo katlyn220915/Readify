@@ -1,8 +1,6 @@
 import React from "react";
 import styles from "./ActionPrompt.module.css";
 
-import { useAppSelector } from "@/hooks/redux/hooks";
-
 type ActionPromptPropsType = {
   isError: boolean;
   errorMes: string | undefined;
