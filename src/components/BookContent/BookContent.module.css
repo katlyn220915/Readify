@@ -1,0 +1,12 @@
+.contents {
+  width: 30rem;
+}
+
+.contentBtn {
+  display: block;
+  color: #959faa;
+}
+
+.contentBtn:hover {
+  color: #76b2ed;
+}

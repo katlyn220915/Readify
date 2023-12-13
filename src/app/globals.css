@@ -69,6 +69,15 @@
 
   /* letter spacing */
   --letter-spacing-tight: -0.025em;
+
+  /* Reading page*/
+  --font-h1: 4rem;
+  --font-h2: 4rem;
+  --font-h3: 4rem;
+  --font-h4: 3.2rem;
+  --font-h5: 2.4rem;
+  --font-h6: 2rem;
+  --font-regular: 2rem;
 }
 
 *,
@@ -180,4 +189,67 @@ button {
 
 .heading__forth {
   font-size: var(--font-size-regular);
+}
+
+/* Reading page*/
+
+.epub_document {
+  color: #c1c7c1;
+  margin-bottom: 20rem;
+  position: relative;
+}
+
+.epub_document h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+  color: var(--color-grey-0);
+
+  margin-bottom: 2rem;
+}
+
+.epub_document h1 {
+  font-size: var(--font-h1);
+}
+
+.epub_document h2 {
+  font-size: var(--font-h2);
+}
+
+.epub_document h3 {
+  font-size: var(--font-h3);
+}
+
+.epub_document h4 {
+  font-size: var(--font-h4);
+}
+
+.epub_document h5 {
+  font-size: var(--font-h5);
+}
+
+.epub_document h6 {
+  font-size: var(--font-h6);
+}
+
+.epub_document p {
+  font-size: var(--font-regular);
+  font-weight: 400;
+  line-height: 2.8rem;
+  margin-bottom: 2rem;
+}
+
+.epub_document::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -10rem;
+  transform: translate(-50%, -50%);
+
+  height: 0.1rem;
+  width: 80%;
+  background-color: var(--color-grey-300);
 }

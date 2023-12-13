@@ -52,11 +52,9 @@ export default function UploadFile() {
         map.set(item?.fileName, downloadURL);
       })
     );
-    console.log("Origin map", map);
     const updateData = {
       images: Object.fromEntries(map),
     };
-    console.log("update data: ", updateData);
     firestore.updateDocument(`/users/${uuid}/mylibrary`, bookId, updateData);
   };
 

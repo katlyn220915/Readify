@@ -1,9 +1,4 @@
 .container {
   display: flex;
   height: 100%;
-  overflow: scroll;
-}
-
-.container div {
-  width: calc(100vw / 2);
 }

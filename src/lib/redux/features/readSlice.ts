@@ -24,7 +24,7 @@ export const read = createSlice({
   initialState,
   reducers: {
     setCurrentBook: (state, action) => {
-      state.content = action.payload.content;
+      state.currentBook = action.payload;
     },
   },
 });

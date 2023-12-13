@@ -93,17 +93,13 @@ function CategorizeItem({
   ) => {
     e.stopPropagation();
     if (pathname === item.path) return;
-    const arrPath = item.path.split("/");
-    const newCategory = arrPath[arrPath.length - 1];
-    const arrPathname = pathname.split("/");
-    const originCategory = arrPathname[arrPathname.length - 1];
     const isSetDocSuccess = await firestore.setDocument(
-      `users/${user.uid}/${newCategory}`,
+      `users/${user.uid}/${item.path.split("/").pop()}`,
       book.bookId,
       book
     );
     const isDeleteDocSuccess = await firestore.deleteDocument(
-      `/users/${user.uid}/${originCategory}/${book.bookId}`
+      `/users/${user.uid}/${pathname.split("/").pop()}/${book.bookId}`
     );
 
     if (isSetDocSuccess && isDeleteDocSuccess) {

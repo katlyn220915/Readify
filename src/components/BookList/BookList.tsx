@@ -29,8 +29,6 @@ function Book({ book }: { book: BookProps }) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
-  const arrPath = pathname.split("/");
-  const category = arrPath[arrPath.length - 1];
 
   return (
     <li
@@ -45,7 +43,7 @@ function Book({ book }: { book: BookProps }) {
       onClick={() => {
         dispatch(setMoreActionBtnClose());
         dispatch(setCurrentBook(book));
-        router.push(`${category}/read/${book.bookId}`);
+        router.push(`${pathname.split("/").pop()}/read/${book.bookId}`);
       }}
     >
       <div className={styles.img_container}>
