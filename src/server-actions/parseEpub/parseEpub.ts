@@ -89,7 +89,6 @@ const parseEpub = () => {
     images: any
   ) => {
     const cleanChapterDivs = epubDocuments.map(({ path, doc }, id) => {
-      if (id === 0) return;
       const bodyContent = doc.body.innerHTML;
       const chapterDiv = document.createElement("div");
       chapterDiv.innerHTML = bodyContent;
@@ -107,6 +106,7 @@ const parseEpub = () => {
         });
       }
       imgEls.forEach((el) => {
+        el.parentElement?.classList.add("image_wrapper");
         const originSrc = el.getAttribute("src");
         const fileName = originSrc?.split("/").pop();
         const obj = images;

@@ -1,0 +1,15 @@
+.readingArea_nav {
+  width: 100%;
+  padding: 2rem 3rem;
+  border-bottom: 0.1rem solid var(--color-grey-700);
+  position: fixed;
+  background-color: var(--color-blue-bg-darker);
+  z-index: 100;
+
+  display: flex;
+  gap: 1.5rem;
+}
+
+.empty_block {
+  height: 6.5rem;
+}

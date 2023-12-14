@@ -1,5 +1,41 @@
-.contents {
+.sidebar {
   width: 30rem;
+  background-color: var(--color-blue-bg-darker);
+  overflow: scroll;
+
+  transition: all 0.3s;
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
+  padding: 1.5rem;
+}
+
+.sidebar_close {
+  width: 0;
+  transform: translateX(-30rem);
+}
+
+.contents_wrapper {
+  position: relative;
+}
+
+.contents_wrapper .title {
+  width: 30rem;
+  padding: 2rem 3rem;
+  margin-bottom: 3rem;
+  border-bottom: 0.1rem solid var(--color-grey-700);
+  background-color: var(--color-blue-bg-darker);
+
+  position: fixed;
+}
+
+.empty_block {
+  height: 6.5rem;
+}
+
+.contents_wrapper .contents {
+  padding: 0 3rem;
 }
 
 .contentBtn {
@@ -9,4 +45,8 @@
 
 .contentBtn:hover {
   color: #76b2ed;
+}
+
+.contentBtn:not(:last-child) {
+  margin-bottom: 1.2rem;
 }

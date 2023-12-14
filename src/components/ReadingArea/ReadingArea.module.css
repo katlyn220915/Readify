@@ -3,8 +3,9 @@
 }
 
 .epubContainer {
-  width: calc(100vw / 2);
+  width: 100%;
   overflow: scroll;
+  transition: all 0.3s;
 }
 
 .epubContainer::-webkit-scrollbar {
@@ -14,7 +15,29 @@
 
 .book_intro {
   padding-top: 1rem;
+  padding-left: 1.5rem;
   margin-bottom: 4rem;
+}
+
+.book_intro .book_intro_title {
+  font-size: 4rem;
+  padding-bottom: 3rem;
+  position: relative;
+}
+
+.book_intro .book_intro_title::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 0.2rem;
+  bottom: 0;
+  left: 0;
+  border-bottom: 0.1rem solid var(--color-grey-500);
+}
+
+.book_intro .book_intro_author {
+  font-size: var(--font-size-small);
+  color: var(--color-grey-500);
 }
 
 .viewer {
@@ -24,4 +47,12 @@
 
   gap: 4rem;
   padding: 2rem;
+}
+
+.empty_block {
+  width: 30rem;
+}
+
+.empty_block_close {
+  transform: translateX(-30rem);
 }

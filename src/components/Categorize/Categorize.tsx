@@ -1,14 +1,11 @@
-"use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { usePathname } from "next/navigation";
 import styles from "./Categorize.module.css";
 
 /* COMPONENT */
 import MoreActionList from "../MoreActionList/MoreActionList";
-import Prompt from "../Prompt/Prompt";
 
 /* THIRD_LIB */
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBookOpen,
   faArchive,
@@ -26,6 +23,7 @@ import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAuth } from "@/context/AuthContext";
 import BookProps from "@/types/BookProps";
+import ActionIcon from "../ActionIcon/ActionIcon";
 
 const staticItems = [
   {
@@ -46,7 +44,6 @@ const staticItems = [
 ];
 
 function MoreActionBtn() {
-  const [isMouseEnter, setIsMouseEnter] = useState(false);
   const dispatch = useAppDispatch();
 
   return (
@@ -57,20 +54,12 @@ function MoreActionBtn() {
         dispatch(setMoreActionBtn());
       }}
     >
-      <button
-        className={styles.btn_add_tag}
-        onMouseEnter={() => {
-          setIsMouseEnter(true);
-        }}
-        onMouseLeave={() => {
-          setIsMouseEnter(false);
-        }}
-      >
-        <FontAwesomeIcon icon={faEllipsis} className="icon" />
-      </button>
-      <Prompt isMouseEnter={isMouseEnter} position="top">
-        More actions
-      </Prompt>
+      <ActionIcon
+        iconProp={faEllipsis}
+        promptText="More actions"
+        position="top"
+        showPrompt={true}
+      />
     </div>
   );
 }
@@ -82,11 +71,11 @@ function CategorizeItem({
   item: { title: string; iconProp: any; path: string };
   book: BookProps;
 }) {
-  const [isMouseEnter, setIsMouseEnter] = useState(false);
   const { user } = useAuth();
   const firestore = useFirestore();
   const dispatch = useAppDispatch();
   const pathname = usePathname();
+  const isCurrentCategory = pathname === item.path;
 
   const handleCategorizeBook = async (
     e: React.MouseEvent<HTMLElement, MouseEvent>
@@ -111,26 +100,17 @@ function CategorizeItem({
     <>
       <li
         className={`${styles.li} ${
-          pathname === item.path ? styles.current_path : ""
+          isCurrentCategory ? styles.current_path : ""
         }`}
         onClick={(e) => handleCategorizeBook(e)}
       >
-        <button
-          onMouseEnter={() => {
-            setIsMouseEnter(true);
-          }}
-          onMouseLeave={() => {
-            setIsMouseEnter(false);
-          }}
-        >
-          <FontAwesomeIcon icon={item.iconProp} className="icon" />
-        </button>
+        <ActionIcon
+          iconProp={item.iconProp}
+          promptText={item.title}
+          position="top"
+          showPrompt={!isCurrentCategory}
+        />
       </li>
-      {pathname !== item.path && (
-        <Prompt isMouseEnter={isMouseEnter} position="top">
-          {item.title}
-        </Prompt>
-      )}
     </>
   );
 }

@@ -195,7 +195,7 @@ button {
 
 .epub_document {
   color: #c1c7c1;
-  margin-bottom: 20rem;
+  padding: 15rem 0;
   position: relative;
 }
 
@@ -251,5 +251,9 @@ h6 {
 
   height: 0.1rem;
   width: 80%;
-  background-color: var(--color-grey-300);
+  background-color: var(--color-grey-500);
+}
+
+.epub_document .image_wrapper {
+  text-align: center;
 }

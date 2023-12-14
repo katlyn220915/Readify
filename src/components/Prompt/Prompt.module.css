@@ -13,10 +13,15 @@
 
 .prompt__position_top {
   /* transform: translateY(-4rem); */
-  left: -3rem;
   top: -3rem;
+  left: -3rem;
 }
 
 .prompt__position_right {
   transform: translateX(4rem);
+}
+
+.prompt__position_bottom {
+  bottom: -3rem;
+  left: 0rem;
 }

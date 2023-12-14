@@ -11,7 +11,11 @@ type ContentItemProp = {
   href: string;
 };
 
-export default function BookContent() {
+export default function BookContent({
+  isContentListOpen,
+}: {
+  isContentListOpen: boolean;
+}) {
   const { currentBook } = useAppSelector((state) => state.read);
   const [toc, setToc] = useState<null | ContentItemProp[]>();
   const parser = parseEpub();
@@ -25,14 +29,27 @@ export default function BookContent() {
     };
     getBookContents();
   }, [currentBook]);
+  console.log(isContentListOpen);
 
   return (
-    <div className={styles.contents}>
-      {toc &&
-        toc.map((toc: ContentItemProp) => (
-          <ContentButton contentItem={toc} key={toc.href} />
-        ))}
-    </div>
+    <>
+      <aside
+        className={`${styles.sidebar} ${
+          isContentListOpen ? "" : styles.sidebar_close
+        }`}
+      >
+        <div className={styles.contents_wrapper}>
+          <p className={styles.title}>{currentBook?.title}</p>
+          <div className={styles.empty_block}></div>
+          <div className={styles.contents}>
+            {toc &&
+              toc.map((toc: ContentItemProp) => (
+                <ContentButton contentItem={toc} key={toc.href} />
+              ))}
+          </div>
+        </div>
+      </aside>
+    </>
   );
 }
 
@@ -47,7 +64,9 @@ const ContentButton = ({ contentItem }: { contentItem: ContentItemProp }) => {
         const paragraphElement = document.getElementById(`${decodeedHref}`);
         console.log(paragraphElement);
         if (paragraphElement) {
-          paragraphElement.scrollIntoView({ behavior: "smooth" });
+          paragraphElement.scrollIntoView({
+            behavior: "smooth",
+          });
         }
       }}
       className={styles.contentBtn}

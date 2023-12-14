@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import styles from "./ReadingArea.module.css";
 
 import Spinner from "../Spinner/Spinner";
+import ReadingAreaNav from "../ReadingAreaNav/ReadingAreNav";
 
 /* HOOKS */
 import { usePathname } from "next/navigation";
@@ -15,9 +16,11 @@ import parseEpub from "@/server-actions/parseEpub/parseEpub";
 import { setCurrentBook } from "@/lib/redux/features/readSlice";
 
 import { literata } from "@/fonts/fonts";
+import BookContent from "../BookContent/BookContent";
 
 export default function ReadingArea() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isContentListOpen, setIsContentListOpen] = useState(true);
   const { currentBook } = useAppSelector((state) => state.read);
   const { user } = useAuth();
   const firestore = useFirestore();
@@ -67,16 +70,26 @@ export default function ReadingArea() {
 
   return (
     <>
-      {isLoading && <Spinner />}
+      <BookContent isContentListOpen={isContentListOpen} />
       <div
         id="epub-viewer"
-        className={`${styles.epubContainer} ${literata.className}`}
+        className={`${styles.epubContainer} ${
+          !isContentListOpen && styles.contentListClose
+        }`}
       >
+        <ReadingAreaNav
+          isContentListOpen={isContentListOpen}
+          onSetContentListOpen={setIsContentListOpen}
+        />
+        {isLoading && <Spinner />}
         <div className={styles.book_intro}>
-          <h2>{currentBook?.title}</h2>
-          <p>{currentBook?.author}</p>
+          <h2 className={styles.book_intro_title}>{currentBook?.title}</h2>
+          <p className={styles.book_intro_autor}>{currentBook?.author}</p>
         </div>
-        <div id="viewer" className={styles.viewer}></div>
+        <div
+          id="viewer"
+          className={`${styles.viewer} ${literata.className}`}
+        ></div>
       </div>
     </>
   );
