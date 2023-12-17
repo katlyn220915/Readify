@@ -1,0 +1,16 @@
+.custom_styles_field {
+  position: absolute;
+  z-index: 1000;
+  background-color: #28313b;
+  padding: 1.5rem;
+  border-radius: 1rem;
+}
+
+.custom_styles_field > p {
+  margin-bottom: 1rem;
+}
+
+.text_styles_box {
+  background-color: var(--color-blue-bg-tine);
+  border-radius: 1rem;
+}

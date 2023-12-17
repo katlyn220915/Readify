@@ -26,6 +26,7 @@
   --color-blue-950: #172554;
   --color-blue-bg: #151c23;
   --color-blue-bg-darker: #10161d;
+  --color-blue-bg-tine: #2f3842;
   --color-cta: rgba(14, 165, 233, 0.6);
 
   --color-blue-100: #e0f2fe;
@@ -208,7 +209,7 @@ h6 {
   font-weight: bold;
   color: var(--color-grey-0);
 
-  margin-bottom: 2rem;
+  margin: 2rem 0;
 }
 
 .epub_document h1 {
@@ -235,10 +236,14 @@ h6 {
   font-size: var(--font-h6);
 }
 
-.epub_document p {
+.epub_document {
   font-size: var(--font-regular);
   font-weight: 400;
-  line-height: 2.8rem;
+  line-height: 1.4;
+  margin-bottom: 2rem;
+}
+
+.epub_document p {
   margin-bottom: 2rem;
 }
 

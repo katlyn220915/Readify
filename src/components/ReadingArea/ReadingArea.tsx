@@ -20,8 +20,11 @@ import BookContent from "../BookContent/BookContent";
 
 export default function ReadingArea() {
   const [isLoading, setIsLoading] = useState(false);
+  const [bookDocuments, setBookDocuments] = useState<any[]>([]);
   const [isContentListOpen, setIsContentListOpen] = useState(true);
-  const { currentBook } = useAppSelector((state) => state.read);
+  const { currentBook, fontSize, lineSpacing, lineWidth } = useAppSelector(
+    (state) => state.read
+  );
   const { user } = useAuth();
   const firestore = useFirestore();
 
@@ -51,12 +54,7 @@ export default function ReadingArea() {
               epubDocuments,
               bookData.images
             );
-            const container = document.querySelector("#viewer");
-            cleanChapterDivs.forEach((chapterDivElement) => {
-              if (chapterDivElement) {
-                container?.appendChild(chapterDivElement);
-              }
-            });
+            setBookDocuments(cleanChapterDivs);
           }
         }
       } catch (e) {
@@ -86,10 +84,18 @@ export default function ReadingArea() {
           <h2 className={styles.book_intro_title}>{currentBook?.title}</h2>
           <p className={styles.book_intro_autor}>{currentBook?.author}</p>
         </div>
-        <div
-          id="viewer"
-          className={`${styles.viewer} ${literata.className}`}
-        ></div>
+        <div id="viewer" className={`${styles.viewer} ${literata.className}`}>
+          {bookDocuments &&
+            bookDocuments.map((div) => (
+              <div
+                className="epub_document"
+                key={div.id}
+                style={{ fontSize: `${fontSize}px`, lineHeight: lineSpacing }}
+              >
+                {div}
+              </div>
+            ))}
+        </div>
       </div>
     </>
   );

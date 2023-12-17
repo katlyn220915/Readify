@@ -1,8 +1,11 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import styles from "./ReadingAreaNav.module.css";
 
 import ActionIcon from "../ActionIcon/ActionIcon";
 import { faList, faFont } from "@fortawesome/free-solid-svg-icons";
+import CustomStylePlatte from "../CustomStylePlatte/CustomStylePlatte";
 
 const ReadingAreaNav = ({
   isContentListOpen,
@@ -11,7 +14,8 @@ const ReadingAreaNav = ({
   isContentListOpen: boolean;
   onSetContentListOpen<SetStateAction>(boolean: any): any;
 }) => {
-  const handleOpenCutomizeBox = () => {};
+  const [isCustomizeBoxOpen, setIsCustomizeBoxOpen] = useState(false);
+
   return (
     <>
       <nav className={styles.readingArea_nav}>
@@ -29,10 +33,11 @@ const ReadingAreaNav = ({
           promptText="Customize styles"
           position="bottom"
           showPrompt={true}
-          onAction={handleOpenCutomizeBox}
+          onAction={() => setIsCustomizeBoxOpen(!isCustomizeBoxOpen)}
         />
       </nav>
       <div className={styles.empty_block}></div>
+      {isCustomizeBoxOpen && <CustomStylePlatte />}
     </>
   );
 };

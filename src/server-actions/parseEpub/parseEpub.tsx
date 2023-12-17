@@ -1,6 +1,7 @@
 import Epub from "epubjs";
 import ePub, { Book } from "epubjs";
 import Section from "epubjs/types/section";
+import React from "react";
 
 const parseEpub = () => {
   const getBookInfos = () => {};
@@ -81,6 +82,46 @@ const parseEpub = () => {
     return images;
   };
 
+  // const handleDocuments = (
+  //   epubDocuments: {
+  //     path: string;
+  //     doc: any;
+  //   }[],
+  //   images: any
+  // ) => {
+  //   const cleanChapterDivs = epubDocuments.map(({ path, doc }, id) => {
+  //     const bodyContent = doc.body.innerHTML;
+  //     const chapterDiv = document.createElement("div");
+  //     chapterDiv.innerHTML = bodyContent;
+  //     chapterDiv.id = decodeURIComponent(path)
+  //       .replaceAll(" ", "")
+  //       .replace(/\.(xhtml|html).*/, "");
+  //     chapterDiv.classList.add("epub_document");
+  //     const imgEls = chapterDiv.querySelectorAll("img");
+  //     const invalidImageTags = chapterDiv.querySelectorAll("image");
+  //     if (invalidImageTags.length > 0) {
+  //       invalidImageTags.forEach((invalidImgTag) => {
+  //         const parent = invalidImgTag.parentNode;
+  //         parent?.removeChild(invalidImgTag);
+  //         console.log(parent);
+  //       });
+  //     }
+  //     imgEls.forEach((el) => {
+  //       el.parentElement?.classList.add("image_wrapper");
+  //       const originSrc = el.getAttribute("src");
+  //       const fileName = originSrc?.split("/").pop();
+  //       const obj = images;
+  //       if (fileName) {
+  //         el.src = obj[fileName];
+  //       }
+  //     });
+  //     return chapterDiv;
+  //   });
+  //   return cleanChapterDivs;
+  // };
+
+  //Using Virtual DOM to create React Element, speed up the loading state
+
   const handleDocuments = (
     epubDocuments: {
       path: string;
@@ -89,31 +130,39 @@ const parseEpub = () => {
     images: any
   ) => {
     const cleanChapterDivs = epubDocuments.map(({ path, doc }, id) => {
-      const bodyContent = doc.body.innerHTML;
-      const chapterDiv = document.createElement("div");
-      chapterDiv.innerHTML = bodyContent;
-      chapterDiv.id = decodeURIComponent(path)
-        .replaceAll(" ", "")
-        .replace(/\.(xhtml|html).*/, "");
-      chapterDiv.classList.add("epub_document");
-      const imgEls = chapterDiv.querySelectorAll("img");
-      const invalidImageTags = chapterDiv.querySelectorAll("image");
-      if (invalidImageTags.length > 0) {
-        invalidImageTags.forEach((invalidImgTag) => {
-          const parent = invalidImgTag.parentNode;
-          parent?.removeChild(invalidImgTag);
-          console.log(parent);
+      const imgEls = doc.querySelectorAll("img");
+      const invalidImgTags = doc.querySelectorAll("image");
+      //Clean up invalid image elements
+      if (invalidImgTags.length > 0)
+        invalidImgTags.forEach((el: any) => {
+          const parent = el.parentNode;
+          parent?.removeChild(el);
         });
-      }
-      imgEls.forEach((el) => {
+
+      imgEls.forEach((el: any) => {
         el.parentElement?.classList.add("image_wrapper");
         const originSrc = el.getAttribute("src");
         const fileName = originSrc?.split("/").pop();
         const obj = images;
+
         if (fileName) {
           el.src = obj[fileName];
         }
       });
+
+      const bodyContent = doc.body.innerHTML;
+
+      const chapterDiv = (
+        <div
+          key={path}
+          id={decodeURIComponent(path)
+            .replaceAll(" ", "")
+            .replace(/\.(xhtml|html).*/, "")}
+          className="epub_document_content"
+        >
+          <div dangerouslySetInnerHTML={{ __html: bodyContent }} />
+        </div>
+      );
       return chapterDiv;
     });
     return cleanChapterDivs;

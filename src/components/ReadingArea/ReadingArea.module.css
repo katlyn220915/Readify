@@ -56,3 +56,9 @@
 .empty_block_close {
   transform: translateX(-30rem);
 }
+
+/* .viewer div p,
+.viewer div span,
+.viewer div a {
+  font-size: 2.5rem;
+} */
