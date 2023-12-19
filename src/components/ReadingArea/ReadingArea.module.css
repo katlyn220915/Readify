@@ -40,15 +40,6 @@
   color: var(--color-grey-500);
 }
 
-.viewer {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-
-  gap: 4rem;
-  padding: 2rem;
-}
-
 .empty_block {
   width: 30rem;
 }
@@ -56,9 +47,3 @@
 .empty_block_close {
   transform: translateX(-30rem);
 }
-
-/* .viewer div p,
-.viewer div span,
-.viewer div a {
-  font-size: 2.5rem;
-} */

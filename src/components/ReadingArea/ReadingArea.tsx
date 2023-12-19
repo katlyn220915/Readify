@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ReadingArea.module.css";
 
 import Spinner from "../Spinner/Spinner";
+import BookContent from "../BookContent/BookContent";
 import ReadingAreaNav from "../ReadingAreaNav/ReadingAreNav";
+import EbookViewer from "../EbookViewer/EbookViewer";
 
 /* HOOKS */
 import { usePathname } from "next/navigation";
@@ -13,28 +15,26 @@ import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import parseEpub from "@/server-actions/parseEpub/parseEpub";
 
-import { setCurrentBook } from "@/lib/redux/features/readSlice";
-
-import { literata } from "@/fonts/fonts";
-import BookContent from "../BookContent/BookContent";
+import {
+  setCurrentBook,
+  setActionMenuPositionY,
+} from "@/lib/redux/features/readSlice";
 
 export default function ReadingArea() {
   const [isLoading, setIsLoading] = useState(false);
   const [bookDocuments, setBookDocuments] = useState<any[]>([]);
   const [isContentListOpen, setIsContentListOpen] = useState(true);
-  const { currentBook, fontSize, lineSpacing, lineWidth } = useAppSelector(
-    (state) => state.read
-  );
-  const { user } = useAuth();
-  const firestore = useFirestore();
+  const { actionMenuPositionY } = useAppSelector((state) => state.read);
 
   const pathname = usePathname();
   const arrPath = pathname.split("/");
   const category = arrPath[1];
   const bookId = arrPath[arrPath.length - 1];
 
-  const parser = parseEpub();
+  const { user } = useAuth();
+  const firestore = useFirestore();
   const dispatch = useAppDispatch();
+  const parser = parseEpub();
 
   useEffect(() => {
     const bookRender = async () => {
@@ -50,11 +50,11 @@ export default function ReadingArea() {
             const epubDocuments = await parser.getAllDocuments(
               bookData.bookDownloadURL
             );
-            const cleanChapterDivs = parser.handleDocuments(
+            const customReactJSXDivs = parser.handleDocuments(
               epubDocuments,
               bookData.images
             );
-            setBookDocuments(cleanChapterDivs);
+            setBookDocuments(customReactJSXDivs);
           }
         }
       } catch (e) {
@@ -74,29 +74,29 @@ export default function ReadingArea() {
         className={`${styles.epubContainer} ${
           !isContentListOpen && styles.contentListClose
         }`}
+        onWheel={(e) => {
+          const delta = Math.round(e.deltaY);
+          dispatch(setActionMenuPositionY(actionMenuPositionY - delta));
+        }}
       >
         <ReadingAreaNav
           isContentListOpen={isContentListOpen}
           onSetContentListOpen={setIsContentListOpen}
         />
         {isLoading && <Spinner />}
-        <div className={styles.book_intro}>
-          <h2 className={styles.book_intro_title}>{currentBook?.title}</h2>
-          <p className={styles.book_intro_autor}>{currentBook?.author}</p>
-        </div>
-        <div id="viewer" className={`${styles.viewer} ${literata.className}`}>
-          {bookDocuments &&
-            bookDocuments.map((div) => (
-              <div
-                className="epub_document"
-                key={div.id}
-                style={{ fontSize: `${fontSize}px`, lineHeight: lineSpacing }}
-              >
-                {div}
-              </div>
-            ))}
-        </div>
+        <EbookIntroductionHeader />
+        <EbookViewer bookDocuments={bookDocuments} />
       </div>
     </>
   );
 }
+
+const EbookIntroductionHeader = () => {
+  const { currentBook } = useAppSelector((state) => state.read);
+  return (
+    <div className={styles.book_intro}>
+      <h2 className={styles.book_intro_title}>{currentBook?.title}</h2>
+      <p className={styles.book_intro_autor}>{currentBook?.author}</p>
+    </div>
+  );
+};

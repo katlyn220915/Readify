@@ -29,7 +29,6 @@ export default function BookContent({
     };
     getBookContents();
   }, [currentBook]);
-  console.log(isContentListOpen);
 
   return (
     <>

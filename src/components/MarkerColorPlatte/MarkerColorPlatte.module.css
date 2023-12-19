@@ -1,0 +1,57 @@
+.platte {
+  position: absolute;
+  top: -5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0.5rem;
+  border-radius: 1rem;
+  background-color: var(--color-blue-bg-tine);
+}
+
+.platte::after {
+  content: "";
+  position: absolute;
+  right: 1rem;
+  bottom: -2rem;
+  border-top: 1.2rem solid transparent;
+  border-left: 1.2rem solid transparent;
+  border-right: 1.2rem solid transparent;
+  border-bottom: 1.2rem solid var(--color-blue-bg-tine);
+  transform: rotate(180deg);
+}
+
+.platte .platte_default,
+.platte .platte_argentinian,
+.platte .platte_celadon,
+.platte .platte_mauve {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+
+  transition: all 0.3s;
+}
+
+.platte .platte_default:hover,
+.platte .platte_argentinian:hover,
+.platte .platte_celadon:hover,
+.platte .platte_mauve:hover {
+  border: 0.2rem dotted #fff;
+}
+
+.platte_default {
+  background-color: var(--color-marker-default);
+}
+
+.platte_celadon {
+  background-color: var(--color-marker-celadon);
+}
+
+.platte_argentinian {
+  background-color: var(--color-marker-argentinian);
+}
+
+.platte_mauve {
+  background-color: var(--color-marker-mauve);
+}

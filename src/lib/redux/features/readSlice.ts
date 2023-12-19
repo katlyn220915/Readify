@@ -12,6 +12,10 @@ type readState = {
   fontSize: number;
   lineSpacing: number;
   lineWidth: string;
+  isActionMenuOpen: boolean;
+  actionMenuPositionX: number;
+  actionMenuPositionY: number;
+  markerColor: string;
 };
 
 const initialState = {
@@ -20,6 +24,10 @@ const initialState = {
   fontSize: 20,
   lineSpacing: 1.4,
   lineWidth: "X-large",
+  isActionMenuOpen: false,
+  actionMenuPositionX: 0,
+  actionMenuPositionY: 0,
+  markerColor: "marker-default",
 } as readState;
 
 export const read = createSlice({
@@ -50,10 +58,30 @@ export const read = createSlice({
     setLineWidth: (state, action) => {
       state.lineWidth = action.payload;
     },
+    setActionMenuToggle: (state, action) => {
+      state.isActionMenuOpen = action.payload;
+    },
+    setActionMenuPositionX: (state, action) => {
+      state.actionMenuPositionX = action.payload;
+    },
+    setActionMenuPositionY: (state, action) => {
+      state.actionMenuPositionY = action.payload;
+    },
+    setMarkerColor: (state, action) => {
+      state.markerColor = action.payload;
+    },
   },
 });
 
-export const { setCurrentBook, setFontSize, setLineSpacing, setLineWidth } =
-  read.actions;
+export const {
+  setCurrentBook,
+  setFontSize,
+  setLineSpacing,
+  setLineWidth,
+  setActionMenuToggle,
+  setActionMenuPositionX,
+  setActionMenuPositionY,
+  setMarkerColor,
+} = read.actions;
 export const selectRead = (state: RootState) => state.read;
 export default read.reducer;

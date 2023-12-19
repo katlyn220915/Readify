@@ -7,19 +7,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import Prompt from "../Prompt/Prompt";
 
+interface ActionIconProps {
+  iconProp: IconDefinition;
+  promptText: string;
+  position: "top" | "right" | "bottom";
+  showPrompt: boolean;
+  onAction: () => void;
+  color?: string;
+}
+
 export default function ActionIcon({
   iconProp,
   promptText,
   position,
   showPrompt,
   onAction,
-}: {
-  iconProp: IconDefinition;
-  promptText: string;
-  position: "top" | "right" | "bottom";
-  showPrompt: boolean;
-  onAction: () => void;
-}) {
+  color = "grey-300",
+}: ActionIconProps) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
   return (
     <>
@@ -31,8 +35,13 @@ export default function ActionIcon({
           setIsMouseEnter(false);
         }}
         onClick={onAction}
+        className={styles.btn}
       >
-        <FontAwesomeIcon icon={iconProp} className="icon" />
+        <FontAwesomeIcon
+          icon={iconProp}
+          className="icon"
+          style={{ color: `var(--color-${color})` }}
+        />
       </button>
       {showPrompt && (
         <Prompt isMouseEnter={isMouseEnter} position={position}>

@@ -32,6 +32,7 @@
 
 .book {
   display: flex;
+  align-items: center;
   gap: 1.2rem;
   padding: 1rem 1rem 1rem 2rem;
   cursor: pointer;

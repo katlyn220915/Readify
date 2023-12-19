@@ -79,6 +79,13 @@
   --font-h5: 2.4rem;
   --font-h6: 2rem;
   --font-regular: 2rem;
+
+  --color-text-highlight: #fff;
+
+  --color-marker-default: rgba(245, 238, 148, 0.5);
+  --color-marker-celadon: rgba(172, 225, 175, 0.5);
+  --color-marker-argentinian: rgba(108, 180, 238, 0.5);
+  --color-marker-mauve: rgba(224, 176, 255, 0.5);
 }
 
 *,
@@ -201,11 +208,11 @@ button {
 }
 
 .epub_document h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+.epub_document h2,
+.epub_document h3,
+.epub_document h4,
+.epub_document h5,
+.epub_document h6 {
   font-weight: bold;
   color: var(--color-grey-0);
 
@@ -240,11 +247,11 @@ h6 {
   font-size: var(--font-regular);
   font-weight: 400;
   line-height: 1.4;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
 .epub_document p {
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
 .epub_document::after {
@@ -261,4 +268,9 @@ h6 {
 
 .epub_document .image_wrapper {
   text-align: center;
+}
+
+.epub_hightLight {
+  color: var(--color-text-highlight);
+  background-color: var(--color-marker-default);
 }

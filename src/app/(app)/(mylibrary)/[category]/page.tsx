@@ -54,7 +54,7 @@ export default function Category() {
       <div className={styles.container}>
         <nav className={styles.nav}>
           <Image
-            src="/image/logo-light.png"
+            src="/image/Readify.png"
             alt="readify logo"
             width={70}
             height={70}
