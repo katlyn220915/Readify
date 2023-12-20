@@ -10,6 +10,7 @@ import {
   faHighlighter,
   faNoteSticky,
   faEllipsis,
+  faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import MarkerColorPlatte from "../MarkerColorPlatte/MarkerColorPlatte";
 
@@ -22,21 +23,43 @@ const ActionMenu = ({
 }) => {
   const [isColorPlatteOpen, setIsColorPlatteOpen] = useState(false);
   const dispatch = useAppDispatch();
-  const { markerColor } = useAppSelector((state) => state.read);
+  const { markerColor, isDeleteMode, deleteHighlightID } = useAppSelector(
+    (state) => state.read
+  );
 
   const handleHighlight = () => {
     const selection = document.getSelection();
     const selectedText = selection?.toString();
     const parent = selection?.anchorNode?.parentElement;
     if (selectedText && parent !== null && parent !== undefined) {
+      const timestamp = Date.now();
+      console.log(timestamp);
       const pattern = new RegExp(selectedText, "g");
       parent.innerHTML = parent.innerHTML.replace(
         pattern,
-        `<span class="epub_hightLight" style='background-color: var(--color-${markerColor})'>${selectedText}</span>`
+        `<span class="epub_hightLight" style='background-color: var(--color-${markerColor})' data-highlight-id=${timestamp}>${selectedText}</span>`
       );
       dispatch(setActionMenuToggle(false));
     } else {
       console.error("Parent element is undefined.");
+    }
+  };
+
+  const deleteHighlight = () => {
+    const deleteEl = document.querySelector(
+      `[data-highlight-id="${deleteHighlightID}"]`
+    );
+    const parent = deleteEl?.parentElement;
+    if (
+      parent !== undefined &&
+      parent !== null &&
+      deleteEl &&
+      deleteEl.textContent
+    ) {
+      parent.innerHTML = parent?.innerHTML.replace(
+        deleteEl?.outerHTML,
+        deleteEl?.textContent
+      );
     }
   };
 
@@ -52,14 +75,25 @@ const ActionMenu = ({
         }}
       >
         <div className={styles.action_menu_inner}>
-          <ActionIcon
-            iconProp={faHighlighter}
-            promptText="Create highlight"
-            position={isColorPlatteOpen ? "bottom" : "top"}
-            showPrompt={true}
-            onAction={() => handleHighlight()}
-            color={markerColor}
-          />
+          {isDeleteMode ? (
+            <ActionIcon
+              iconProp={faTrashCan}
+              promptText="Delete highlight"
+              position="top"
+              showPrompt={true}
+              onAction={() => deleteHighlight()}
+            />
+          ) : (
+            <ActionIcon
+              iconProp={faHighlighter}
+              promptText="Create highlight"
+              position={isColorPlatteOpen ? "bottom" : "top"}
+              showPrompt={true}
+              onAction={() => handleHighlight()}
+              color={markerColor}
+            />
+          )}
+
           <ActionIcon
             iconProp={faNoteSticky}
             promptText="Add note"

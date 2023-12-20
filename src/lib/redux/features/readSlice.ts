@@ -16,6 +16,8 @@ type readState = {
   actionMenuPositionX: number;
   actionMenuPositionY: number;
   markerColor: string;
+  isDeleteMode: boolean;
+  deleteHighlightID: number | null;
 };
 
 const initialState = {
@@ -28,6 +30,8 @@ const initialState = {
   actionMenuPositionX: 0,
   actionMenuPositionY: 0,
   markerColor: "marker-default",
+  isDeleteMode: false,
+  deleteHighlightID: null,
 } as readState;
 
 export const read = createSlice({
@@ -70,6 +74,10 @@ export const read = createSlice({
     setMarkerColor: (state, action) => {
       state.markerColor = action.payload;
     },
+    setDeleteHighlightMode: (state, action) => {
+      state.isDeleteMode = action.payload.isDeleteMode;
+      state.deleteHighlightID = action.payload.highlightId;
+    },
   },
 });
 
@@ -82,6 +90,7 @@ export const {
   setActionMenuPositionX,
   setActionMenuPositionY,
   setMarkerColor,
+  setDeleteHighlightMode,
 } = read.actions;
 export const selectRead = (state: RootState) => state.read;
 export default read.reducer;

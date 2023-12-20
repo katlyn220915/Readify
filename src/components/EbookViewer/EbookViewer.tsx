@@ -8,10 +8,13 @@ import {
   setActionMenuToggle,
   setActionMenuPositionX,
   setActionMenuPositionY,
+  setDeleteHighlightMode,
 } from "@/lib/redux/features/readSlice";
 
 const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
-  const { fontSize, lineSpacing } = useAppSelector((state) => state.read);
+  const { fontSize, lineSpacing, isDeleteMode } = useAppSelector(
+    (state) => state.read
+  );
   const dispatch = useAppDispatch();
 
   const handleMouseUp = () => {
@@ -39,8 +42,24 @@ const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
                 style={{ fontSize: `${fontSize}px`, lineHeight: lineSpacing }}
                 onMouseDown={(e) => {
                   dispatch(setActionMenuToggle(false));
-                  dispatch(setActionMenuPositionX(Math.round(e.pageX)));
-                  console.log("mouse dowm");
+                  const target = e.target as HTMLElement;
+                  if (target.className === "epub_hightLight") {
+                    dispatch(setActionMenuToggle(true));
+                    dispatch(
+                      setDeleteHighlightMode({
+                        isDeleteMode: true,
+                        highlightId: target.dataset.highlightId,
+                      })
+                    );
+                    console.log("here");
+                  } else if (isDeleteMode) {
+                    dispatch(
+                      setDeleteHighlightMode({
+                        isDeleteMode: false,
+                        highlightId: null,
+                      })
+                    );
+                  }
                 }}
                 onMouseUp={() => {
                   handleMouseUp();
