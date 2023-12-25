@@ -1,9 +1,8 @@
 import app from "../../lib/firebase/initialize";
-import { Firestore, getFirestore, updateDoc } from "firebase/firestore";
+import { getFirestore, updateDoc } from "firebase/firestore";
 
 import {
   collection,
-  addDoc,
   setDoc,
   doc,
   getDocs,
@@ -25,7 +24,7 @@ const useFirestore = () => {
       console.info("Firestore: Already Set Document ");
       return true;
     } catch (e) {
-      // throw new Error("Firestore Set Data Error: " + e);
+      throw new Error("Firestore Set Data Error: " + e);
       return false;
     }
   };
@@ -59,7 +58,7 @@ const useFirestore = () => {
       const docRef = doc(db, path, bookId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        console.info("Document data :", docSnap.data());
+        // console.info("Document data :", docSnap.data());
         const data = docSnap.data();
         return data;
       } else {

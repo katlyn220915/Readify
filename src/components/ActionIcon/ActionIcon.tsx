@@ -11,7 +11,7 @@ interface ActionIconProps {
   iconProp: IconDefinition;
   promptText: string;
   position: "top" | "right" | "bottom";
-  showPrompt: boolean;
+  showPrompt?: boolean;
   onAction: () => void;
   color?: string;
 }
@@ -20,7 +20,7 @@ export default function ActionIcon({
   iconProp,
   promptText,
   position,
-  showPrompt,
+  showPrompt = true,
   onAction,
   color = "grey-300",
 }: ActionIconProps) {

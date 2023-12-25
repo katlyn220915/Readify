@@ -3,8 +3,15 @@ import { useState } from "react";
 import styles from "./ActionMenu.module.css";
 
 import ActionIcon from "../ActionIcon/ActionIcon";
+import MarkerColorPlatte from "../MarkerColorPlatte/MarkerColorPlatte";
+
+import { useAuth } from "@/context/AuthContext";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { setActionMenuToggle } from "@/lib/redux/features/readSlice";
+
+import findIndexOfParentElement from "@/utils/findIndexOfParentElement";
+import getSelectionData from "@/utils/getSelectionData";
 
 import {
   faHighlighter,
@@ -12,7 +19,6 @@ import {
   faEllipsis,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
-import MarkerColorPlatte from "../MarkerColorPlatte/MarkerColorPlatte";
 
 const ActionMenu = ({
   xPosition,
@@ -22,44 +28,75 @@ const ActionMenu = ({
   yPosition: number;
 }) => {
   const [isColorPlatteOpen, setIsColorPlatteOpen] = useState(false);
+  const firestore = useFirestore();
   const dispatch = useAppDispatch();
-  const { markerColor, isDeleteMode, deleteHighlightID } = useAppSelector(
-    (state) => state.read
-  );
+  const {
+    markerColor,
+    isDeleteMode,
+    deleteHighlightID,
+    currentBook,
+    currentCategory,
+    currentChapter,
+  } = useAppSelector((state) => state.read);
 
+  const { user } = useAuth();
   const handleHighlight = () => {
-    const selection = document.getSelection();
-    const selectedText = selection?.toString();
-    const parent = selection?.anchorNode?.parentElement;
-    if (selectedText && parent !== null && parent !== undefined) {
-      const timestamp = Date.now();
-      console.log(timestamp);
+    const selectionData = getSelectionData();
+    if (selectionData) {
+      const { parent, selectedText } = selectionData;
+      console.log(parent);
+      const randomString = Math.random().toString(36).substring(2);
       const pattern = new RegExp(selectedText, "g");
-      parent.innerHTML = parent.innerHTML.replace(
-        pattern,
-        `<span class="epub_hightLight" style='background-color: var(--color-${markerColor})' data-highlight-id=${timestamp}>${selectedText}</span>`
-      );
-      dispatch(setActionMenuToggle(false));
-    } else {
-      console.error("Parent element is undefined.");
+      if (parent) {
+        parent.innerHTML = parent.innerHTML.replace(
+          pattern,
+          `<span class="epub_highlight" style='background-color: var(--color-${markerColor})' data-highlight-id=${randomString}>${selectedText}</span>`
+        );
+        dispatch(setActionMenuToggle(false));
+        const data = findIndexOfParentElement(parent);
+
+        firestore.setDocument(
+          `/users/${user.uid}/${currentCategory}/${
+            currentBook?.bookId
+          }/${data.chapterID.replace("/", "")}`,
+          `${randomString}`,
+          {
+            highlightId: randomString,
+            indexOfTag: data.indexOfParentElement,
+            markerColor,
+            tagName: parent.tagName,
+            text: selectedText,
+          }
+        );
+      }
     }
   };
 
-  const deleteHighlight = () => {
-    const deleteEl = document.querySelector(
-      `[data-highlight-id="${deleteHighlightID}"]`
-    );
-    const parent = deleteEl?.parentElement;
-    if (
-      parent !== undefined &&
-      parent !== null &&
-      deleteEl &&
-      deleteEl.textContent
-    ) {
-      parent.innerHTML = parent?.innerHTML.replace(
-        deleteEl?.outerHTML,
-        deleteEl?.textContent
+  const deleteHighlight = async () => {
+    try {
+      const deleteEl = document.querySelector(
+        `[data-highlight-id="${deleteHighlightID}"]`
       );
+      await firestore.deleteDocument(
+        `/users/${user.uid}/${currentCategory}/${
+          currentBook?.bookId
+        }/${currentChapter?.replace("/", "")}/${deleteHighlightID}`
+      );
+      const parent = deleteEl?.parentElement;
+      if (
+        parent !== undefined &&
+        parent !== null &&
+        deleteEl &&
+        deleteEl.textContent
+      ) {
+        parent.innerHTML = parent?.innerHTML.replace(
+          deleteEl?.outerHTML,
+          deleteEl?.textContent
+        );
+      }
+      dispatch(setActionMenuToggle(false));
+    } catch (e) {
+      console.log("Delete fail");
     }
   };
 
@@ -80,7 +117,6 @@ const ActionMenu = ({
               iconProp={faTrashCan}
               promptText="Delete highlight"
               position="top"
-              showPrompt={true}
               onAction={() => deleteHighlight()}
             />
           ) : (
@@ -88,7 +124,6 @@ const ActionMenu = ({
               iconProp={faHighlighter}
               promptText="Create highlight"
               position={isColorPlatteOpen ? "bottom" : "top"}
-              showPrompt={true}
               onAction={() => handleHighlight()}
               color={markerColor}
             />
@@ -98,14 +133,12 @@ const ActionMenu = ({
             iconProp={faNoteSticky}
             promptText="Add note"
             position={isColorPlatteOpen ? "bottom" : "top"}
-            showPrompt={true}
             onAction={() => handleHighlight()}
           />
           <ActionIcon
             iconProp={faEllipsis}
             promptText="Pick marker color"
             position={isColorPlatteOpen ? "bottom" : "top"}
-            showPrompt={true}
             onAction={() => setIsColorPlatteOpen(!isColorPlatteOpen)}
           />
           {isColorPlatteOpen && <MarkerColorPlatte />}

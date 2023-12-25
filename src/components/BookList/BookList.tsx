@@ -16,7 +16,6 @@ import { faFeather } from "@fortawesome/free-solid-svg-icons";
 
 /* CUSTOM-HOOKS */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import { setCurrentBook } from "@/lib/redux/features/readSlice";
 import { setMoreActionBtnClose } from "@/lib/redux/features/moreActionSlice";
 
 /////////////////////////////////////////////////////////
@@ -29,6 +28,7 @@ function Book({ book }: { book: BookProps }) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
+  const category = pathname.split("/").pop();
 
   return (
     <li
@@ -42,8 +42,7 @@ function Book({ book }: { book: BookProps }) {
       }}
       onClick={() => {
         dispatch(setMoreActionBtnClose());
-        dispatch(setCurrentBook(book));
-        router.push(`${pathname.split("/").pop()}/read/${book.bookId}`);
+        router.push(`${category}/read/${book.bookId}`);
       }}
     >
       <div className={styles.img_container}>

@@ -5,8 +5,9 @@ import styles from "./ReadingArea.module.css";
 
 import Spinner from "../Spinner/Spinner";
 import BookContent from "../BookContent/BookContent";
-import ReadingAreaNav from "../ReadingAreaNav/ReadingAreNav";
+import ReadingAreaNav from "../ReadingAreaNav/ReadingAreaNav";
 import EbookViewer from "../EbookViewer/EbookViewer";
+import EbookIntroductionHeader from "../EbookIntroductionHeader/EbookIntroductionHeader";
 
 /* HOOKS */
 import { usePathname } from "next/navigation";
@@ -24,7 +25,9 @@ export default function ReadingArea() {
   const [isLoading, setIsLoading] = useState(false);
   const [bookDocuments, setBookDocuments] = useState<any[]>([]);
   const [isContentListOpen, setIsContentListOpen] = useState(true);
-  const { actionMenuPositionY } = useAppSelector((state) => state.read);
+  const { actionMenuPositionY, isActionMenuOpen } = useAppSelector(
+    (state) => state.read
+  );
 
   const pathname = usePathname();
   const arrPath = pathname.split("/");
@@ -45,8 +48,8 @@ export default function ReadingArea() {
             `/users/${user.uid}/${category}`,
             bookId
           );
+          dispatch(setCurrentBook({ currentBook: bookData, category }));
           if (bookData) {
-            dispatch(setCurrentBook(bookData));
             const epubDocuments = await parser.getAllDocuments(
               bookData.bookDownloadURL
             );
@@ -66,6 +69,33 @@ export default function ReadingArea() {
     bookRender();
   }, [user]);
 
+  useEffect(() => {
+    const getHighlights = async () => {
+      const allChapterElement = Array.from(
+        document.querySelectorAll(".epub_document_content")
+      );
+
+      allChapterElement.map(async (el: any) => {
+        const chapterId = el.id.replace("/", "");
+        const highlights = await firestore.getDocuments(
+          `/users/${user.uid}/${category}/${bookId}/${chapterId}`
+        );
+        if (highlights.length > 0) {
+          highlights.forEach((item: any) => {
+            const allElements = el.querySelectorAll(item.tagName.toLowerCase());
+            const highlightElement = allElements[item.indexOfTag];
+            const pattern = new RegExp(item.text, "g");
+            highlightElement.innerHTML = highlightElement.innerHTML.replace(
+              pattern,
+              `<span class="epub_highlight" style="background-color: var(--color-${item.markerColor})" data-highlight-id=${item.highlightId}>${item.text}</span>`
+            );
+          });
+        }
+      });
+    };
+    getHighlights();
+  }, [bookDocuments.length]);
+
   return (
     <>
       <BookContent isContentListOpen={isContentListOpen} />
@@ -76,7 +106,8 @@ export default function ReadingArea() {
         }`}
         onWheel={(e) => {
           const delta = Math.round(e.deltaY);
-          dispatch(setActionMenuPositionY(actionMenuPositionY - delta));
+          if (isActionMenuOpen)
+            dispatch(setActionMenuPositionY(actionMenuPositionY - delta));
         }}
       >
         <ReadingAreaNav
@@ -85,18 +116,8 @@ export default function ReadingArea() {
         />
         {isLoading && <Spinner />}
         <EbookIntroductionHeader />
-        <EbookViewer bookDocuments={bookDocuments} />
+        {bookDocuments && <EbookViewer bookDocuments={bookDocuments} />}
       </div>
     </>
   );
 }
-
-const EbookIntroductionHeader = () => {
-  const { currentBook } = useAppSelector((state) => state.read);
-  return (
-    <div className={styles.book_intro}>
-      <h2 className={styles.book_intro_title}>{currentBook?.title}</h2>
-      <p className={styles.book_intro_autor}>{currentBook?.author}</p>
-    </div>
-  );
-};

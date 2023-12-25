@@ -1,8 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./BookContent.module.css";
 
-import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
+import { useAppSelector } from "@/hooks/redux/hooks";
 import parseEpub from "@/server-actions/parseEpub/parseEpub";
 
 type ContentItemProp = {
@@ -18,17 +18,24 @@ export default function BookContent({
 }) {
   const { currentBook } = useAppSelector((state) => state.read);
   const [toc, setToc] = useState<null | ContentItemProp[]>();
-  const parser = parseEpub();
+
+  const currentBookMemo = useMemo(() => {
+    return currentBook;
+  }, [currentBook]);
+  const parserMemo = useCallback(parseEpub, [parseEpub]);
 
   useEffect(() => {
     const getBookContents = async () => {
-      if (currentBook) {
-        const tocList = await parser.getContents(currentBook?.bookDownloadURL);
+      if (currentBookMemo) {
+        const parser = parserMemo();
+        const tocList = await parser.getContents(
+          currentBookMemo?.bookDownloadURL
+        );
         setToc(tocList);
       }
     };
     getBookContents();
-  }, [currentBook]);
+  }, [currentBookMemo, parserMemo]);
 
   return (
     <>

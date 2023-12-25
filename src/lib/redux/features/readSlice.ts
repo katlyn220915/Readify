@@ -9,6 +9,8 @@ type initialState = {
 type readState = {
   isLoading: boolean;
   currentBook: null | BookProps;
+  currentCategory: string | undefined;
+  currentChapter: string | undefined;
   fontSize: number;
   lineSpacing: number;
   lineWidth: string;
@@ -23,6 +25,8 @@ type readState = {
 const initialState = {
   isLoading: false,
   currentBook: null,
+  currentCategory: undefined,
+  currentChapter: undefined,
   fontSize: 20,
   lineSpacing: 1.4,
   lineWidth: "X-large",
@@ -39,8 +43,14 @@ export const read = createSlice({
   initialState,
   reducers: {
     setCurrentBook: (state, action) => {
-      state.currentBook = action.payload;
+      state.currentBook = action.payload.currentBook;
+      state.currentCategory = action.payload.category;
     },
+
+    setCurrentChapter: (state, action) => {
+      state.currentChapter = action.payload;
+    },
+
     setFontSize: (state, action) => {
       if (action.payload) {
         state.fontSize = state.fontSize + 1;
@@ -65,8 +75,10 @@ export const read = createSlice({
     setActionMenuToggle: (state, action) => {
       state.isActionMenuOpen = action.payload;
     },
-    setActionMenuPositionX: (state, action) => {
-      state.actionMenuPositionX = action.payload;
+    setActionMenuPosition: (state, action) => {
+      state.isActionMenuOpen = true;
+      state.actionMenuPositionX = action.payload.positionX;
+      state.actionMenuPositionY = action.payload.positionY;
     },
     setActionMenuPositionY: (state, action) => {
       state.actionMenuPositionY = action.payload;
@@ -83,11 +95,12 @@ export const read = createSlice({
 
 export const {
   setCurrentBook,
+  setCurrentChapter,
   setFontSize,
   setLineSpacing,
   setLineWidth,
   setActionMenuToggle,
-  setActionMenuPositionX,
+  setActionMenuPosition,
   setActionMenuPositionY,
   setMarkerColor,
   setDeleteHighlightMode,

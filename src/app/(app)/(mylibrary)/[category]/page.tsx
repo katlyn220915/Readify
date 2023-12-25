@@ -34,10 +34,8 @@ export default function Category() {
     const getBookList = async () => {
       try {
         setIsLoading(true);
-        const arrPathname = pathname.split("/");
-        const category = arrPathname[arrPathname.length - 1];
         const bookList = await firestoreCallback().getDocuments(
-          `/users/${user.uid}/${category}`
+          `/users/${user.uid}/${pathname.split("/").pop()}`
         );
         dispatchCallback(bookListInitialize(bookList));
       } catch (e) {

@@ -1,10 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import styles from "./ReadingAreaNav.module.css";
 
 import ActionIcon from "../ActionIcon/ActionIcon";
-import { faList, faFont } from "@fortawesome/free-solid-svg-icons";
+import {
+  faList,
+  faFont,
+  faCircleArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import CustomStylePlatte from "../CustomStylePlatte/CustomStylePlatte";
 
 const ReadingAreaNav = ({
@@ -15,10 +20,21 @@ const ReadingAreaNav = ({
   onSetContentListOpen<SetStateAction>(boolean: any): any;
 }) => {
   const [isCustomizeBoxOpen, setIsCustomizeBoxOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <>
       <nav className={styles.readingArea_nav}>
+        <ActionIcon
+          iconProp={faCircleArrowLeft}
+          promptText="Go back to list"
+          position="bottom"
+          onAction={() => {
+            const category = pathname.split("/")[1];
+            router.push(`/${category}`);
+          }}
+        />
         <ActionIcon
           iconProp={faList}
           promptText={

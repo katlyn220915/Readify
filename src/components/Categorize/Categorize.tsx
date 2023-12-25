@@ -15,10 +15,7 @@ import { faClock } from "@fortawesome/free-regular-svg-icons";
 
 /* CUSTOM HOOK */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import {
-  setMoreActionBtn,
-  setMoreActionBtnClose,
-} from "@/lib/redux/features/moreActionSlice";
+import { setMoreActionBtn } from "@/lib/redux/features/moreActionSlice";
 import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAuth } from "@/context/AuthContext";
@@ -58,7 +55,7 @@ function MoreActionBtn() {
         iconProp={faEllipsis}
         promptText="More actions"
         position="top"
-        showPrompt={true}
+        onAction={() => {}}
       />
     </div>
   );
@@ -109,6 +106,8 @@ function CategorizeItem({
           promptText={item.title}
           position="top"
           showPrompt={!isCurrentCategory}
+          onAction={() => {}}
+          color={`${isCurrentCategory ? "grey-600" : "grey-300"}`}
         />
       </li>
     </>
