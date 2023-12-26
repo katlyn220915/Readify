@@ -27,7 +27,7 @@ export default function ActionIcon({
   const [isMouseEnter, setIsMouseEnter] = useState(false);
   return (
     <>
-      <button
+      <span
         onMouseEnter={() => {
           setIsMouseEnter(true);
         }}
@@ -42,7 +42,7 @@ export default function ActionIcon({
           className="icon"
           style={{ color: `var(--color-${color})` }}
         />
-      </button>
+      </span>
       {showPrompt && (
         <Prompt isMouseEnter={isMouseEnter} position={position}>
           {promptText}

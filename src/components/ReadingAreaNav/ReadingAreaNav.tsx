@@ -52,7 +52,7 @@ const ReadingAreaNav = ({
           onAction={() => setIsCustomizeBoxOpen(!isCustomizeBoxOpen)}
         />
       </nav>
-      <div className={styles.empty_block}></div>
+      {/* <div className={styles.empty_block}></div> */}
       {isCustomizeBoxOpen && <CustomStylePlatte />}
     </>
   );

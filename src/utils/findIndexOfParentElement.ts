@@ -1,6 +1,5 @@
 function findIndexOfParentElement(parentElement: any) {
   let chapterDiv;
-
   let currentElement = parentElement;
 
   while (currentElement.parentNode) {

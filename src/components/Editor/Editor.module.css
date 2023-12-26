@@ -1,0 +1,92 @@
+/* Basic editor styles */
+.wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  background-color: #2f3842;
+  padding: 1rem;
+  border-top-right-radius: 1rem;
+  border-top-left-radius: 1rem;
+  gap: 0.5rem;
+}
+
+.wrapper > button {
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1rem;
+}
+
+.tiptap > * + * {
+  margin-top: 0.75em;
+}
+
+.tiptap > ul,
+.tiptap > ol {
+  padding: 0 1rem;
+}
+
+.taptap > h1,
+.taptap > h2,
+.taptap > h3,
+.taptap > h4,
+.taptap > h5,
+.taptap > h6 {
+  line-height: 1.1;
+}
+
+.taptap > code {
+  background-color: rgba(#616161, 0.1);
+  color: #616161;
+}
+
+.taptap > pre {
+  background: #0d0d0d;
+  color: #fff;
+  font-family: "JetBrainsMono", monospace;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  height: 100%;
+}
+
+.tiptap > code {
+  color: inherit;
+  padding: 0;
+  background: none;
+  font-size: 0.8rem;
+}
+
+.tiptap > img {
+  max-width: 100%;
+  height: auto;
+}
+
+.tiptap > blockquote {
+  padding-left: 1rem;
+  border-left: 2px solid rgba(#0d0d0d, 0.1);
+}
+
+.tiptap > hr {
+  border: none;
+  border-top: 2px solid rgba(#0d0d0d, 0.1);
+  margin: 2rem 0;
+}
+
+.is_active {
+  background-color: var(--color-cta);
+}
+
+.text_area {
+  border: 0.1rem solid var(--color-grey-700);
+  height: 50rem;
+}
+
+.text_area > div {
+  height: 100%;
+}
+
+.text_area > div:focus {
+  outline: none;
+  padding: 1rem;
+}

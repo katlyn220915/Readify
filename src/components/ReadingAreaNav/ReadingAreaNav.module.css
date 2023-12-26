@@ -2,8 +2,9 @@
   width: 100%;
   padding: 2rem 3rem;
   border-bottom: 0.1rem solid var(--color-grey-700);
-  position: fixed;
+  /* position: fixed; */
   background-color: var(--color-blue-bg-darker);
+  position: relative;
   z-index: 100;
 
   display: flex;

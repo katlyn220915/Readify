@@ -24,7 +24,7 @@ import {
 export default function ReadingArea() {
   const [isLoading, setIsLoading] = useState(false);
   const [bookDocuments, setBookDocuments] = useState<any[]>([]);
-  const [isContentListOpen, setIsContentListOpen] = useState(true);
+  const [isContentListOpen, setIsContentListOpen] = useState(false);
   const { actionMenuPositionY, isActionMenuOpen } = useAppSelector(
     (state) => state.read
   );

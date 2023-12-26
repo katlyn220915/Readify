@@ -1,7 +1,7 @@
 .prompt {
   display: inline-block;
   position: absolute;
-  z-index: 100;
+  z-index: 1000;
 
   color: var(--color-blue-bg);
   background-color: #fff;
@@ -22,6 +22,6 @@
 }
 
 .prompt__position_bottom {
-  bottom: -4rem;
+  bottom: -3.5rem;
   left: 0rem;
 }

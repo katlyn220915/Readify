@@ -26,11 +26,12 @@ const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
     const selectionData = getSelectionData();
     if (selectionData) {
       const { rec } = selectionData;
+      console.log(rec);
       if (rec) {
         dispatch(
           setActionMenuPosition({
             positionX: rec.left + rec.width / 2 - 75 / 2,
-            positionY: Math.round(rec.top),
+            positionY: rec.top,
           })
         );
       }
@@ -47,7 +48,7 @@ const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
         dispatch(
           setActionMenuPosition({
             positionX: e.pageX - 75,
-            positionY: e.pageY,
+            positionY: e.pageY - 50,
           })
         );
         dispatch(
