@@ -1,14 +1,19 @@
 /* Basic editor styles */
 .wrapper {
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  flex-wrap: wrap;
+  gap: 0.5rem;
+
   background-color: #2f3842;
   padding: 1rem;
-  border-top-right-radius: 1rem;
-  border-top-left-radius: 1rem;
-  gap: 0.5rem;
+  border-radius: 1rem;
+
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  z-index: 100000;
 }
 
 .wrapper > button {
@@ -16,6 +21,12 @@
   width: 3rem;
   height: 3rem;
   border-radius: 1rem;
+}
+
+.wrapper > .toggle_icon {
+  width: 2rem;
+  height: 2rem;
+  text-align: center;
 }
 
 .tiptap > * + * {
@@ -79,7 +90,9 @@
 
 .text_area {
   border: 0.1rem solid var(--color-grey-700);
-  height: 50rem;
+  height: 100%;
+  padding: 1rem;
+  background-color: var(--color-blue-bg-darker);
 }
 
 .text_area > div {
@@ -88,5 +101,4 @@
 
 .text_area > div:focus {
   outline: none;
-  padding: 1rem;
 }

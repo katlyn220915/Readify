@@ -1,5 +1,4 @@
 .sidebar {
-  width: 30rem;
   background-color: var(--color-blue-bg-darker);
   overflow: scroll;
 
@@ -21,6 +20,7 @@
 }
 
 .contents_wrapper .title {
+  width: 30rem;
   padding: 2rem 3rem;
   margin-bottom: 3rem;
   border-bottom: 0.1rem solid var(--color-grey-700);
@@ -34,7 +34,7 @@
 }
 
 .contents_wrapper .contents {
-  padding: 0 3rem;
+  padding: 2rem 3rem;
 }
 
 .contentBtn {

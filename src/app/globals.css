@@ -255,15 +255,15 @@ button {
 }
 
 .epub_document::after {
-  content: "";
+  content: "***";
   position: absolute;
   left: 50%;
   bottom: -10rem;
   transform: translate(-50%, -50%);
-
-  height: 0.1rem;
   width: 80%;
-  background-color: var(--color-grey-500);
+  font-size: 8rem;
+  letter-spacing: 5rem;
+  text-align: center;
 }
 
 .epub_document .image_wrapper {

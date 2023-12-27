@@ -9,6 +9,8 @@ import {
   faList,
   faFont,
   faCircleArrowLeft,
+  faPenToSquare,
+  faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import CustomStylePlatte from "../CustomStylePlatte/CustomStylePlatte";
 
@@ -26,34 +28,45 @@ const ReadingAreaNav = ({
   return (
     <>
       <nav className={styles.readingArea_nav}>
-        <ActionIcon
-          iconProp={faCircleArrowLeft}
-          promptText="Go back to list"
-          position="bottom"
-          onAction={() => {
-            const category = pathname.split("/")[1];
-            router.push(`/${category}`);
-          }}
-        />
-        <ActionIcon
-          iconProp={faList}
-          promptText={
-            isContentListOpen ? "Close the sidebar" : "Open the sidebar"
-          }
-          position="bottom"
-          showPrompt={true}
-          onAction={() => onSetContentListOpen(!isContentListOpen)}
-        />
-        <ActionIcon
-          iconProp={faFont}
-          promptText="Customize styles"
-          position="bottom"
-          showPrompt={true}
-          onAction={() => setIsCustomizeBoxOpen(!isCustomizeBoxOpen)}
-        />
+        <div className={styles.left_list}>
+          <ActionIcon
+            iconProp={faCircleArrowLeft}
+            promptText="Go back to list"
+            position="bottom"
+            onAction={() => {
+              const category = pathname.split("/")[1];
+              router.push(`/${category}`);
+            }}
+          />
+          <ActionIcon
+            iconProp={faList}
+            promptText={
+              isContentListOpen ? "Close the sidebar" : "Open the sidebar"
+            }
+            position="bottom"
+            showPrompt={true}
+            onAction={() => onSetContentListOpen(!isContentListOpen)}
+          />
+          <ActionIcon
+            iconProp={faFont}
+            promptText="Customize styles"
+            position="bottom"
+            showPrompt={true}
+            onAction={() => setIsCustomizeBoxOpen(!isCustomizeBoxOpen)}
+          />
+          {isCustomizeBoxOpen && <CustomStylePlatte />}
+        </div>
+        <div className={styles.right_list}>
+          <ActionIcon
+            iconProp={faPenToSquare}
+            promptText="Open notebook"
+            position="bottom"
+            showPrompt={true}
+            onAction={() => setIsCustomizeBoxOpen(!isCustomizeBoxOpen)}
+          />
+        </div>
       </nav>
       {/* <div className={styles.empty_block}></div> */}
-      {isCustomizeBoxOpen && <CustomStylePlatte />}
     </>
   );
 };

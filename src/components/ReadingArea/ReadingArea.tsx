@@ -114,6 +114,7 @@ export default function ReadingArea() {
           isContentListOpen={isContentListOpen}
           onSetContentListOpen={setIsContentListOpen}
         />
+        <div className={styles.empty_block}></div>
         {isLoading && <Spinner />}
         <EbookIntroductionHeader />
         {bookDocuments && <EbookViewer bookDocuments={bookDocuments} />}

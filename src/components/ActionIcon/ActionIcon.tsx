@@ -10,9 +10,9 @@ import Prompt from "../Prompt/Prompt";
 interface ActionIconProps {
   iconProp: IconDefinition;
   promptText: string;
-  position: "top" | "right" | "bottom";
+  position: "top" | "right" | "bottom" | "left";
   showPrompt?: boolean;
-  onAction: () => void;
+  onAction?: () => void;
   color?: string;
 }
 
@@ -21,13 +21,13 @@ export default function ActionIcon({
   promptText,
   position,
   showPrompt = true,
-  onAction,
+  onAction = () => {},
   color = "grey-300",
 }: ActionIconProps) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
   return (
     <>
-      <span
+      <button
         onMouseEnter={() => {
           setIsMouseEnter(true);
         }}
@@ -42,12 +42,12 @@ export default function ActionIcon({
           className="icon"
           style={{ color: `var(--color-${color})` }}
         />
-      </span>
-      {showPrompt && (
-        <Prompt isMouseEnter={isMouseEnter} position={position}>
-          {promptText}
-        </Prompt>
-      )}
+        {showPrompt && (
+          <Prompt isMouseEnter={isMouseEnter} position={position}>
+            {promptText}
+          </Prompt>
+        )}
+      </button>
     </>
   );
 }
