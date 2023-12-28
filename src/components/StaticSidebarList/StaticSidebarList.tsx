@@ -58,12 +58,7 @@ function ListItem({ item }: ListItemProps) {
       }}
       data-iscurrentpath={category === item.path}
     >
-      <Icon
-        path={
-          item.path === "mylibrary" ? "/mylibrary" : `/mylibrary/${item.path}`
-        }
-        iconProp={item.iconProp}
-      />
+      <Icon path={item.path} iconProp={item.iconProp} />
       <Prompt isMouseEnter={isMouseEnter} position="right">
         {item.title}
       </Prompt>

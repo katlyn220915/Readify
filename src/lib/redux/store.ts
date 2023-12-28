@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import uploadReducer from "./features/uploadSlice";
 import bookReducer from "./features/bookSlice";
 import moreActionReducer from "./features/moreActionSlice";
+import readReducer from "./features/readSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -9,6 +10,7 @@ export const makeStore = () => {
       upload: uploadReducer,
       book: bookReducer,
       moreAction: moreActionReducer,
+      read: readReducer,
     },
   });
 };

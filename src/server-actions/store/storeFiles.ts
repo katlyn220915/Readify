@@ -3,6 +3,7 @@ import {
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  uploadBytes,
 } from "firebase/storage";
 import app from "@/lib/firebase/initialize";
 

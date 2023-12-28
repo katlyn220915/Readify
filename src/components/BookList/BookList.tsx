@@ -1,13 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
 import styles from "./BookList.module.css";
-
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 /* TYPE */
 import { BookListProps, BookProps } from "@/types/BookListProps";
 
 /* COMPONENT */
 import Categorize from "../Categorize/Categorize";
+import ActionPrompt from "../ActionPrompt/ActionPrompt";
 
 /* THIRD-LIB */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,7 +16,7 @@ import { faFeather } from "@fortawesome/free-solid-svg-icons";
 
 /* CUSTOM-HOOKS */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import ActionPrompt from "../ActionPrompt/ActionPrompt";
+import { setMoreActionBtnClose } from "@/lib/redux/features/moreActionSlice";
 
 /////////////////////////////////////////////////////////
 
@@ -24,6 +25,10 @@ function Book({ book }: { book: BookProps }) {
   const { isMoreActionBtnOpen, isOtherMoreActionBtnOpen } = useAppSelector(
     (state) => state.moreAction
   );
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const pathname = usePathname();
+  const category = pathname.split("/").pop();
 
   return (
     <li
@@ -34,6 +39,10 @@ function Book({ book }: { book: BookProps }) {
       }}
       onMouseLeave={() => {
         if (!isMoreActionBtnOpen) setIsMouseEnter(false);
+      }}
+      onClick={() => {
+        dispatch(setMoreActionBtnClose());
+        router.push(`${category}/read/${book.bookId}`);
       }}
     >
       <div className={styles.img_container}>

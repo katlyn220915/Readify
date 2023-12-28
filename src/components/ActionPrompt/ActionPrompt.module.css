@@ -12,6 +12,7 @@
   position: absolute;
   bottom: 18rem;
   right: -30rem;
+  z-index: 200;
   transition: all 0.3s;
 }
 

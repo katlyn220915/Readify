@@ -1,14 +1,11 @@
-"use client";
-import React, { useState } from "react";
+import React from "react";
 import { usePathname } from "next/navigation";
 import styles from "./Categorize.module.css";
 
 /* COMPONENT */
 import MoreActionList from "../MoreActionList/MoreActionList";
-import Prompt from "../Prompt/Prompt";
 
 /* THIRD_LIB */
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBookOpen,
   faArchive,
@@ -23,6 +20,7 @@ import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAuth } from "@/context/AuthContext";
 import BookProps from "@/types/BookProps";
+import ActionIcon from "../ActionIcon/ActionIcon";
 
 const staticItems = [
   {
@@ -33,40 +31,32 @@ const staticItems = [
   {
     title: "Move to Later",
     iconProp: faClock,
-    path: "/mylibrary/later",
+    path: "/later",
   },
   {
     title: "Move to Archive",
     iconProp: faArchive,
-    path: "/mylibrary/archive",
+    path: "/archive",
   },
 ];
 
 function MoreActionBtn() {
-  const [isMouseEnter, setIsMouseEnter] = useState(false);
   const dispatch = useAppDispatch();
 
   return (
     <div
       className={styles.more_act_box}
       onClick={(e) => {
+        e.stopPropagation();
         dispatch(setMoreActionBtn());
       }}
     >
-      <button
-        className={styles.btn_add_tag}
-        onMouseEnter={() => {
-          setIsMouseEnter(true);
-        }}
-        onMouseLeave={() => {
-          setIsMouseEnter(false);
-        }}
-      >
-        <FontAwesomeIcon icon={faEllipsis} className="icon" />
-      </button>
-      <Prompt isMouseEnter={isMouseEnter} position="top">
-        More actions
-      </Prompt>
+      <ActionIcon
+        iconProp={faEllipsis}
+        promptText="More actions"
+        position="top"
+        onAction={() => {}}
+      />
     </div>
   );
 }
@@ -78,25 +68,24 @@ function CategorizeItem({
   item: { title: string; iconProp: any; path: string };
   book: BookProps;
 }) {
-  const [isMouseEnter, setIsMouseEnter] = useState(false);
   const { user } = useAuth();
   const firestore = useFirestore();
   const dispatch = useAppDispatch();
   const pathname = usePathname();
+  const isCurrentCategory = pathname === item.path;
 
-  const handleCategorizeBook = async () => {
+  const handleCategorizeBook = async (
+    e: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
     if (pathname === item.path) return;
-    const arrPath = item.path.split("/");
-    const newCategory = arrPath[arrPath.length - 1];
-    const arrPathname = pathname.split("/");
-    const originCategory = arrPathname[arrPathname.length - 1];
     const isSetDocSuccess = await firestore.setDocument(
-      `users/${user.uid}/${newCategory}`,
+      `users/${user.uid}/${item.path.split("/").pop()}`,
       book.bookId,
       book
     );
     const isDeleteDocSuccess = await firestore.deleteDocument(
-      `/users/${user.uid}/${originCategory}/${book.bookId}`
+      `/users/${user.uid}/${pathname.split("/").pop()}/${book.bookId}`
     );
 
     if (isSetDocSuccess && isDeleteDocSuccess) {
@@ -108,26 +97,19 @@ function CategorizeItem({
     <>
       <li
         className={`${styles.li} ${
-          pathname === item.path ? styles.current_path : ""
+          isCurrentCategory ? styles.current_path : ""
         }`}
-        onClick={() => handleCategorizeBook()}
+        onClick={(e) => handleCategorizeBook(e)}
       >
-        <button
-          onMouseEnter={() => {
-            setIsMouseEnter(true);
-          }}
-          onMouseLeave={() => {
-            setIsMouseEnter(false);
-          }}
-        >
-          <FontAwesomeIcon icon={item.iconProp} className="icon" />
-        </button>
+        <ActionIcon
+          iconProp={item.iconProp}
+          promptText={item.title}
+          position="top"
+          showPrompt={!isCurrentCategory}
+          onAction={() => {}}
+          color={`${isCurrentCategory ? "grey-600" : "grey-300"}`}
+        />
       </li>
-      {pathname !== item.path && (
-        <Prompt isMouseEnter={isMouseEnter} position="top">
-          {item.title}
-        </Prompt>
-      )}
     </>
   );
 }

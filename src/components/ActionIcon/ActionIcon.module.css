@@ -1,0 +1,6 @@
+.btn {
+  position: relative;
+  z-index: 999;
+
+  cursor: pointer;
+}

@@ -8,7 +8,7 @@ export default function Prompt({
 }: {
   children: React.ReactNode;
   isMouseEnter: boolean;
-  position: string;
+  position: "right" | "bottom" | "top" | "left";
 }) {
   return (
     <>
@@ -17,6 +17,10 @@ export default function Prompt({
           className={`${styles.prompt} ${
             position === "right"
               ? styles.prompt__position_right
+              : position === "bottom"
+              ? styles.prompt__position_bottom
+              : position === "left"
+              ? styles.prompt__position_left
               : styles.prompt__position_top
           }`}
         >

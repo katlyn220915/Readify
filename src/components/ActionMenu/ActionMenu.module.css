@@ -1,0 +1,29 @@
+.action_menu_container {
+  position: relative;
+  z-index: 100;
+}
+
+.action_menu {
+  width: 100%;
+}
+
+.action_menu_inner {
+  width: fit-content;
+  display: flex;
+  background-color: var(--color-blue-bg-tine);
+  padding: 0.5rem 0.5rem;
+  border-radius: 1rem;
+  gap: 0.5rem;
+
+  position: relative;
+}
+
+.action_menu_inner > button {
+  width: 3rem;
+  padding: 0.2rem;
+  border-radius: 50%;
+}
+
+.action_menu_inner > button:hover {
+  background-color: var(--color-grey-500);
+}

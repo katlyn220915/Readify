@@ -11,10 +11,10 @@ export default function Signup() {
       <div className={styles.container}>
         <div className={styles.topbar}>
           <Image
-            src="/image/logo-light.png"
+            src="/image/Readify.png"
             alt="logo"
             width={80}
-            height={60}
+            height={80}
             priority={true}
           />
           <div>
