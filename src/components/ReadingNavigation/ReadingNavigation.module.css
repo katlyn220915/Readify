@@ -1,7 +1,7 @@
 .readingArea_nav {
-  width: 60rem;
+  width: 45rem;
   margin: 2rem auto;
-  padding: 2rem 3rem;
+  padding: 1.5rem 3rem;
   border: 1px solid var(--color-grey-700);
   border-radius: 1rem;
   position: fixed;
@@ -17,14 +17,12 @@
 
   display: flex;
   justify-content: space-between;
+  font-size: 2rem;
+  transition: all 0.3s;
 }
 
-.left_list {
+.list {
   display: flex;
   gap: 1.5rem;
-  position: relative;
-}
-
-.right_list {
   position: relative;
 }

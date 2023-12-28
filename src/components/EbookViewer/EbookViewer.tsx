@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./EbookViewer.module.css";
 
 import EbookChapter from "../EbookChapter/EbookChapter";
@@ -41,6 +41,8 @@ const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     dispatch(setActionMenuToggle(false));
     const target = e.target as HTMLElement;
+    if (target.id === "viewer" || target.className === "epub_document") return;
+    console.log(target);
     const { chapterID } = findIndexOfParentElement(target.parentElement);
     dispatch(setCurrentChapter(chapterID));
     if (target.className === "epub_highlight") {

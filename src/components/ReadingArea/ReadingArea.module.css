@@ -6,11 +6,17 @@
   width: 100%;
   overflow: scroll;
   transition: all 0.3s;
+
+  margin-top: 5rem;
 }
 
 .epubContainer::-webkit-scrollbar {
   display: none;
   padding: 1.5rem;
+}
+
+.contentListClose {
+  transition: all 0.3s;
 }
 
 .empty_block {

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import styles from "./ReadingAreaNav.module.css";
+import styles from "./ReadingNavigation.module.css";
 
 import ActionIcon from "../ActionIcon/ActionIcon";
 import {
@@ -10,16 +10,21 @@ import {
   faFont,
   faCircleArrowLeft,
   faPenToSquare,
-  faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import CustomStylePlatte from "../CustomStylePlatte/CustomStylePlatte";
 
-const ReadingAreaNav = ({
+const ReadingNavigation = ({
   isContentListOpen,
   onSetContentListOpen,
+  isNotebookOpen,
+  onSetNotebookOpen,
+  isNavigationVisible,
 }: {
   isContentListOpen: boolean;
   onSetContentListOpen<SetStateAction>(boolean: any): any;
+  isNotebookOpen: boolean;
+  onSetNotebookOpen<SetStateAction>(boolean: any): any;
+  isNavigationVisible: boolean;
 }) => {
   const [isCustomizeBoxOpen, setIsCustomizeBoxOpen] = useState(false);
   const router = useRouter();
@@ -27,8 +32,15 @@ const ReadingAreaNav = ({
 
   return (
     <>
-      <nav className={styles.readingArea_nav}>
-        <div className={styles.left_list}>
+      <nav
+        className={styles.readingArea_nav}
+        style={{
+          transform: `translate(${
+            isNavigationVisible ? "50%,0" : "50%,-100px"
+          })`,
+        }}
+      >
+        <div className={styles.list}>
           <ActionIcon
             iconProp={faCircleArrowLeft}
             promptText="Go back to list"
@@ -56,19 +68,16 @@ const ReadingAreaNav = ({
           />
           {isCustomizeBoxOpen && <CustomStylePlatte />}
         </div>
-        <div className={styles.right_list}>
-          <ActionIcon
-            iconProp={faPenToSquare}
-            promptText="Open notebook"
-            position="bottom"
-            showPrompt={true}
-            onAction={() => setIsCustomizeBoxOpen(!isCustomizeBoxOpen)}
-          />
-        </div>
+        <ActionIcon
+          iconProp={faPenToSquare}
+          promptText={isNotebookOpen ? "Close Notebook" : "Open Notebook"}
+          position="bottom"
+          showPrompt={true}
+          onAction={() => onSetNotebookOpen(!isNotebookOpen)}
+        />
       </nav>
-      {/* <div className={styles.empty_block}></div> */}
     </>
   );
 };
 
-export default ReadingAreaNav;
+export default ReadingNavigation;

@@ -11,53 +11,55 @@ type ContentItemProp = {
   href: string;
 };
 
-export default function BookContent({
-  isContentListOpen,
-}: {
-  isContentListOpen: boolean;
-}) {
-  const { currentBook } = useAppSelector((state) => state.read);
-  const [toc, setToc] = useState<null | ContentItemProp[]>();
+const BookContent = React.memo(
+  ({ isContentListOpen }: { isContentListOpen: boolean }) => {
+    const { currentBook } = useAppSelector((state) => state.read);
+    const [toc, setToc] = useState<null | ContentItemProp[]>();
 
-  const currentBookMemo = useMemo(() => {
-    return currentBook;
-  }, [currentBook]);
-  const parserMemo = useCallback(parseEpub, [parseEpub]);
+    const currentBookMemo = useMemo(() => {
+      return currentBook;
+    }, [currentBook]);
+    const parserMemo = useCallback(parseEpub, [parseEpub]);
 
-  useEffect(() => {
-    const getBookContents = async () => {
-      if (currentBookMemo) {
-        const parser = parserMemo();
-        const tocList = await parser.getContents(
-          currentBookMemo?.bookDownloadURL
-        );
-        setToc(tocList);
-      }
-    };
-    getBookContents();
-  }, [currentBookMemo, parserMemo]);
+    useEffect(() => {
+      const getBookContents = async () => {
+        if (currentBookMemo) {
+          const parser = parserMemo();
+          const tocList = await parser.getContents(
+            currentBookMemo?.bookDownloadURL
+          );
+          setToc(tocList);
+        }
+      };
+      getBookContents();
+    }, [currentBookMemo, parserMemo]);
 
-  return (
-    <>
-      <aside
-        className={`${styles.sidebar} ${
-          isContentListOpen ? "" : styles.sidebar_close
-        }`}
-      >
-        <div className={styles.contents_wrapper}>
-          <p className={styles.title}>{currentBook?.title}</p>
-          <div className={styles.empty_block}></div>
-          <div className={styles.contents}>
-            {toc &&
-              toc.map((toc: ContentItemProp) => (
-                <ContentButton contentItem={toc} key={toc.href} />
-              ))}
+    return (
+      <>
+        <aside
+          className={`${styles.sidebar} ${
+            isContentListOpen ? "" : styles.sidebar_close
+          }`}
+        >
+          <div className={styles.contents_wrapper}>
+            <p className={styles.title}>{currentBook?.title}</p>
+            <div className={styles.empty_block}></div>
+            <div className={styles.contents}>
+              {toc &&
+                toc.map((toc: ContentItemProp) => (
+                  <ContentButton contentItem={toc} key={toc.href} />
+                ))}
+            </div>
           </div>
-        </div>
-      </aside>
-    </>
-  );
-}
+        </aside>
+      </>
+    );
+  }
+);
+
+BookContent.displayName = "BookContent";
+
+export default BookContent;
 
 const ContentButton = ({ contentItem }: { contentItem: ContentItemProp }) => {
   return (

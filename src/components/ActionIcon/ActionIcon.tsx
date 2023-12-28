@@ -27,27 +27,29 @@ export default function ActionIcon({
   const [isMouseEnter, setIsMouseEnter] = useState(false);
   return (
     <>
-      <button
-        onMouseEnter={() => {
-          setIsMouseEnter(true);
-        }}
-        onMouseLeave={() => {
-          setIsMouseEnter(false);
-        }}
-        onClick={onAction}
-        className={styles.btn}
-      >
-        <FontAwesomeIcon
-          icon={iconProp}
-          className="icon"
-          style={{ color: `var(--color-${color})` }}
-        />
+      <span style={{ position: "relative" }}>
+        <button
+          onMouseEnter={(e) => {
+            setIsMouseEnter(true);
+          }}
+          onMouseLeave={() => {
+            setIsMouseEnter(false);
+          }}
+          onClick={onAction}
+          className={styles.btn}
+        >
+          <FontAwesomeIcon
+            icon={iconProp}
+            className="icon"
+            style={{ color: `var(--color-${color})` }}
+          />
+        </button>
         {showPrompt && (
           <Prompt isMouseEnter={isMouseEnter} position={position}>
             {promptText}
           </Prompt>
         )}
-      </button>
+      </span>
     </>
   );
 }

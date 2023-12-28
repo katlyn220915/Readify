@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import styles from "./ReadingArea.module.css";
 
 import Spinner from "../Spinner/Spinner";
-import BookContent from "../BookContent/BookContent";
-import ReadingAreaNav from "../ReadingAreaNav/ReadingAreaNav";
 import EbookViewer from "../EbookViewer/EbookViewer";
 import EbookIntroductionHeader from "../EbookIntroductionHeader/EbookIntroductionHeader";
 
@@ -21,10 +25,13 @@ import {
   setActionMenuPositionY,
 } from "@/lib/redux/features/readSlice";
 
-export default function ReadingArea() {
+export default function ReadingArea({
+  setIsNavigationVisible,
+}: {
+  setIsNavigationVisible: Dispatch<SetStateAction<boolean>>;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [bookDocuments, setBookDocuments] = useState<any[]>([]);
-  const [isContentListOpen, setIsContentListOpen] = useState(false);
   const { actionMenuPositionY, isActionMenuOpen } = useAppSelector(
     (state) => state.read
   );
@@ -35,12 +42,17 @@ export default function ReadingArea() {
   const bookId = arrPath[arrPath.length - 1];
 
   const { user } = useAuth();
-  const firestore = useFirestore();
   const dispatch = useAppDispatch();
-  const parser = parseEpub();
+
+  const parserMemo = useCallback(parseEpub, [parseEpub]);
+  const firestoreMemo = useCallback(useFirestore, [useFirestore]);
+
+  console.log("render-", " ReadingArea");
 
   useEffect(() => {
     const bookRender = async () => {
+      const parser = parserMemo();
+      const firestore = firestoreMemo();
       try {
         setIsLoading(true);
         if (user) {
@@ -67,7 +79,7 @@ export default function ReadingArea() {
       }
     };
     bookRender();
-  }, [user]);
+  }, [user, bookId, category, dispatch, parserMemo, firestoreMemo]);
 
   useEffect(() => {
     const getHighlights = async () => {
@@ -76,45 +88,47 @@ export default function ReadingArea() {
       );
 
       allChapterElement.map(async (el: any) => {
+        const firestore = firestoreMemo();
         const chapterId = el.id.replace("/", "");
-        const highlights = await firestore.getDocuments(
-          `/users/${user.uid}/${category}/${bookId}/${chapterId}`
-        );
-        if (highlights.length > 0) {
-          highlights.forEach((item: any) => {
-            const allElements = el.querySelectorAll(item.tagName.toLowerCase());
-            const highlightElement = allElements[item.indexOfTag];
-            const pattern = new RegExp(item.text, "g");
-            highlightElement.innerHTML = highlightElement.innerHTML.replace(
-              pattern,
-              `<span class="epub_highlight" style="background-color: var(--color-${item.markerColor})" data-highlight-id=${item.highlightId}>${item.text}</span>`
-            );
-          });
+        if (user) {
+          const highlights = await firestore.getDocuments(
+            `/users/${user.uid}/${category}/${bookId}/${chapterId}`
+          );
+          if (highlights.length > 0) {
+            highlights.forEach((item: any) => {
+              const allElements = el.querySelectorAll(
+                item.tagName.toLowerCase()
+              );
+              const highlightElement = allElements[item.indexOfTag];
+              const pattern = new RegExp(item.text, "g");
+              highlightElement.innerHTML = highlightElement.innerHTML.replace(
+                pattern,
+                `<span class="epub_highlight" style="background-color: var(--color-${item.markerColor})" data-highlight-id=${item.highlightId}>${item.text}</span>`
+              );
+            });
+          }
         }
       });
     };
     getHighlights();
-  }, [bookDocuments.length]);
+  }, [bookDocuments.length, bookId, category, firestoreMemo, user]);
 
   return (
     <>
-      <BookContent isContentListOpen={isContentListOpen} />
       <div
         id="epub-viewer"
-        className={`${styles.epubContainer} ${
-          !isContentListOpen && styles.contentListClose
-        }`}
+        className={`${styles.epubContainer}`}
         onWheel={(e) => {
           const delta = Math.round(e.deltaY);
           if (isActionMenuOpen)
             dispatch(setActionMenuPositionY(actionMenuPositionY - delta));
+          if (delta < 0) {
+            setIsNavigationVisible(true);
+          } else {
+            setIsNavigationVisible(false);
+          }
         }}
       >
-        <ReadingAreaNav
-          isContentListOpen={isContentListOpen}
-          onSetContentListOpen={setIsContentListOpen}
-        />
-        <div className={styles.empty_block}></div>
         {isLoading && <Spinner />}
         <EbookIntroductionHeader />
         {bookDocuments && <EbookViewer bookDocuments={bookDocuments} />}

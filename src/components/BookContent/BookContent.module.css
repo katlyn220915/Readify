@@ -1,4 +1,7 @@
 .sidebar {
+  width: 25rem;
+  flex-grow: 0;
+  flex-shrink: 0;
   background-color: var(--color-blue-bg-darker);
   overflow: scroll;
 
@@ -13,6 +16,7 @@
 .sidebar_close {
   width: 0;
   transform: translateX(-30rem);
+  transition: all 0.3s;
 }
 
 .contents_wrapper {
@@ -22,11 +26,9 @@
 .contents_wrapper .title {
   width: 30rem;
   padding: 2rem 3rem;
-  margin-bottom: 3rem;
+
   border-bottom: 0.1rem solid var(--color-grey-700);
   background-color: var(--color-blue-bg-darker);
-
-  position: fixed;
 }
 
 .empty_block {

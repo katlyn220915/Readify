@@ -11,6 +11,10 @@
   text-wrap: nowrap;
 }
 
+.show_prompt {
+  display: inline-block;
+}
+
 .prompt__position_top {
   /* transform: translateY(-4rem); */
   top: -3rem;
@@ -27,6 +31,6 @@
 }
 
 .prompt__position_left {
-  left: -13.5rem;
-  bottom: -1rem;
+  left: -13rem;
+  top: 0.5rem;
 }
