@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { AuthProvider } from "@/context/AuthContext";
+import StoreProvider from "@/lib/redux/StoreProvider";
 import { headers } from "next/headers";
 
 const inter = Inter({
@@ -26,8 +27,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className={`${pathname === "/" ? "wrapper" : ""}`}>
-          <AuthProvider>{children}</AuthProvider>
+        <div
+          className={`${
+            pathname === "/" || pathname === "/signin" || pathname === "/signup"
+              ? "wrapper"
+              : ""
+          }`}
+        >
+          <AuthProvider>
+            <StoreProvider>{children}</StoreProvider>
+          </AuthProvider>
         </div>
       </body>
     </html>

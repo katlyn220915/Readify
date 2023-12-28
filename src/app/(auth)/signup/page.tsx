@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 
 import Image from "next/image";
-import Link from "next/link";
 import styles from "./page.module.css";
 import SignupForm from "@/components/SignupForm/SignupForm";
 import Loading from "../loading";
@@ -12,10 +11,10 @@ export default function Signup() {
       <div className={styles.container}>
         <div className={styles.topbar}>
           <Image
-            src="/image/logo-light.png"
+            src="/image/Readify.png"
             alt="logo"
             width={80}
-            height={60}
+            height={80}
             priority={true}
           />
           <div>

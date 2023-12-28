@@ -1,0 +1,26 @@
+.container {
+  width: 30rem;
+  height: 8rem;
+
+  background-color: var(--color-grey-300);
+  color: var(--color-red-700);
+  border-radius: 1rem;
+
+  text-align: center;
+  line-height: 8rem;
+
+  position: absolute;
+  bottom: 18rem;
+  right: -30rem;
+  z-index: 200;
+  transition: all 0.3s;
+}
+
+.error {
+  right: 3rem;
+}
+
+.successful {
+  right: 3rem;
+  color: var(--color-green-700);
+}

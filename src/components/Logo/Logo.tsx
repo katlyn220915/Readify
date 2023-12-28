@@ -7,10 +7,10 @@ export default function Logo() {
   return (
     <Link href="/">
       <Image
-        src="/image/logo-light.png"
+        src="/image/Readify-new.png"
         alt="readify"
         width={100}
-        height={80}
+        height={100}
         priority={false}
       />
     </Link>

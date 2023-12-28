@@ -1,4 +1,4 @@
-import ePub from "epubjs";
+import ePub, { Book } from "epubjs";
 
 const useEpubJs = () => {
   const getBookInfos = async (path: string) => {
@@ -8,19 +8,32 @@ const useEpubJs = () => {
         const title: string = (newBook as any).package.metadata.title;
         const author: string = (newBook as any).package.metadata.creator;
         const coverURL: string | null = await newBook.coverUrl();
+        console.log(
+          "Successfully parsed e-book:" + title + " " + author + " " + coverURL
+        );
         return {
           title,
           author,
           coverURL,
         };
       });
+
       return bookInfos;
     } catch (e) {
       console.error(e);
     }
   };
 
-  return { getBookInfos };
+  const renderBook = async (path: string) => {
+    try {
+      const newBook = ePub(path);
+      return newBook;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  return { getBookInfos, renderBook };
 };
 
 export default useEpubJs;

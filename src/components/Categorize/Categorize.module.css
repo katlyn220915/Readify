@@ -2,6 +2,7 @@
   position: absolute;
   right: 1rem;
   top: 50%;
+  z-index: 100;
   transform: translateY(-50%);
 
   display: flex;
@@ -40,6 +41,11 @@
   transform: translate(-50%, -50%);
 }
 
-.more_act_box .li {
-  position: relative;
+.li:hover.li button svg:not(.current_path button svg) {
+  color: var(--color-blue-300);
+}
+
+.current_path button svg {
+  cursor: default;
+  color: var(--color-grey-600);
 }

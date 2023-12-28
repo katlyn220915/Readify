@@ -20,32 +20,33 @@ type ListItemProps = {
 
 const staticList = [
   {
-    title: "My books",
-    path: "/mybooks",
+    title: "My Library",
+    path: "mylibrary",
     iconProp: faBookOpen,
   },
   {
     title: "Later",
-    path: "/later",
+    path: "later",
     iconProp: faClock,
   },
   {
     title: "Archive",
-    path: "/archive",
+    path: "archive",
     iconProp: faBoxArchive,
   },
   {
     title: "Search",
-    path: "/search",
+    path: "search",
     iconProp: faMagnifyingGlass,
   },
 ];
 
-function ListItem ({ item }: ListItemProps) {
+function ListItem({ item }: ListItemProps) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
   const pathName = usePathname();
+  const arrPathname = pathName.split("/");
+  const category = arrPathname[arrPathname.length - 1];
 
-  
   return (
     <li
       className={`${styles.li}`}
@@ -55,9 +56,9 @@ function ListItem ({ item }: ListItemProps) {
       onMouseLeave={() => {
         setIsMouseEnter(false);
       }}
-      data-iscurrentpath = {pathName === `/mylibrary${item.path}`}
+      data-iscurrentpath={category === item.path}
     >
-      <Icon path={`/mylibrary${item.path}`} iconProp={item.iconProp} />
+      <Icon path={item.path} iconProp={item.iconProp} />
       <Prompt isMouseEnter={isMouseEnter} position="right">
         {item.title}
       </Prompt>

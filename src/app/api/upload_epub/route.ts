@@ -19,7 +19,10 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes);
 
     const store = storeFiles();
-    const downloadURL = await store.storeEpub(uuid, timestemp, buffer);
+    const downloadURL = await store.storeEpub(
+      buffer,
+      `/${uuid}/books/${timestemp}/${timestemp}.epub`
+    );
 
     return NextResponse.json(
       { success: true, data: { downloadURL, id: timestemp } },

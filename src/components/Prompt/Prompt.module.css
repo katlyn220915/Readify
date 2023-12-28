@@ -1,7 +1,7 @@
 .prompt {
   display: inline-block;
   position: absolute;
-  z-index: 100;
+  z-index: 1000;
 
   color: var(--color-blue-bg);
   background-color: #fff;
@@ -11,12 +11,26 @@
   text-wrap: nowrap;
 }
 
+.show_prompt {
+  display: inline-block;
+}
+
 .prompt__position_top {
   /* transform: translateY(-4rem); */
-  left: -3rem;
   top: -3rem;
+  left: -3rem;
 }
 
 .prompt__position_right {
   transform: translateX(4rem);
+}
+
+.prompt__position_bottom {
+  bottom: -3.5rem;
+  left: 0rem;
+}
+
+.prompt__position_left {
+  left: -13rem;
+  top: 0.5rem;
 }

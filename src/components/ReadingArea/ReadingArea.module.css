@@ -1,0 +1,29 @@
+.container {
+  height: 100%;
+}
+
+.epubContainer {
+  width: 100%;
+  overflow: scroll;
+  transition: all 0.3s;
+
+  margin-top: 5rem;
+}
+
+.epubContainer::-webkit-scrollbar {
+  display: none;
+  padding: 1.5rem;
+}
+
+.contentListClose {
+  transition: all 0.3s;
+}
+
+.empty_block {
+  width: 30rem;
+  height: 10rem;
+}
+
+.empty_block_close {
+  transform: translateX(-30rem);
+}

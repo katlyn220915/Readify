@@ -33,7 +33,7 @@ export default function Home() {
             </div>
             {isLogin && (
               <ButtonCta color="green">
-                <Link href="/mylibrary/mybooks">Go to the App</Link>
+                <Link href="/mylibrary">Go to the App</Link>
               </ButtonCta>
             )}
           </div>
