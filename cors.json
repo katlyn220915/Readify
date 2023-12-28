@@ -1,6 +1,9 @@
 [
   {
-    "origin": ["http://localhost:3000"],
+    "origin": [
+      "http://localhost:3000",
+      "https://readify-git-dev-library-katlyns-projects.vercel.app/"
+    ],
     "method": ["GET"],
     "maxAgeSeconds": 3600
   }
