@@ -18,7 +18,7 @@ export default function BookId() {
   const [isContentListOpen, setIsContentListOpen] = useState(false);
   const [isNavigationVisible, setIsNavigationVisible] = useState(false);
 
-  console.log("render -", " BookId page");
+  // console.log("render -", " BookId page");
 
   return (
     <>

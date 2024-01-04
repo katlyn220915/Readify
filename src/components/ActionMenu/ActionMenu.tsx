@@ -10,7 +10,6 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { setActionMenuToggle } from "@/lib/redux/features/readSlice";
 
-import findIndexOfParentElement from "@/utils/findIndexOfParentElement";
 import getSelectionData from "@/utils/getSelectionData";
 
 import {
@@ -19,6 +18,8 @@ import {
   faEllipsis,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
+import { fromRange } from "xpath-range";
+import highlightHelper from "@/utils/highlightHelper";
 
 const ActionMenu = ({
   xPosition,
@@ -38,63 +39,59 @@ const ActionMenu = ({
     currentCategory,
     currentChapter,
   } = useAppSelector((state) => state.read);
-
   const { user } = useAuth();
+
   const handleHighlight = () => {
     const selectionData = getSelectionData();
     if (selectionData) {
-      const { parent, selectedText } = selectionData;
-      console.log(parent);
-      const randomString = Math.random().toString(36).substring(2);
-      const pattern = new RegExp(selectedText, "g");
-      if (parent) {
-        parent.innerHTML = parent.innerHTML.replace(
-          pattern,
-          `<span class="epub_highlight" style='background-color: var(--color-${markerColor})' data-highlight-id=${randomString}>${selectedText}</span>`
-        );
-        dispatch(setActionMenuToggle(false));
-        const data = findIndexOfParentElement(parent);
+      const { range, startContainer, endContainer, selectedText } =
+        selectionData;
+      const root = document.querySelector("#viewer");
+      const xpath = fromRange(range, root);
+      const { start, startOffset, end, endOffset } = xpath;
+      console.log(start, startOffset, end, endOffset);
+      const highlightId = Math.random().toString(36).substring(2);
+      const highlight = highlightHelper();
 
+      highlight.highlightText(
+        startContainer,
+        endContainer,
+        startOffset,
+        endOffset,
+        highlightId,
+        markerColor
+      );
+
+      if (currentChapter) {
         firestore.setDocument(
           `/users/${user.uid}/${currentCategory}/${
             currentBook?.bookId
-          }/${data.chapterID.replace("/", "")}`,
-          `${randomString}`,
+          }/${currentChapter.replace("/", "")}`,
+          `${highlightId}`,
           {
-            highlightId: randomString,
-            indexOfTag: data.indexOfParentElement,
+            highlightId,
             markerColor,
-            tagName: parent.tagName,
             text: selectedText,
+            range: xpath,
           }
         );
       }
     }
   };
 
-  const deleteHighlight = async () => {
+  const handleDeleteHighlight = async () => {
     try {
-      const deleteEl = document.querySelector(
-        `[data-highlight-id="${deleteHighlightID}"]`
-      );
-      await firestore.deleteDocument(
-        `/users/${user.uid}/${currentCategory}/${
-          currentBook?.bookId
-        }/${currentChapter?.replace("/", "")}/${deleteHighlightID}`
-      );
-      const parent = deleteEl?.parentElement;
-      if (
-        parent !== undefined &&
-        parent !== null &&
-        deleteEl &&
-        deleteEl.textContent
-      ) {
-        parent.innerHTML = parent?.innerHTML.replace(
-          deleteEl?.outerHTML,
-          deleteEl?.textContent
+      console.log(deleteHighlightID);
+      if (deleteHighlightID) {
+        const highlight = highlightHelper();
+        highlight.deleteHighlight(deleteHighlightID);
+        await firestore.deleteDocument(
+          `/users/${user.uid}/${currentCategory}/${
+            currentBook?.bookId
+          }/${currentChapter?.replaceAll("/", "")}/${deleteHighlightID}`
         );
+        dispatch(setActionMenuToggle(false));
       }
-      dispatch(setActionMenuToggle(false));
     } catch (e) {
       console.log("Delete fail");
     }
@@ -117,7 +114,7 @@ const ActionMenu = ({
               iconProp={faTrashCan}
               promptText="Delete highlight"
               position="top"
-              onAction={() => deleteHighlight()}
+              onAction={() => handleDeleteHighlight()}
             />
           ) : (
             <ActionIcon

@@ -1,5 +1,11 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import styles from "./EbookViewer.module.css";
 
 import EbookChapter from "../EbookChapter/EbookChapter";
@@ -16,17 +22,56 @@ import {
   setCurrentChapter,
 } from "@/lib/redux/features/readSlice";
 
-const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
+const EbookViewer = ({
+  bookDocuments,
+  onSetChapterCount,
+  hasMoreChapter,
+  handleLoadMore,
+}: {
+  bookDocuments: any[];
+  onSetChapterCount: Dispatch<number>;
+  hasMoreChapter: boolean;
+  handleLoadMore: (currentChapterCount: number) => void;
+}) => {
   const { isDeleteMode, isActionMenuOpen, currentChapter } = useAppSelector(
     (state) => state.read
   );
   const dispatch = useAppDispatch();
+  const lastElementRef = useRef(null);
+  const countRef = useRef(0);
+
+  const handleIntersection = (entries: any) => {
+    if (entries[0].isIntersecting) {
+      console.log("Last element is intersecting!");
+      if (hasMoreChapter) {
+        countRef.current + 1;
+        handleLoadMore(countRef.current);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleIntersection, {
+      root: null,
+      rootMargin: "0px",
+      threshold: 1.0,
+    });
+
+    if (lastElementRef.current && hasMoreChapter) {
+      observer.observe(lastElementRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const handleMouseUp = () => {
     const selectionData = getSelectionData();
     if (selectionData) {
-      const { rec } = selectionData;
+      const { rec, selectedText } = selectionData;
       console.log(rec);
+      console.log(selectedText);
       if (rec) {
         dispatch(
           setActionMenuPosition({
@@ -42,7 +87,6 @@ const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
     dispatch(setActionMenuToggle(false));
     const target = e.target as HTMLElement;
     if (target.id === "viewer" || target.className === "epub_document") return;
-    console.log(target);
     const { chapterID } = findIndexOfParentElement(target.parentElement);
     dispatch(setCurrentChapter(chapterID));
     if (target.className === "epub_highlight") {
@@ -82,11 +126,12 @@ const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
           handleMouseUp();
         }}
       >
-        {bookDocuments &&
+        {/* {bookDocuments !== undefined &&
           bookDocuments.map((div) => (
             <EbookChapter divElement={div} key={div.props.id} />
-          ))}
+          ))} */}
       </div>
+      {hasMoreChapter && <div ref={lastElementRef}>Load More ...</div>}
     </>
   );
 };

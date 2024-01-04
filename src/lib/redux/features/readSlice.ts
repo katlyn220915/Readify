@@ -20,7 +20,7 @@ type readState = {
   actionMenuPositionY: number;
   markerColor: string;
   isDeleteMode: boolean;
-  deleteHighlightID: number | null;
+  deleteHighlightID: string | null;
   readingProgress: number;
 };
 

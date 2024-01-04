@@ -24,6 +24,7 @@ function findIndexOfParentElement(parentElement: any) {
   }
 
   return {
+    chapterDiv,
     chapterID: chapterDiv.id,
     indexOfParentElement,
   };
