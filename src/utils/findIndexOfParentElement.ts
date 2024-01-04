@@ -1,7 +1,6 @@
-function findIndexOfParentElement(parentElement: any) {
+function findChapterElement(element: any) {
   let chapterDiv;
-  let currentElement = parentElement;
-  let indexOfParentElement;
+  let currentElement = element;
 
   while (currentElement.parentNode) {
     currentElement = currentElement.parentNode;
@@ -10,24 +9,10 @@ function findIndexOfParentElement(parentElement: any) {
       break;
     }
   }
-  if (chapterDiv) {
-    const elementsOfCertainTag = chapterDiv.querySelectorAll(
-      parentElement.tagName
-    );
-    indexOfParentElement =
-      Array.from(elementsOfCertainTag).indexOf(parentElement);
-  } else {
-    return {
-      chapterID: null,
-      indexOfParentElement: undefined,
-    };
-  }
 
   return {
-    chapterDiv,
     chapterID: chapterDiv.id,
-    indexOfParentElement,
   };
 }
 
-export default findIndexOfParentElement;
+export default findChapterElement;

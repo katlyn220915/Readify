@@ -7,6 +7,7 @@ import MarkerColorPlatte from "../MarkerColorPlatte/MarkerColorPlatte";
 
 import { useAuth } from "@/context/AuthContext";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import { setDeleteHighlightMode } from "@/lib/redux/features/readSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { setActionMenuToggle } from "@/lib/redux/features/readSlice";
 
@@ -20,6 +21,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { fromRange } from "xpath-range";
 import highlightHelper from "@/utils/highlightHelper";
+import findChapterElement from "@/utils/findIndexOfParentElement";
 
 const ActionMenu = ({
   xPosition,
@@ -49,7 +51,6 @@ const ActionMenu = ({
       const root = document.querySelector("#viewer");
       const xpath = fromRange(range, root);
       const { start, startOffset, end, endOffset } = xpath;
-      console.log(start, startOffset, end, endOffset);
       const highlightId = Math.random().toString(36).substring(2);
       const highlight = highlightHelper();
 
@@ -66,7 +67,7 @@ const ActionMenu = ({
         firestore.setDocument(
           `/users/${user.uid}/${currentCategory}/${
             currentBook?.bookId
-          }/${currentChapter.replace("/", "")}`,
+          }/${currentChapter.replaceAll("/", "")}`,
           `${highlightId}`,
           {
             highlightId,
@@ -74,6 +75,12 @@ const ActionMenu = ({
             text: selectedText,
             range: xpath,
           }
+        );
+        dispatch(
+          setDeleteHighlightMode({
+            isDeleteMode: true,
+            deleteHighlightID: highlightId,
+          })
         );
       }
     }

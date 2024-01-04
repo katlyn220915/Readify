@@ -255,11 +255,67 @@ const highlightHelper = () => {
     });
   };
 
+  const findCertainNodes = (startXpath: string, endXpath: string) => {
+    console.log("解析", startXpath, "字串");
+    console.log("解析", endXpath, "字串");
+    const startPathArr = startXpath
+      .split("/")
+      .filter((cur) => cur !== "/" && cur !== "" && cur !== "");
+    const endPathArr = endXpath
+      .split("/")
+      .filter((cur) => cur !== "/" && cur !== "" && cur !== "");
+    const startNode = getNode(startPathArr);
+    const endNode = getNode(endPathArr);
+    return { startNode, endNode };
+  };
+
+  const getNode = (arr: any[]) => {
+    let root = document.querySelectorAll(".epub_document");
+    let node: any;
+    arr.map((cur, i) => {
+      let [element, index] = cur.split(/\[(\d+)\]/);
+      console.log("目前為", node, "節點");
+      index = parseInt(index);
+      element = element.replaceAll("()", "");
+      if (element === "text") {
+        node = node.childNodes[index - 1];
+        console.log("找到文本節點");
+      } else if (i === 0) {
+        console.log("目前為第一層div，是第", index, "個章節");
+        node = root[index - 1];
+      } else {
+        console.log("目前為第", i, "層", element, index);
+        let tempList = node.querySelectorAll(element);
+        node = tempList[index - 1];
+      }
+    });
+    return node;
+  };
+
+  function findChapterElement(element: any) {
+    let chapterDiv;
+    let currentElement = element;
+
+    while (currentElement.parentNode) {
+      currentElement = currentElement.parentNode;
+      if (currentElement.className === "epub_document_content") {
+        chapterDiv = currentElement;
+        break;
+      }
+    }
+
+    return {
+      chapterID: chapterDiv.id,
+    };
+  }
+
   return {
     highlightText,
     findElementAllTextNodes,
     setRange,
     deleteHighlight,
+    findCertainNodes,
+    findChapterElement,
   };
 };
 
