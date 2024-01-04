@@ -21,6 +21,7 @@ type readState = {
   isDeleteMode: boolean;
   deleteHighlightID: string | null;
   readingProgress: number;
+  isAddNoteBlockOpen: boolean;
 };
 
 const initialState = {
@@ -38,6 +39,7 @@ const initialState = {
   isDeleteMode: false,
   deleteHighlightID: null,
   readingProgress: 0,
+  isAddNoteBlockOpen: true,
 } as readState;
 
 export const read = createSlice({
@@ -92,6 +94,10 @@ export const read = createSlice({
       state.isDeleteMode = action.payload.isDeleteMode;
       state.deleteHighlightID = action.payload.highlightId;
     },
+    setIsAddNoteBlockOpen: (state, action) => {
+      state.isActionMenuOpen = !action.payload;
+      state.isAddNoteBlockOpen = action.payload;
+    },
   },
 });
 
@@ -106,6 +112,7 @@ export const {
   setActionMenuPositionY,
   setMarkerColor,
   setDeleteHighlightMode,
+  setIsAddNoteBlockOpen,
 } = read.actions;
 export const selectRead = (state: RootState) => state.read;
 export default read.reducer;

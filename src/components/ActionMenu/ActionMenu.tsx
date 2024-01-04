@@ -9,7 +9,11 @@ import { useAuth } from "@/context/AuthContext";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { setDeleteHighlightMode } from "@/lib/redux/features/readSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
-import { setActionMenuToggle } from "@/lib/redux/features/readSlice";
+import {
+  setActionMenuToggle,
+  setIsAddNoteBlockOpen,
+} from "@/lib/redux/features/readSlice";
+import { addHighlight } from "@/lib/redux/features/noteSlice";
 
 import getSelectionData from "@/utils/getSelectionData";
 
@@ -31,6 +35,7 @@ const ActionMenu = ({
   yPosition: number;
 }) => {
   const [isColorPlatteOpen, setIsColorPlatteOpen] = useState(false);
+  const [isAddNoteBlockOpen, setIsAddNoteBlockOpen] = useState(false);
   const firestore = useFirestore();
   const dispatch = useAppDispatch();
   const {
@@ -68,12 +73,21 @@ const ActionMenu = ({
           `/users/${user.uid}/${currentCategory}/${
             currentBook?.bookId
           }/${currentChapter.replaceAll("/", "")}`,
-          `${highlightId}`,
+          highlightId,
           {
             highlightId,
             markerColor,
             text: selectedText,
             range: xpath,
+          }
+        );
+        firestore.setDocument(
+          `/users/${user.uid}/${currentCategory}/${currentBook?.bookId}/highlights`,
+          highlightId,
+          {
+            id: highlightId,
+            text: selectedText,
+            markerColor,
           }
         );
         dispatch(
@@ -82,9 +96,20 @@ const ActionMenu = ({
             deleteHighlightID: highlightId,
           })
         );
+        dispatch(
+          addHighlight({ id: highlightId, text: selectedText, markerColor })
+        );
       }
     }
   };
+
+  const handleAddNote = () => {
+    handleHighlight();
+    setIsAddNoteBlockOpen(true);
+    console.log("增加筆記函式執行！");
+  };
+
+  console.log(isAddNoteBlockOpen);
 
   const handleDeleteHighlight = async () => {
     try {
@@ -115,41 +140,56 @@ const ActionMenu = ({
           zIndex: 100,
         }}
       >
-        <div className={styles.action_menu_inner}>
-          {isDeleteMode ? (
-            <ActionIcon
-              iconProp={faTrashCan}
-              promptText="Delete highlight"
-              position="top"
-              onAction={() => handleDeleteHighlight()}
-            />
-          ) : (
-            <ActionIcon
-              iconProp={faHighlighter}
-              promptText="Create highlight"
-              position={isColorPlatteOpen ? "bottom" : "top"}
-              onAction={() => handleHighlight()}
-              color={markerColor}
-            />
-          )}
+        {isAddNoteBlockOpen && <NoteForm />}
+        {!isAddNoteBlockOpen && (
+          <div className={styles.action_menu_inner}>
+            {isDeleteMode ? (
+              <ActionIcon
+                iconProp={faTrashCan}
+                promptText="Delete highlight"
+                position="top"
+                onAction={() => handleDeleteHighlight()}
+              />
+            ) : (
+              <ActionIcon
+                iconProp={faHighlighter}
+                promptText="Create highlight"
+                position={isColorPlatteOpen ? "bottom" : "top"}
+                onAction={() => handleHighlight()}
+                color={markerColor}
+              />
+            )}
 
-          <ActionIcon
-            iconProp={faNoteSticky}
-            promptText="Add note"
-            position={isColorPlatteOpen ? "bottom" : "top"}
-            onAction={() => handleHighlight()}
-          />
-          <ActionIcon
-            iconProp={faEllipsis}
-            promptText="Pick marker color"
-            position={isColorPlatteOpen ? "bottom" : "top"}
-            onAction={() => setIsColorPlatteOpen(!isColorPlatteOpen)}
-          />
-          {isColorPlatteOpen && <MarkerColorPlatte />}
-        </div>
+            <ActionIcon
+              iconProp={faNoteSticky}
+              promptText="Add note"
+              position={isColorPlatteOpen ? "bottom" : "top"}
+              onAction={() => handleAddNote()}
+            />
+            <ActionIcon
+              iconProp={faEllipsis}
+              promptText="Pick marker color"
+              position={isColorPlatteOpen ? "bottom" : "top"}
+              onAction={() => setIsColorPlatteOpen(!isColorPlatteOpen)}
+            />
+            {isColorPlatteOpen && <MarkerColorPlatte />}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 export default ActionMenu;
+
+const NoteForm = () => {
+  return (
+    <div>
+      <form>
+        <textarea></textarea>
+        <button>cancel</button>
+        <button>Save</button>
+      </form>
+    </div>
+  );
+};

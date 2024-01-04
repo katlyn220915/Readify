@@ -41,12 +41,10 @@ const EbookViewer = ({
   const countRef = useRef(0);
 
   const handleIntersection = (entries: any) => {
-    console.log(entries);
     if (entries[0].isIntersecting) {
       console.log("Last element is intersecting!");
       console.log("是否還有下一章節，", hasMoreChapter);
       if (hasMoreChapter) {
-        console.log("目標進入視窗，目前chpater count = ", countRef.current);
         countRef.current = countRef.current + 1;
         console.log(
           "目前chapter count =",

@@ -264,6 +264,8 @@ const highlightHelper = () => {
     const endPathArr = endXpath
       .split("/")
       .filter((cur) => cur !== "/" && cur !== "" && cur !== "");
+    console.log("startPath array :", startPathArr);
+    console.log("endPath array :", endPathArr);
     const startNode = getNode(startPathArr);
     const endNode = getNode(endPathArr);
     return { startNode, endNode };
@@ -272,18 +274,28 @@ const highlightHelper = () => {
   const getNode = (arr: any[]) => {
     let root = document.querySelectorAll(".epub_document");
     let node: any;
-    arr.map((cur, i) => {
+    arr.map((cur: any, i: number) => {
       let [element, index] = cur.split(/\[(\d+)\]/);
+      console.log(
+        "目前為第",
+        i,
+        "層節點，為",
+        element,
+        "在父層節點的第",
+        index,
+        "位置"
+      );
       console.log("目前為", node, "節點");
       index = parseInt(index);
       element = element.replaceAll("()", "");
-      if (element === "text") {
+      if (element === "text" && node !== undefined) {
         node = node.childNodes[index - 1];
         console.log("找到文本節點");
       } else if (i === 0) {
         console.log("目前為第一層div，是第", index, "個章節");
         node = root[index - 1];
-      } else {
+        console.log(root);
+      } else if (node !== undefined) {
         console.log("目前為第", i, "層", element, index);
         let tempList = node.querySelectorAll(element);
         node = tempList[index - 1];
