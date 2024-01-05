@@ -79,6 +79,10 @@ const useFirestore = () => {
     try {
       const ref = doc(db, collectionName, documentName);
       await updateDoc(ref, data);
+      console.log(
+        "Firestore: sucessfully update document!, Document name :",
+        documentName
+      );
     } catch (e) {
       console.error(e);
     }

@@ -64,7 +64,9 @@ export default function Category() {
           {isLoading ? (
             <Spinner />
           ) : bookList.length === 0 ? (
-            <p>There is no book in this category</p>
+            <p className={styles.empty_hint}>
+              Ooops...! There is no book in this category!
+            </p>
           ) : (
             <BookList bookList={bookList} />
           )}

@@ -1,7 +1,8 @@
 .book_intro {
+  max-width: 80rem;
   padding-top: 1rem;
   padding-left: 1.5rem;
-  margin-bottom: 4rem;
+  margin: 0 auto 4rem auto;
 }
 
 .book_intro .book_intro_title {

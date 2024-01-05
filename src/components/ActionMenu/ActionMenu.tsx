@@ -4,13 +4,22 @@ import styles from "./ActionMenu.module.css";
 
 import ActionIcon from "../ActionIcon/ActionIcon";
 import MarkerColorPlatte from "../MarkerColorPlatte/MarkerColorPlatte";
+import NoteForm from "../NoteForm/NoteForm";
 
 import { useAuth } from "@/context/AuthContext";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import { setDeleteHighlightMode } from "@/lib/redux/features/readSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
-import { setActionMenuToggle } from "@/lib/redux/features/readSlice";
+import {
+  setActionMenuToggle,
+  setIsAddNoteBlockOpen,
+} from "@/lib/redux/features/readSlice";
+import {
+  addHighlight,
+  deleteHighlight,
+  upDateNote,
+} from "@/lib/redux/features/noteSlice";
 
-import findIndexOfParentElement from "@/utils/findIndexOfParentElement";
 import getSelectionData from "@/utils/getSelectionData";
 
 import {
@@ -19,6 +28,9 @@ import {
   faEllipsis,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
+import { fromRange } from "xpath-range";
+import highlightHelper from "@/utils/highlightHelper";
+import findChapterElement from "@/utils/findIndexOfParentElement";
 
 const ActionMenu = ({
   xPosition,
@@ -28,6 +40,10 @@ const ActionMenu = ({
   yPosition: number;
 }) => {
   const [isColorPlatteOpen, setIsColorPlatteOpen] = useState(false);
+  const [isAddNoteBlockOpen, setIsAddNoteBlockOpen] = useState(false);
+  const [currentHighlightId, setCurrentHighlightId] = useState("");
+  const [note, setNote] = useState("");
+  const [isNew, setIsNew] = useState(false);
   const firestore = useFirestore();
   const dispatch = useAppDispatch();
   const {
@@ -39,62 +55,108 @@ const ActionMenu = ({
     currentChapter,
   } = useAppSelector((state) => state.read);
 
+  const { highlightList } = useAppSelector((state) => state.note);
   const { user } = useAuth();
-  const handleHighlight = () => {
+
+  const handleHighlight = async () => {
     const selectionData = getSelectionData();
     if (selectionData) {
-      const { parent, selectedText } = selectionData;
-      console.log(parent);
-      const randomString = Math.random().toString(36).substring(2);
-      const pattern = new RegExp(selectedText, "g");
-      if (parent) {
-        parent.innerHTML = parent.innerHTML.replace(
-          pattern,
-          `<span class="epub_highlight" style='background-color: var(--color-${markerColor})' data-highlight-id=${randomString}>${selectedText}</span>`
-        );
-        dispatch(setActionMenuToggle(false));
-        const data = findIndexOfParentElement(parent);
+      const { range, startContainer, endContainer, selectedText } =
+        selectionData;
+      const root = document.querySelector("#viewer");
+      const xpath = fromRange(range, root);
+      const { start, startOffset, end, endOffset } = xpath;
+      const highlightId = Math.random().toString(36).substring(2);
+      const highlight = highlightHelper();
 
-        firestore.setDocument(
+      await highlight.highlightText(
+        startContainer,
+        endContainer,
+        startOffset,
+        endOffset,
+        highlightId,
+        markerColor
+      );
+
+      if (currentChapter) {
+        await firestore.setDocument(
           `/users/${user.uid}/${currentCategory}/${
             currentBook?.bookId
-          }/${data.chapterID.replace("/", "")}`,
-          `${randomString}`,
+          }/${currentChapter.replaceAll("/", "")}`,
+          highlightId,
           {
-            highlightId: randomString,
-            indexOfTag: data.indexOfParentElement,
+            highlightId,
             markerColor,
-            tagName: parent.tagName,
             text: selectedText,
+            range: xpath,
           }
         );
+        await firestore.setDocument(
+          `/users/${user.uid}/${currentCategory}/${currentBook?.bookId}/highlights`,
+          highlightId,
+          {
+            id: highlightId,
+            text: selectedText,
+            markerColor,
+          }
+        );
+        setCurrentHighlightId(highlightId);
+        dispatch(
+          setDeleteHighlightMode({
+            isDeleteMode: true,
+            deleteHighlightID: highlightId,
+          })
+        );
+        dispatch(
+          addHighlight({ id: highlightId, text: selectedText, markerColor })
+        );
       }
+      return highlightId;
     }
   };
 
-  const deleteHighlight = async () => {
-    try {
-      const deleteEl = document.querySelector(
-        `[data-highlight-id="${deleteHighlightID}"]`
-      );
-      await firestore.deleteDocument(
-        `/users/${user.uid}/${currentCategory}/${
-          currentBook?.bookId
-        }/${currentChapter?.replace("/", "")}/${deleteHighlightID}`
-      );
-      const parent = deleteEl?.parentElement;
-      if (
-        parent !== undefined &&
-        parent !== null &&
-        deleteEl &&
-        deleteEl.textContent
-      ) {
-        parent.innerHTML = parent?.innerHTML.replace(
-          deleteEl?.outerHTML,
-          deleteEl?.textContent
-        );
+  const handleAddNote = async () => {
+    setIsAddNoteBlockOpen(true);
+    if (!deleteHighlightID) {
+      const highlightId = await handleHighlight();
+      if (highlightId) {
+        setCurrentHighlightId(highlightId);
+        setIsNew(true);
       }
-      dispatch(setActionMenuToggle(false));
+      console.log("目前點擊的highlightId :", highlightId);
+    } else {
+      setCurrentHighlightId(deleteHighlightID);
+      setIsNew(false);
+      const index = highlightList.findIndex(
+        (cur) => cur.id === deleteHighlightID
+      );
+      setNote(highlightList[index].note);
+
+      console.log("目前點擊的highlightId :", deleteHighlightID);
+    }
+  };
+
+  const handleDeleteHighlight = async () => {
+    try {
+      console.log("目前要刪除的highlight id :", currentHighlightId);
+      let id = deleteHighlightID;
+      if (!id) {
+        id = currentHighlightId;
+      }
+      if (id) {
+        const highlight = highlightHelper();
+        highlight.deleteHighlight(id);
+        await firestore.deleteDocument(
+          `/users/${user.uid}/${currentCategory}/${
+            currentBook?.bookId
+          }/${currentChapter?.replaceAll("/", "")}/${id}`
+        );
+        await firestore.deleteDocument(
+          `/users/${user.uid}/${currentCategory}/${currentBook?.bookId}/highlights/${id}`
+        );
+        dispatch(deleteHighlight(id));
+        dispatch(setActionMenuToggle(false));
+      }
     } catch (e) {
       console.log("Delete fail");
     }
@@ -111,38 +173,49 @@ const ActionMenu = ({
           zIndex: 100,
         }}
       >
-        <div className={styles.action_menu_inner}>
-          {isDeleteMode ? (
-            <ActionIcon
-              iconProp={faTrashCan}
-              promptText="Delete highlight"
-              position="top"
-              onAction={() => deleteHighlight()}
-            />
-          ) : (
-            <ActionIcon
-              iconProp={faHighlighter}
-              promptText="Create highlight"
-              position={isColorPlatteOpen ? "bottom" : "top"}
-              onAction={() => handleHighlight()}
-              color={markerColor}
-            />
-          )}
+        {isAddNoteBlockOpen && (
+          <NoteForm
+            onIsAddNoteBlockOpen={setIsAddNoteBlockOpen}
+            currentHighlightId={currentHighlightId}
+            isFirstTime={isNew}
+            onDeleteHighlight={handleDeleteHighlight}
+            note={note}
+          />
+        )}
+        {!isAddNoteBlockOpen && (
+          <div className={styles.action_menu_inner}>
+            {isDeleteMode ? (
+              <ActionIcon
+                iconProp={faTrashCan}
+                promptText="Delete highlight"
+                position="top"
+                onAction={() => handleDeleteHighlight()}
+              />
+            ) : (
+              <ActionIcon
+                iconProp={faHighlighter}
+                promptText="Create highlight"
+                position={isColorPlatteOpen ? "bottom" : "top"}
+                onAction={() => handleHighlight()}
+                color={markerColor}
+              />
+            )}
 
-          <ActionIcon
-            iconProp={faNoteSticky}
-            promptText="Add note"
-            position={isColorPlatteOpen ? "bottom" : "top"}
-            onAction={() => handleHighlight()}
-          />
-          <ActionIcon
-            iconProp={faEllipsis}
-            promptText="Pick marker color"
-            position={isColorPlatteOpen ? "bottom" : "top"}
-            onAction={() => setIsColorPlatteOpen(!isColorPlatteOpen)}
-          />
-          {isColorPlatteOpen && <MarkerColorPlatte />}
-        </div>
+            <ActionIcon
+              iconProp={faNoteSticky}
+              promptText="Add note"
+              position={isColorPlatteOpen ? "bottom" : "top"}
+              onAction={() => handleAddNote()}
+            />
+            <ActionIcon
+              iconProp={faEllipsis}
+              promptText="Pick marker color"
+              position={isColorPlatteOpen ? "bottom" : "top"}
+              onAction={() => setIsColorPlatteOpen(!isColorPlatteOpen)}
+            />
+            {isColorPlatteOpen && <MarkerColorPlatte />}
+          </div>
+        )}
       </div>
     </div>
   );

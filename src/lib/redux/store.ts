@@ -3,6 +3,7 @@ import uploadReducer from "./features/uploadSlice";
 import bookReducer from "./features/bookSlice";
 import moreActionReducer from "./features/moreActionSlice";
 import readReducer from "./features/readSlice";
+import noteReducer from "./features/noteSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -11,6 +12,7 @@ export const makeStore = () => {
       book: bookReducer,
       moreAction: moreActionReducer,
       read: readReducer,
+      note: noteReducer,
     },
   });
 };
