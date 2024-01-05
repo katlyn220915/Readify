@@ -67,7 +67,7 @@ const EbookViewer = ({
     return () => {
       observer.disconnect();
     };
-  }, []);
+  });
 
   const handleMouseUp = () => {
     const selectionData = getSelectionData();
