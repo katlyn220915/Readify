@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useState,
   useCallback,
+  useMemo,
 } from "react";
 import styles from "./ReadingArea.module.css";
 
@@ -23,6 +24,7 @@ import parseEpub from "@/server-actions/parseEpub/parseEpub";
 import {
   setCurrentBook,
   setActionMenuPositionY,
+  setCurrentChapter,
 } from "@/lib/redux/features/readSlice";
 
 export default function ReadingArea({
@@ -35,6 +37,9 @@ export default function ReadingArea({
   const { actionMenuPositionY, isActionMenuOpen } = useAppSelector(
     (state) => state.read
   );
+  const [chapterArr, setChapterArr] = useState<any>([]);
+  const [hasMoreChapter, setHasMoreChapter] = useState(true);
+  const [chapterCount, setChapterCount] = useState(0);
 
   const pathname = usePathname();
   const arrPath = pathname.split("/");
@@ -47,8 +52,7 @@ export default function ReadingArea({
   const parserMemo = useCallback(parseEpub, [parseEpub]);
   const firestoreMemo = useCallback(useFirestore, [useFirestore]);
 
-  console.log("render-", " ReadingArea");
-
+  //初始useEffect
   useEffect(() => {
     const bookRender = async () => {
       const parser = parserMemo();
@@ -70,6 +74,7 @@ export default function ReadingArea({
               bookData.images
             );
             setBookDocuments(customReactJSXDivs);
+            setChapterArr([customReactJSXDivs[0]]);
           }
         }
       } catch (e) {
@@ -81,37 +86,29 @@ export default function ReadingArea({
     bookRender();
   }, [user, bookId, category, dispatch, parserMemo, firestoreMemo]);
 
-  useEffect(() => {
-    const getHighlights = async () => {
-      const allChapterElement = Array.from(
-        document.querySelectorAll(".epub_document_content")
-      );
+  console.log("目前新陣列為：", chapterArr);
 
-      allChapterElement.map(async (el: any) => {
-        const firestore = firestoreMemo();
-        const chapterId = el.id.replace("/", "");
-        if (user) {
-          const highlights = await firestore.getDocuments(
-            `/users/${user.uid}/${category}/${bookId}/${chapterId}`
-          );
-          if (highlights.length > 0) {
-            highlights.forEach((item: any) => {
-              const allElements = el.querySelectorAll(
-                item.tagName.toLowerCase()
-              );
-              const highlightElement = allElements[item.indexOfTag];
-              const pattern = new RegExp(item.text, "g");
-              highlightElement.innerHTML = highlightElement.innerHTML.replace(
-                pattern,
-                `<span class="epub_highlight" style="background-color: var(--color-${item.markerColor})" data-highlight-id=${item.highlightId}>${item.text}</span>`
-              );
-            });
-          }
-        }
-      });
-    };
-    getHighlights();
-  }, [bookDocuments.length, bookId, category, firestoreMemo, user]);
+  //When the observered div element has been triggered, the chapterCount would change, then this effect would be triggered too.
+  useEffect(() => {
+    if (
+      hasMoreChapter &&
+      bookDocuments[chapterCount] !== undefined &&
+      bookDocuments[chapterCount] !== null
+    ) {
+      console.log(
+        "setChapterCount 已經執行，目前chapterCount為: ",
+        chapterCount
+      );
+      setChapterArr((prevChapters: any) => [
+        ...prevChapters,
+        bookDocuments[chapterCount],
+      ]);
+      if (chapterCount === bookDocuments.length - 1) {
+        setHasMoreChapter(false);
+        console.log("目前chapterCount = ", chapterCount, "已經無下一章節了");
+      }
+    }
+  }, [chapterCount, hasMoreChapter]);
 
   return (
     <>
@@ -131,7 +128,13 @@ export default function ReadingArea({
       >
         {isLoading && <Spinner />}
         <EbookIntroductionHeader />
-        {bookDocuments && <EbookViewer bookDocuments={bookDocuments} />}
+        {bookDocuments && (
+          <EbookViewer
+            bookDocuments={chapterArr}
+            onSetChapterCount={setChapterCount}
+            hasMoreChapter={hasMoreChapter}
+          />
+        )}
       </div>
     </>
   );

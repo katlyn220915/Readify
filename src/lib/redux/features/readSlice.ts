@@ -11,7 +11,6 @@ type readState = {
   currentBook: null | BookProps;
   currentCategory: string | undefined;
   currentChapter: string | undefined;
-  bookDocuments: any;
   fontSize: number;
   lineSpacing: number;
   lineWidth: string;
@@ -20,16 +19,16 @@ type readState = {
   actionMenuPositionY: number;
   markerColor: string;
   isDeleteMode: boolean;
-  deleteHighlightID: number | null;
+  deleteHighlightID: string | null;
   readingProgress: number;
+  isAddNoteBlockOpen: boolean;
 };
 
 const initialState = {
   isLoading: false,
   currentBook: null,
-  currentCategory: undefined,
+  currentCategory: "mylibrary",
   currentChapter: undefined,
-  bookDocuments: [],
   fontSize: 20,
   lineSpacing: 1.4,
   lineWidth: "X-large",
@@ -40,6 +39,7 @@ const initialState = {
   isDeleteMode: false,
   deleteHighlightID: null,
   readingProgress: 0,
+  isAddNoteBlockOpen: true,
 } as readState;
 
 export const read = createSlice({
@@ -94,11 +94,9 @@ export const read = createSlice({
       state.isDeleteMode = action.payload.isDeleteMode;
       state.deleteHighlightID = action.payload.highlightId;
     },
-    setBookDocuments: (state, action) => {
-      state.bookDocuments = action.payload;
-    },
-    setReadinProgress: (state, action) => {
-      state.readingProgress = state.readingProgress + 1;
+    setIsAddNoteBlockOpen: (state, action) => {
+      state.isActionMenuOpen = action.payload;
+      state.isAddNoteBlockOpen = action.payload;
     },
   },
 });
@@ -114,8 +112,7 @@ export const {
   setActionMenuPositionY,
   setMarkerColor,
   setDeleteHighlightMode,
-  setBookDocuments,
-  setReadinProgress,
+  setIsAddNoteBlockOpen,
 } = read.actions;
 export const selectRead = (state: RootState) => state.read;
 export default read.reducer;

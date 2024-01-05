@@ -68,13 +68,15 @@ const ReadingNavigation = ({
           />
           {isCustomizeBoxOpen && <CustomStylePlatte />}
         </div>
-        <ActionIcon
-          iconProp={faPenToSquare}
-          promptText={isNotebookOpen ? "Close Notebook" : "Open Notebook"}
-          position="bottom"
-          showPrompt={true}
-          onAction={() => onSetNotebookOpen(!isNotebookOpen)}
-        />
+        <div className={styles.right_btn_wrapper}>
+          <ActionIcon
+            iconProp={faPenToSquare}
+            promptText={isNotebookOpen ? "Close Notebook" : "Open Notebook"}
+            position="bottom"
+            showPrompt={true}
+            onAction={() => onSetNotebookOpen(!isNotebookOpen)}
+          />
+        </div>
       </nav>
     </>
   );

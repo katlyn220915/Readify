@@ -171,8 +171,7 @@ button {
 }
 
 .wrapper {
-  height: calc(100vh - 5rem);
-  margin: 2.5rem;
+  height: 100vh;
 }
 
 .font-strong {

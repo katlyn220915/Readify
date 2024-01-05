@@ -34,11 +34,11 @@ const staticList = [
     path: "archive",
     iconProp: faBoxArchive,
   },
-  {
-    title: "Search",
-    path: "search",
-    iconProp: faMagnifyingGlass,
-  },
+  // {
+  //   title: "Search",
+  //   path: "search",
+  //   iconProp: faMagnifyingGlass,
+  // },
 ];
 
 function ListItem({ item }: ListItemProps) {

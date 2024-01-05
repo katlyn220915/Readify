@@ -10,6 +10,7 @@ import ReadingNavigation from "@/components/ReadingNavigation/ReadingNavigation"
 import Editor from "@/components/Editor/Editor";
 
 import { useAppSelector } from "@/hooks/redux/hooks";
+import Notebook from "@/components/Notebook/Notebook";
 
 export default function BookId() {
   const { isActionMenuOpen, actionMenuPositionX, actionMenuPositionY } =
@@ -18,14 +19,14 @@ export default function BookId() {
   const [isContentListOpen, setIsContentListOpen] = useState(false);
   const [isNavigationVisible, setIsNavigationVisible] = useState(false);
 
-  console.log("render -", " BookId page");
+  // console.log("render -", " BookId page");
 
   return (
     <>
       {isActionMenuOpen && (
         <ActionMenu
           xPosition={actionMenuPositionX}
-          yPosition={actionMenuPositionY - 50}
+          yPosition={actionMenuPositionY - 30}
         />
       )}
       <ReadingNavigation
@@ -38,7 +39,7 @@ export default function BookId() {
       <div className={`${styles.container}`}>
         <BookContent isContentListOpen={isContentListOpen} />
         <ReadingArea setIsNavigationVisible={setIsNavigationVisible} />
-        <Editor isNotebookOpen={isNotebookOpen} />
+        <Notebook isNotebookOpen={isNotebookOpen} />
       </div>
     </>
   );

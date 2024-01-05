@@ -1,5 +1,13 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import styles from "./EbookViewer.module.css";
 
 import EbookChapter from "../EbookChapter/EbookChapter";
@@ -15,18 +23,58 @@ import {
   setDeleteHighlightMode,
   setCurrentChapter,
 } from "@/lib/redux/features/readSlice";
+import highlightHelper from "@/utils/highlightHelper";
 
-const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
-  const { isDeleteMode, isActionMenuOpen, currentChapter } = useAppSelector(
+const EbookViewer = ({
+  bookDocuments,
+  onSetChapterCount,
+  hasMoreChapter,
+}: {
+  bookDocuments: any[];
+  onSetChapterCount: Dispatch<number>;
+  hasMoreChapter: boolean;
+}) => {
+  const { isDeleteMode, isActionMenuOpen } = useAppSelector(
     (state) => state.read
   );
   const dispatch = useAppDispatch();
+  const lastElementRef = useRef(null);
+  const countRef = useRef(0);
+
+  const handleIntersection = (entries: any) => {
+    if (entries[0].isIntersecting) {
+      console.log("Last element is intersecting!");
+      console.log("是否還有下一章節，", hasMoreChapter);
+      if (hasMoreChapter) {
+        countRef.current = countRef.current + 1;
+        onSetChapterCount(countRef.current);
+        dispatch(setCurrentChapter(countRef.current));
+      }
+    }
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleIntersection, {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.5,
+    });
+
+    if (lastElementRef.current && hasMoreChapter) {
+      observer.observe(lastElementRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const handleMouseUp = () => {
     const selectionData = getSelectionData();
     if (selectionData) {
-      const { rec } = selectionData;
+      const { rec, selectedText } = selectionData;
       console.log(rec);
+      console.log(selectedText);
       if (rec) {
         dispatch(
           setActionMenuPosition({
@@ -40,10 +88,11 @@ const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     dispatch(setActionMenuToggle(false));
+    const highlight = highlightHelper();
     const target = e.target as HTMLElement;
     if (target.id === "viewer" || target.className === "epub_document") return;
     console.log(target);
-    const { chapterID } = findIndexOfParentElement(target.parentElement);
+    const { chapterID } = highlight.findChapterElement(target);
     dispatch(setCurrentChapter(chapterID));
     if (target.className === "epub_highlight") {
       if (!isActionMenuOpen) {
@@ -82,11 +131,12 @@ const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
           handleMouseUp();
         }}
       >
-        {bookDocuments &&
+        {bookDocuments !== undefined &&
           bookDocuments.map((div) => (
             <EbookChapter divElement={div} key={div.props.id} />
           ))}
       </div>
+      {hasMoreChapter && <div ref={lastElementRef}></div>}
     </>
   );
 };

@@ -22,8 +22,11 @@
   width: 3rem;
   padding: 0.2rem;
   border-radius: 50%;
+  text-align: center;
+
+  transition: all 0.3s;
 }
 
-.action_menu_inner > button:hover {
+.action_menu_inner > span:hover {
   background-color: var(--color-grey-500);
 }

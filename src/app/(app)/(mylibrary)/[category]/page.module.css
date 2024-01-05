@@ -28,3 +28,11 @@
 .middle_container {
   width: 100%;
 }
+
+.empty_hint {
+  width: 100%;
+  height: 100%;
+  margin-top: 10rem;
+  text-align: center;
+  font-size: 3rem;
+}

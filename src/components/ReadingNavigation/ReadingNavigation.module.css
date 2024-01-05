@@ -26,3 +26,7 @@
   gap: 1.5rem;
   position: relative;
 }
+
+.right_btn_wrapper {
+  position: relative;
+}
