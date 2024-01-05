@@ -19,6 +19,11 @@ type dataType = {
   password: string;
 };
 
+const defaultValue = {
+  email: "test@test.com",
+  password: "123456",
+};
+
 const schema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup
@@ -41,6 +46,10 @@ export default function SigninForm() {
     reset,
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      email: "test@test.com",
+      password: "123456",
+    },
   });
 
   const onSubmit: SubmitHandler<dataType> = async ({ email, password }) => {
