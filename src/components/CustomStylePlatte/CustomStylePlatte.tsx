@@ -19,11 +19,11 @@ export default function CustomStylePlatte() {
     <div className={styles.custom_styles_field}>
       <p>Text styles</p>
       <div className={styles.text_styles_box}>
-        <CustomStylePlatteItem
+        {/* <CustomStylePlatteItem
           iconProp={faFont}
           customItemName="Typeface"
           value="Literata"
-        />
+        /> */}
         <CustomStylePlatteItem
           iconProp={faTextHeight}
           customItemName="Font size"
@@ -34,11 +34,11 @@ export default function CustomStylePlatte() {
           customItemName="Line spacing"
           value={lineSpacing}
         />
-        <CustomStylePlatteItem
+        {/* <CustomStylePlatteItem
           iconProp={faArrowsLeftRight}
           customItemName="Line width"
           value={lineWidth}
-        />
+        /> */}
       </div>
     </div>
   );
