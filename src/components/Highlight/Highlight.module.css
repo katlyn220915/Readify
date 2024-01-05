@@ -15,3 +15,11 @@
 .highlight:not(:last-child) {
   margin-bottom: 2rem;
 }
+
+.highlight_text {
+  margin-bottom: 1rem;
+}
+
+.note_form {
+  margin-top: 1rem;
+}

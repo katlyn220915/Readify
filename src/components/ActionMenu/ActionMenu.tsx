@@ -4,6 +4,7 @@ import styles from "./ActionMenu.module.css";
 
 import ActionIcon from "../ActionIcon/ActionIcon";
 import MarkerColorPlatte from "../MarkerColorPlatte/MarkerColorPlatte";
+import NoteForm from "../NoteForm/NoteForm";
 
 import { useAuth } from "@/context/AuthContext";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
@@ -13,7 +14,11 @@ import {
   setActionMenuToggle,
   setIsAddNoteBlockOpen,
 } from "@/lib/redux/features/readSlice";
-import { addHighlight } from "@/lib/redux/features/noteSlice";
+import {
+  addHighlight,
+  deleteHighlight,
+  upDateNote,
+} from "@/lib/redux/features/noteSlice";
 
 import getSelectionData from "@/utils/getSelectionData";
 
@@ -36,6 +41,9 @@ const ActionMenu = ({
 }) => {
   const [isColorPlatteOpen, setIsColorPlatteOpen] = useState(false);
   const [isAddNoteBlockOpen, setIsAddNoteBlockOpen] = useState(false);
+  const [currentHighlightId, setCurrentHighlightId] = useState("");
+  const [note, setNote] = useState("");
+  const [isNew, setIsNew] = useState(false);
   const firestore = useFirestore();
   const dispatch = useAppDispatch();
   const {
@@ -46,9 +54,11 @@ const ActionMenu = ({
     currentCategory,
     currentChapter,
   } = useAppSelector((state) => state.read);
+
+  const { highlightList } = useAppSelector((state) => state.note);
   const { user } = useAuth();
 
-  const handleHighlight = () => {
+  const handleHighlight = async () => {
     const selectionData = getSelectionData();
     if (selectionData) {
       const { range, startContainer, endContainer, selectedText } =
@@ -59,7 +69,7 @@ const ActionMenu = ({
       const highlightId = Math.random().toString(36).substring(2);
       const highlight = highlightHelper();
 
-      highlight.highlightText(
+      await highlight.highlightText(
         startContainer,
         endContainer,
         startOffset,
@@ -69,7 +79,7 @@ const ActionMenu = ({
       );
 
       if (currentChapter) {
-        firestore.setDocument(
+        await firestore.setDocument(
           `/users/${user.uid}/${currentCategory}/${
             currentBook?.bookId
           }/${currentChapter.replaceAll("/", "")}`,
@@ -81,7 +91,7 @@ const ActionMenu = ({
             range: xpath,
           }
         );
-        firestore.setDocument(
+        await firestore.setDocument(
           `/users/${user.uid}/${currentCategory}/${currentBook?.bookId}/highlights`,
           highlightId,
           {
@@ -90,6 +100,7 @@ const ActionMenu = ({
             markerColor,
           }
         );
+        setCurrentHighlightId(highlightId);
         dispatch(
           setDeleteHighlightMode({
             isDeleteMode: true,
@@ -100,28 +111,50 @@ const ActionMenu = ({
           addHighlight({ id: highlightId, text: selectedText, markerColor })
         );
       }
+      return highlightId;
     }
   };
 
-  const handleAddNote = () => {
-    handleHighlight();
+  const handleAddNote = async () => {
     setIsAddNoteBlockOpen(true);
-    console.log("增加筆記函式執行！");
-  };
+    if (!deleteHighlightID) {
+      const highlightId = await handleHighlight();
+      if (highlightId) {
+        setCurrentHighlightId(highlightId);
+        setIsNew(true);
+      }
+      console.log("目前點擊的highlightId :", highlightId);
+    } else {
+      setCurrentHighlightId(deleteHighlightID);
+      setIsNew(false);
+      const index = highlightList.findIndex(
+        (cur) => cur.id === deleteHighlightID
+      );
+      setNote(highlightList[index].note);
 
-  console.log(isAddNoteBlockOpen);
+      console.log("目前點擊的highlightId :", deleteHighlightID);
+    }
+  };
 
   const handleDeleteHighlight = async () => {
     try {
-      console.log(deleteHighlightID);
-      if (deleteHighlightID) {
+      console.log("目前要刪除的highlight id :", currentHighlightId);
+      let id = deleteHighlightID;
+      if (!id) {
+        id = currentHighlightId;
+      }
+      if (id) {
         const highlight = highlightHelper();
-        highlight.deleteHighlight(deleteHighlightID);
+        highlight.deleteHighlight(id);
         await firestore.deleteDocument(
           `/users/${user.uid}/${currentCategory}/${
             currentBook?.bookId
-          }/${currentChapter?.replaceAll("/", "")}/${deleteHighlightID}`
+          }/${currentChapter?.replaceAll("/", "")}/${id}`
         );
+        await firestore.deleteDocument(
+          `/users/${user.uid}/${currentCategory}/${currentBook?.bookId}/highlights/${id}`
+        );
+        dispatch(deleteHighlight(id));
         dispatch(setActionMenuToggle(false));
       }
     } catch (e) {
@@ -140,7 +173,15 @@ const ActionMenu = ({
           zIndex: 100,
         }}
       >
-        {isAddNoteBlockOpen && <NoteForm />}
+        {isAddNoteBlockOpen && (
+          <NoteForm
+            onIsAddNoteBlockOpen={setIsAddNoteBlockOpen}
+            currentHighlightId={currentHighlightId}
+            isFirstTime={isNew}
+            onDeleteHighlight={handleDeleteHighlight}
+            note={note}
+          />
+        )}
         {!isAddNoteBlockOpen && (
           <div className={styles.action_menu_inner}>
             {isDeleteMode ? (
@@ -181,15 +222,3 @@ const ActionMenu = ({
 };
 
 export default ActionMenu;
-
-const NoteForm = () => {
-  return (
-    <div>
-      <form>
-        <textarea></textarea>
-        <button>cancel</button>
-        <button>Save</button>
-      </form>
-    </div>
-  );
-};

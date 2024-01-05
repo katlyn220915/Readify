@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useState,
   useCallback,
+  useMemo,
 } from "react";
 import styles from "./ReadingArea.module.css";
 
@@ -102,7 +103,6 @@ export default function ReadingArea({
         ...prevChapters,
         bookDocuments[chapterCount],
       ]);
-      console.log("新章節加入陣列完畢，目前陣列為：", chapterArr);
       if (chapterCount === bookDocuments.length - 1) {
         setHasMoreChapter(false);
         console.log("目前chapterCount = ", chapterCount, "已經無下一章節了");

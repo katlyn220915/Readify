@@ -18,7 +18,7 @@
   position: relative;
 }
 
-.action_menu_inner > span {
+.action_menu_inner > button {
   width: 3rem;
   padding: 0.2rem;
   border-radius: 50%;

@@ -49,12 +49,12 @@ export default function Topbar() {
         <Icon path="/mybooks" iconProp={icon} />
         <h3 className="heading__tertiary">{title}</h3>
       </div>
-      <div className={styles.tools}>
+      {/* <div className={styles.tools}>
         <span>
           <FontAwesomeIcon icon={faTags} className="icon" />
           Manage tags
         </span>
-      </div>
+      </div> */}
     </div>
   );
 }

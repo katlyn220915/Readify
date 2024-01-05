@@ -1,0 +1,38 @@
+.noteForm_container {
+  width: 30rem;
+  padding: 1rem;
+  background-color: #28313b;
+  border-radius: 1rem;
+}
+
+.textarea {
+  width: 27rem;
+  min-height: 10rem;
+  padding: 1rem;
+  background: none;
+  outline: none;
+  border: none;
+  resize: none;
+  overflow: scroll;
+}
+
+.textarea::-webkit-scrollbar {
+  display: none;
+  padding: 1.5rem;
+}
+
+.button_wrapper {
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.button_wrapper button {
+  padding: 0.5rem;
+}
+
+.button_wrapper .button_save {
+  background-color: var(--color-cta);
+  border-radius: 1rem;
+}

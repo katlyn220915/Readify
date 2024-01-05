@@ -95,7 +95,7 @@ export const read = createSlice({
       state.deleteHighlightID = action.payload.highlightId;
     },
     setIsAddNoteBlockOpen: (state, action) => {
-      state.isActionMenuOpen = !action.payload;
+      state.isActionMenuOpen = action.payload;
       state.isAddNoteBlockOpen = action.payload;
     },
   },

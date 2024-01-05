@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import styles from "./Notebook.module.css";
 
 import { useAuth } from "@/context/AuthContext";

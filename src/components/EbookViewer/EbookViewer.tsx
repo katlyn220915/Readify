@@ -3,6 +3,7 @@
 import React, {
   Dispatch,
   SetStateAction,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -46,11 +47,6 @@ const EbookViewer = ({
       console.log("是否還有下一章節，", hasMoreChapter);
       if (hasMoreChapter) {
         countRef.current = countRef.current + 1;
-        console.log(
-          "目前chapter count =",
-          countRef.current,
-          "準備呼叫setChapterCount"
-        );
         onSetChapterCount(countRef.current);
         dispatch(setCurrentChapter(countRef.current));
       }
@@ -58,7 +54,6 @@ const EbookViewer = ({
   };
 
   useEffect(() => {
-    console.log("這個effect有被執行");
     const observer = new IntersectionObserver(handleIntersection, {
       root: null,
       rootMargin: "0px",
@@ -141,7 +136,7 @@ const EbookViewer = ({
             <EbookChapter divElement={div} key={div.props.id} />
           ))}
       </div>
-      {hasMoreChapter && <div ref={lastElementRef}>Load More ...</div>}
+      {hasMoreChapter && <div ref={lastElementRef}></div>}
     </>
   );
 };
