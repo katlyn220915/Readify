@@ -12,35 +12,36 @@ const EbookChapter = ({ divElement }: { divElement: React.JSX.Element }) => {
   const firestoreMemo = useCallback(useFirestore, [useFirestore]);
   const { user } = useAuth();
 
-  useEffect(() => {
-    const getHighlights = async () => {
-      if (!currentBook) return;
-      const chapterId = divElement.props.id.replaceAll("/", "");
-      const firestore = firestoreMemo();
-      const highlight = highlightHelper();
-      const highlightsData = await firestore.getDocuments(
-        `/users/${user.uid}/${currentCategory}/${currentBook.bookId}/${chapterId}`
-      );
-      console.log("章節-", chapterId, "的畫記號資料", highlightsData);
-      if (highlightsData.length > 0) {
-        highlightsData.forEach((data: any) => {
-          const { startNode, endNode } = highlight.findCertainNodes(
-            data.range.start,
-            data.range.end
-          );
-          highlight.highlightText(
-            startNode,
-            endNode,
-            data.range.startOffset,
-            data.range.endOffset,
-            data.highlightId,
-            data.markerColor
-          );
-        });
-      }
-    };
-    getHighlights();
-  }, []);
+  // useEffect(() => {
+  //   const getHighlights = async () => {
+  //     if (!currentBook) return;
+  //     const chapterId = divElement.props.id.replaceAll("/", "");
+  //     const firestore = firestoreMemo();
+  //     const highlight = highlightHelper();
+  //     const highlightsData = await firestore.getDocuments(
+  //       `/users/${user.uid}/${currentCategory}/${currentBook.bookId}/highlights`
+  //     );
+
+  //     console.log("章節-", chapterId, "的畫記號資料", highlightsData);
+  //     if (highlightsData.length > 0) {
+  //       highlightsData.forEach((data: any) => {
+  //         const { startNode, endNode } = highlight.findCertainNodes(
+  //           data.range.start,
+  //           data.range.end
+  //         );
+  //         highlight.highlightText(
+  //           startNode,
+  //           endNode,
+  //           data.range.startOffset,
+  //           data.range.endOffset,
+  //           data.highlightId,
+  //           data.markerColor
+  //         );
+  //       });
+  //     }
+  //   };
+  //   getHighlights();
+  // }, []);
 
   return (
     <div

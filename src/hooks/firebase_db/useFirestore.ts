@@ -8,6 +8,7 @@ import {
   getDocs,
   getDoc,
   deleteDoc,
+  deleteField,
 } from "firebase/firestore";
 
 const useFirestore = () => {
@@ -88,12 +89,29 @@ const useFirestore = () => {
     }
   };
 
+  const deleteColumn = async (
+    collectionName: string,
+    documentName: string,
+    deleteColumnId: string
+  ) => {
+    try {
+      const ref = doc(db, collectionName, documentName);
+      await updateDoc(ref, {
+        [deleteColumnId]: deleteField(),
+      });
+      console.log("Firebase delete column sucessfully");
+    } catch (e) {
+      console.log("Firebase Error: ", e);
+    }
+  };
+
   return {
     setDocument,
     getDocuments,
     deleteDocument,
     getDocumentById,
     updateDocument,
+    deleteColumn,
   };
 };
 

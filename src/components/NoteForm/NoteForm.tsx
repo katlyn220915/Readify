@@ -16,8 +16,9 @@ import useFirestore from "@/hooks/firebase_db/useFirestore";
 import {
   setHighlight,
   setIsEditNoteFieldOpen,
-  upDateNote,
+  updateNote,
 } from "@/lib/redux/features/noteSlice";
+import { usePathname } from "next/navigation";
 
 type dataType = {
   note: string;
@@ -42,6 +43,10 @@ const NoteForm = ({
   note?: string;
   onChangeNote?: Dispatch<any>;
 }) => {
+  const arrPath = usePathname().split("/");
+  const category = arrPath[1];
+  const bookId = arrPath[arrPath.length - 1];
+
   const dispatch = useAppDispatch();
   const { currentBook, deleteHighlightID, currentCategory, currentChapter } =
     useAppSelector((state) => state.read);
@@ -60,15 +65,23 @@ const NoteForm = ({
 
   const onSubmit: SubmitHandler<dataType> = async (data) => {
     if (data.note.length === 0) return;
-    if (currentHighlightId) {
+    if (currentChapter) {
       const index = highlightList.findIndex(
         (cur) => cur.id === currentHighlightId
       );
       if (highlightList[index].note === data.note) return;
+      dispatch(
+        updateNote({
+          index,
+          note: data.note,
+        })
+      );
       await firestore.updateDocument(
-        `/users/${user.uid}/${currentCategory}/${currentBook?.bookId}/highlights`,
-        currentHighlightId,
-        { note: data.note }
+        `/users/${user.uid}/${category}/${bookId}/highlights`,
+        currentChapter,
+        {
+          [`${currentHighlightId}.note`]: data.note,
+        }
       );
 
       if (onChangeNote) {
@@ -118,6 +131,9 @@ const NoteForm = ({
             type="submit"
             id={"btn_save_note"}
             className={styles.button_save}
+            onClick={() => {
+              handleSubmit(onSubmit);
+            }}
           >
             Save
           </button>

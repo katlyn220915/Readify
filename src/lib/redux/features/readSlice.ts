@@ -52,7 +52,8 @@ export const read = createSlice({
     },
 
     setCurrentChapter: (state, action) => {
-      state.currentChapter = action.payload;
+      const chapter = action.payload.replaceAll("/", "");
+      state.currentChapter = chapter;
     },
 
     setFontSize: (state, action) => {

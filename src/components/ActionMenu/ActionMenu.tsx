@@ -6,6 +6,7 @@ import ActionIcon from "../ActionIcon/ActionIcon";
 import MarkerColorPlatte from "../MarkerColorPlatte/MarkerColorPlatte";
 import NoteForm from "../NoteForm/NoteForm";
 
+import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { setDeleteHighlightMode } from "@/lib/redux/features/readSlice";
@@ -31,6 +32,7 @@ import {
 import { fromRange } from "xpath-range";
 import highlightHelper from "@/utils/highlightHelper";
 import findChapterElement from "@/utils/findIndexOfParentElement";
+import { object } from "yup";
 
 const ActionMenu = ({
   xPosition,
@@ -54,6 +56,11 @@ const ActionMenu = ({
     currentCategory,
     currentChapter,
   } = useAppSelector((state) => state.read);
+
+  const pathname = usePathname();
+  const arrPath = pathname.split("/");
+  const category = arrPath[1];
+  const bookId = arrPath[arrPath.length - 1];
 
   const { highlightList } = useAppSelector((state) => state.note);
   const { user } = useAuth();
@@ -80,24 +87,16 @@ const ActionMenu = ({
 
       if (currentChapter) {
         await firestore.setDocument(
-          `/users/${user.uid}/${currentCategory}/${
-            currentBook?.bookId
-          }/${currentChapter.replaceAll("/", "")}`,
-          highlightId,
+          `/users/${user.uid}/${category}/${bookId}/highlights`,
+          `${currentChapter.replaceAll("/", "")}`,
           {
-            highlightId,
-            markerColor,
-            text: selectedText,
-            range: xpath,
-          }
-        );
-        await firestore.setDocument(
-          `/users/${user.uid}/${currentCategory}/${currentBook?.bookId}/highlights`,
-          highlightId,
-          {
-            id: highlightId,
-            text: selectedText,
-            markerColor,
+            [highlightId]: {
+              id: highlightId,
+              markerColor,
+              text: selectedText,
+              range: xpath,
+              note: "",
+            },
           }
         );
         setCurrentHighlightId(highlightId);
@@ -143,16 +142,13 @@ const ActionMenu = ({
       if (!id) {
         id = currentHighlightId;
       }
-      if (id) {
+      if (id && currentChapter) {
         const highlight = highlightHelper();
         highlight.deleteHighlight(id);
-        await firestore.deleteDocument(
-          `/users/${user.uid}/${currentCategory}/${
-            currentBook?.bookId
-          }/${currentChapter?.replaceAll("/", "")}/${id}`
-        );
-        await firestore.deleteDocument(
-          `/users/${user.uid}/${currentCategory}/${currentBook?.bookId}/highlights/${id}`
+        await firestore.deleteColumn(
+          `/users/${user.uid}/${category}/${bookId}/highlights`,
+          `${currentChapter.replaceAll("/", "")}`,
+          id
         );
         dispatch(deleteHighlight(id));
         dispatch(setActionMenuToggle(false));

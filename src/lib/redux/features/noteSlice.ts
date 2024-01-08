@@ -21,7 +21,6 @@ export const note = createSlice({
   reducers: {
     setHighlight: (state, action) => {
       state.highlightList = action.payload;
-      console.log(state.highlightList);
     },
     addHighlight: (state, action) => {
       state.highlightList = [...state.highlightList, action.payload];
@@ -34,7 +33,7 @@ export const note = createSlice({
     setIsEditNoteFieldOpen: (state, action) => {
       state.editNoteFieldOpen = action.payload;
     },
-    upDateNote: (state, action) => {
+    updateNote: (state, action) => {
       state.highlightList[action.payload.index].note = action.payload.note;
     },
   },
@@ -45,7 +44,7 @@ export const {
   setHighlight,
   deleteHighlight,
   setIsEditNoteFieldOpen,
-  upDateNote,
+  updateNote,
 } = note.actions;
 export const selectMoreAction = (state: RootState) => state.moreAction;
 export default note.reducer;
