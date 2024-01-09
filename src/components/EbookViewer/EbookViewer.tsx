@@ -8,7 +8,7 @@ import EbookChapter from "../EbookChapter/EbookChapter";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import getSelectionData from "@/utils/getSelectionData";
 
-import { literata } from "@/fonts/fonts";
+import { literata, roboto, inter } from "@/fonts/fonts";
 import {
   setActionMenuToggle,
   setActionMenuPosition,
@@ -18,7 +18,7 @@ import {
 import highlightHelper from "@/utils/highlightHelper";
 
 const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
-  const { isDeleteMode, isActionMenuOpen } = useAppSelector(
+  const { isDeleteMode, isActionMenuOpen, typeface } = useAppSelector(
     (state) => state.read
   );
   const dispatch = useAppDispatch();
@@ -76,7 +76,7 @@ const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
     <>
       <div
         id="viewer"
-        className={`${styles.viewer} ${literata.className}`}
+        className={`${styles.viewer} ${typeface.className}`}
         onMouseDown={(e) => {
           handleMouseDown(e);
         }}

@@ -79,7 +79,7 @@ const ContentButton = ({ contentItem }: { contentItem: ContentItemProp }) => {
       }}
       className={styles.contentBtn}
     >
-      {contentItem.label}
+      {contentItem.label.trim()}
     </button>
   );
 };

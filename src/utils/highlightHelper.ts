@@ -303,10 +303,15 @@ const highlightHelper = () => {
           "目標陣列的最後一個節點，正開始尋找文本節點：",
           node.childNodes
         );
-        if (node.childNodes[index - 1] === undefined) {
-          node = node.childNodes[0];
+        let tempList: any[] = [];
+        Array.from(node.childNodes).forEach((n: any) => {
+          if (n.nodeType === 3) tempList.push(n);
+        });
+
+        if (tempList[index - 1] === undefined) {
+          node = tempList[0];
         } else {
-          node = node.childNodes[index - 1];
+          node = tempList[index - 1];
         }
         console.log("找到文本節點 :", node);
       } else if (i === 0) {

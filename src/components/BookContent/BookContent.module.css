@@ -19,12 +19,11 @@
   transition: all 0.3s;
 }
 
-.contents_wrapper {
+/* .contents_wrapper {
   position: relative;
-}
+} */
 
 .contents_wrapper .title {
-  width: 30rem;
   padding: 2rem 3rem;
 
   border-bottom: 0.1rem solid var(--color-grey-700);

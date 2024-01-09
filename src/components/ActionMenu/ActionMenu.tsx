@@ -15,11 +15,7 @@ import {
   setActionMenuToggle,
   setIsAddNoteBlockOpen,
 } from "@/lib/redux/features/readSlice";
-import {
-  addHighlight,
-  deleteHighlight,
-  upDateNote,
-} from "@/lib/redux/features/noteSlice";
+import { addHighlight, deleteHighlight } from "@/lib/redux/features/noteSlice";
 
 import getSelectionData from "@/utils/getSelectionData";
 
@@ -31,8 +27,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { fromRange } from "xpath-range";
 import highlightHelper from "@/utils/highlightHelper";
-import findChapterElement from "@/utils/findIndexOfParentElement";
-import { object } from "yup";
 
 const ActionMenu = ({
   xPosition,
@@ -48,14 +42,8 @@ const ActionMenu = ({
   const [isNew, setIsNew] = useState(false);
   const firestore = useFirestore();
   const dispatch = useAppDispatch();
-  const {
-    markerColor,
-    isDeleteMode,
-    deleteHighlightID,
-    currentBook,
-    currentCategory,
-    currentChapter,
-  } = useAppSelector((state) => state.read);
+  const { markerColor, isDeleteMode, deleteHighlightID, currentChapter } =
+    useAppSelector((state) => state.read);
 
   const pathname = usePathname();
   const arrPath = pathname.split("/");

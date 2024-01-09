@@ -34,22 +34,19 @@ const NoteForm = ({
   isFirstTime,
   onDeleteHighlight,
   note,
-  onChangeNote,
 }: {
   onIsAddNoteBlockOpen?: Dispatch<boolean>;
   currentHighlightId: string;
   isFirstTime?: boolean;
   onDeleteHighlight?: () => void;
   note?: string;
-  onChangeNote?: Dispatch<any>;
 }) => {
   const arrPath = usePathname().split("/");
   const category = arrPath[1];
   const bookId = arrPath[arrPath.length - 1];
 
   const dispatch = useAppDispatch();
-  const { currentBook, deleteHighlightID, currentCategory, currentChapter } =
-    useAppSelector((state) => state.read);
+  const { currentChapter } = useAppSelector((state) => state.read);
 
   const { highlightList } = useAppSelector((state) => state.note);
   const firestore = useFirestore();
@@ -84,14 +81,11 @@ const NoteForm = ({
         }
       );
 
-      if (onChangeNote) {
-        onChangeNote(data.note);
-      }
-
       if (onIsAddNoteBlockOpen) {
         onIsAddNoteBlockOpen(false);
       }
       dispatch(setIsEditNoteFieldOpen(false));
+      dispatch(setActionMenuToggle(false));
     }
   };
 

@@ -111,7 +111,7 @@ export default function ReadingArea({
               );
             }
           });
-          dispatch(setHighlight(highlights));
+          dispatch(setHighlight(highlights.reverse()));
         }
       } catch (e) {
         console.log("ReadingArea component error: ", e);

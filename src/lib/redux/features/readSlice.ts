@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "@/lib/redux/store";
 import BookProps from "@/types/BookProps";
+import { literata, roboto, inter } from "@/fonts/fonts";
 
 type initialState = {
   state: readState;
@@ -14,6 +15,12 @@ type readState = {
   fontSize: number;
   lineSpacing: number;
   lineWidth: string;
+  typeface: {
+    title: string;
+    type: "serif" | "sans-serif";
+    variable: string;
+    className: any;
+  };
   isActionMenuOpen: boolean;
   actionMenuPositionX: number;
   actionMenuPositionY: number;
@@ -32,6 +39,12 @@ const initialState = {
   fontSize: 20,
   lineSpacing: 1.4,
   lineWidth: "X-large",
+  typeface: {
+    title: "Literata",
+    type: "serif",
+    variable: "--font-literata",
+    className: literata.className,
+  },
   isActionMenuOpen: false,
   actionMenuPositionX: 0,
   actionMenuPositionY: 0,
@@ -63,6 +76,7 @@ export const read = createSlice({
         state.fontSize = state.fontSize - 1;
       }
     },
+
     setLineSpacing: (state, action) => {
       if (action.payload && state.lineSpacing >= 2.2) return;
       if (!action.payload && state.lineSpacing <= 1.2) return;
@@ -99,6 +113,9 @@ export const read = createSlice({
       state.isActionMenuOpen = action.payload;
       state.isAddNoteBlockOpen = action.payload;
     },
+    setTypeface: (state, action) => {
+      state.typeface = action.payload;
+    },
   },
 });
 
@@ -114,6 +131,7 @@ export const {
   setMarkerColor,
   setDeleteHighlightMode,
   setIsAddNoteBlockOpen,
+  setTypeface,
 } = read.actions;
 export const selectRead = (state: RootState) => state.read;
 export default read.reducer;

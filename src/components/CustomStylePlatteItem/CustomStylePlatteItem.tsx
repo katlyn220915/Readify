@@ -8,16 +8,22 @@ import {
   setFontSize,
   setLineSpacing,
   setLineWidth,
+  setTypeface,
 } from "@/lib/redux/features/readSlice";
+import ActionIcon from "../ActionIcon/ActionIcon";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { Dispatch, SetStateAction } from "react";
 
 const CustomStylePlatteItem = ({
   iconProp,
   customItemName,
   value,
+  onTypefaceListOpen,
 }: {
   iconProp: any;
   customItemName: string;
   value: number | string;
+  onTypefaceListOpen?: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
     <div className={styles.text_styles_item}>
@@ -27,7 +33,10 @@ const CustomStylePlatteItem = ({
       </div>
       <div className={styles.text_styles_item_function}>
         <span className={styles.text_styles_item_function_value}>{value}</span>
-        <CustomStylePlatteAction customItemName={customItemName} />
+        <CustomStylePlatteAction
+          customItemName={customItemName}
+          onTypefaceListOpen={onTypefaceListOpen}
+        />
       </div>
     </div>
   );
@@ -37,8 +46,10 @@ export default CustomStylePlatteItem;
 
 const CustomStylePlatteAction = ({
   customItemName,
+  onTypefaceListOpen,
 }: {
   customItemName: string;
+  onTypefaceListOpen?: Dispatch<SetStateAction<boolean>>;
 }) => {
   const dispatch = useAppDispatch();
   return (
@@ -64,6 +75,15 @@ const CustomStylePlatteAction = ({
             -
           </button>
         </span>
+      )}
+      {customItemName === "Typeface" && onTypefaceListOpen !== undefined && (
+        <ActionIcon
+          iconProp={faChevronRight}
+          position="top"
+          promptText="Select a typeface"
+          showPrompt={false}
+          onAction={() => onTypefaceListOpen(true)}
+        />
       )}
     </>
   );
