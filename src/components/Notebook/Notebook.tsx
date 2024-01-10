@@ -5,10 +5,10 @@ import styles from "./Notebook.module.css";
 
 import { useAuth } from "@/context/AuthContext";
 import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
-import { setHighlight } from "@/lib/redux/features/noteSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import Highlight from "../Highlight/Highlight";
 import { usePathname } from "next/navigation";
+import { resetNotes } from "@/lib/redux/features/noteSlice";
 
 export default function Notebook({
   isNotebookOpen,
@@ -26,6 +26,12 @@ export default function Notebook({
   );
   const { highlightList } = useAppSelector((state) => state.note);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetNotes());
+    };
+  }, [dispatch]);
 
   return (
     <div

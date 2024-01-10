@@ -19,7 +19,7 @@ import { bookListInitialize } from "@/lib/redux/features/bookSlice";
 import UploadFile from "@/components/UploadFile/UploadFile";
 
 export default function Category() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
 
   const dispatch = useAppDispatch();
@@ -61,13 +61,13 @@ export default function Category() {
         </nav>
         <section className={styles.middle_container}>
           <Topbar />
-          {isLoading ? (
-            <Spinner />
-          ) : bookList.length === 0 ? (
+          {isLoading && <Spinner />}
+          {!isLoading && bookList.length === 0 && (
             <p className={styles.empty_hint}>
               Ooops...! There is no book in this category!
             </p>
-          ) : (
+          )}
+          {!isLoading && bookList.length > 0 && (
             <BookList bookList={bookList} />
           )}
         </section>

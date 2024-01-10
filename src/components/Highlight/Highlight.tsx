@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Highlight.module.css";
 import NoteForm from "../NoteForm/NoteForm";
 import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
 import { setIsEditNoteFieldOpen } from "@/lib/redux/features/noteSlice";
+
+import { findChapterElement, scrollIntoScreen } from "@/utils/helper";
+import { setCurrentChapter } from "@/lib/redux/features/readSlice";
 
 export default function Highlight({
   id,
@@ -24,19 +27,21 @@ export default function Highlight({
       data-note-id={id}
       onClick={(e) => {
         let element = e.target as HTMLElement;
+        console.log(element);
         if (!element.id && element.parentElement) {
           element = element.parentElement;
+          console.log(element);
         }
+
         const target = document.querySelector(
           `[data-highlight-id="${element.dataset.noteId}"]`
-        );
+        ) as HTMLElement;
+
         dispatch(setIsEditNoteFieldOpen(id));
         if (target) {
-          target.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-            inline: "center",
-          });
+          const { chapterID } = findChapterElement(target);
+          scrollIntoScreen(target, "center");
+          dispatch(setCurrentChapter(chapterID));
         } else {
           console.log("該章節還不存在");
         }

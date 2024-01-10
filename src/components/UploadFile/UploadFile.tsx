@@ -116,7 +116,6 @@ export default function UploadFile() {
 
   const upload = async (fileList: FileList) => {
     dispatch(reset());
-    console.log(fileList);
     if (fileList[0].type !== "application/epub+zip") {
       dispatch(error("Incorrect data type"));
       setTimeout(() => {
@@ -129,6 +128,7 @@ export default function UploadFile() {
       dispatch(uploading(fileList[0].name));
       const data = new FormData();
       data.set("file", fileList[0]);
+      console.log("準備fetch, user uid確認: ", user.uid);
       const res = await fetch("/api/upload_epub", {
         method: "POST",
         body: data,
@@ -163,6 +163,9 @@ export default function UploadFile() {
                 console.log(e.target.value);
                 if (e.target.files && e.target.files.length > 0) {
                   upload(e.target.files);
+                } else {
+                  console.log("上傳資料錯誤");
+                  return;
                 }
               }}
               className={styles.input}

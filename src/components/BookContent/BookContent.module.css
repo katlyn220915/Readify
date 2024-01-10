@@ -43,6 +43,10 @@
   color: #959faa;
 }
 
+.contentBtn_active {
+  color: #76b2ed;
+}
+
 .contentBtn:hover {
   color: #76b2ed;
 }

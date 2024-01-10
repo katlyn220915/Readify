@@ -98,9 +98,8 @@ const NoteForm = ({
           rows={1}
           className={styles.textarea}
           {...register("note")}
-        >
-          {note && note}
-        </textarea>
+          defaultValue={note}
+        ></textarea>
         <div className={styles.button_wrapper}>
           <button
             id={"btn_cancel_add_note"}

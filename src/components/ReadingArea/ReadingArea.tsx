@@ -25,7 +25,7 @@ import {
   setCurrentBook,
   setActionMenuPositionY,
 } from "@/lib/redux/features/readSlice";
-import { setHighlight } from "@/lib/redux/features/noteSlice";
+import { setHighlight, resetNotes } from "@/lib/redux/features/noteSlice";
 import highlightHelper from "@/utils/highlightHelper";
 
 export default function ReadingArea({
@@ -61,8 +61,15 @@ export default function ReadingArea({
             `/users/${user.uid}/${category}`,
             bookId
           );
-          dispatch(setCurrentBook({ currentBook: bookData, category }));
           if (bookData) {
+            const recordChapter = bookData.record ? bookData.record : undefined;
+            dispatch(
+              setCurrentBook({
+                currentBook: bookData,
+                category,
+                chapter: recordChapter,
+              })
+            );
             const epubDocuments = await parser.getAllDocuments(
               bookData.bookDownloadURL
             );

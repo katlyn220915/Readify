@@ -2,8 +2,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./BookContent.module.css";
 
-import { useAppSelector } from "@/hooks/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import parseEpub from "@/server-actions/parseEpub/parseEpub";
+import { setCurrentChapter } from "@/lib/redux/features/readSlice";
+
+import { decode, scrollIntoScreen } from "@/utils/helper";
+import useFirestore from "@/hooks/firebase_db/useFirestore";
+import { useAuth } from "@/context/AuthContext";
 
 type ContentItemProp = {
   id: string | number;
@@ -32,6 +37,9 @@ const BookContent = React.memo(
         }
       };
       getBookContents();
+      return () => {
+        setToc(null);
+      };
     }, [currentBookMemo, parserMemo]);
 
     return (
@@ -43,7 +51,6 @@ const BookContent = React.memo(
         >
           <div className={styles.contents_wrapper}>
             <p className={styles.title}>{currentBook?.title}</p>
-            <div className={styles.empty_block}></div>
             <div className={styles.contents}>
               {toc &&
                 toc.map((toc: ContentItemProp) => (
@@ -62,24 +69,36 @@ BookContent.displayName = "BookContent";
 export default BookContent;
 
 const ContentButton = ({ contentItem }: { contentItem: ContentItemProp }) => {
+  const { currentChapter, currentCategory, currentBook } = useAppSelector(
+    (state) => state.read
+  );
+  const { user } = useAuth();
+  const dispatch = useAppDispatch();
+  const firebase = useFirestore();
+  console.log(contentItem.href);
+
   return (
     <button
       onClick={() => {
-        const decodeedHref = decodeURIComponent(contentItem.href)
-          .replaceAll(" ", "")
-          .replace(/\.(xhtml|html).*/, "");
-        console.log("click", decodeedHref);
+        const decodeedHref = decode(contentItem.href);
         const paragraphElement = document.getElementById(`${decodeedHref}`);
-        console.log(paragraphElement);
-        if (paragraphElement) {
-          paragraphElement.scrollIntoView({
-            behavior: "smooth",
-          });
+        if (paragraphElement && currentBook?.bookId) {
+          scrollIntoScreen(paragraphElement, "start");
+          dispatch(setCurrentChapter(contentItem.id));
+          firebase.updateDocument(
+            `/users/${user.uid}/${currentCategory}`,
+            currentBook?.bookId,
+            {
+              record: contentItem.id,
+            }
+          );
         }
       }}
-      className={styles.contentBtn}
+      className={`${styles.contentBtn} ${
+        currentChapter === contentItem.id ? styles.contentBtn_active : ""
+      }`}
     >
-      {contentItem.label.trim()}
+      {contentItem.label}
     </button>
   );
 };

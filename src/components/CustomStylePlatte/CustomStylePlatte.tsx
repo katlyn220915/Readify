@@ -53,7 +53,7 @@ export default function CustomStylePlatte() {
     (state) => state.read
   );
 
-  const [isTypefaceListOpen, setIsTypefaceListOpen] = useState(true);
+  const [isTypefaceListOpen, setIsTypefaceListOpen] = useState(false);
 
   return (
     <div className={styles.custom_styles_field}>
@@ -82,7 +82,7 @@ export default function CustomStylePlatte() {
             <CustomStylePlatteItem
               iconProp={faFont}
               customItemName="Typeface"
-              value="Literata"
+              value={typeface.title}
               onTypefaceListOpen={setIsTypefaceListOpen}
             />
             <CustomStylePlatteItem

@@ -62,6 +62,7 @@ export const read = createSlice({
     setCurrentBook: (state, action) => {
       state.currentBook = action.payload.currentBook;
       state.currentCategory = action.payload.category;
+      state.currentChapter = action.payload.chapter;
     },
 
     setCurrentChapter: (state, action) => {
@@ -88,31 +89,39 @@ export const read = createSlice({
         state.lineSpacing = Number(newLineSpacing.toFixed(1));
       }
     },
+
     setLineWidth: (state, action) => {
       state.lineWidth = action.payload;
     },
+
     setActionMenuToggle: (state, action) => {
       state.isActionMenuOpen = action.payload;
     },
+
     setActionMenuPosition: (state, action) => {
       state.isActionMenuOpen = true;
       state.actionMenuPositionX = action.payload.positionX;
       state.actionMenuPositionY = action.payload.positionY;
     },
+
     setActionMenuPositionY: (state, action) => {
       state.actionMenuPositionY = action.payload;
     },
+
     setMarkerColor: (state, action) => {
       state.markerColor = action.payload;
     },
+
     setDeleteHighlightMode: (state, action) => {
       state.isDeleteMode = action.payload.isDeleteMode;
       state.deleteHighlightID = action.payload.highlightId;
     },
+
     setIsAddNoteBlockOpen: (state, action) => {
       state.isActionMenuOpen = action.payload;
       state.isAddNoteBlockOpen = action.payload;
     },
+
     setTypeface: (state, action) => {
       state.typeface = action.payload;
     },

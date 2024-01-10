@@ -2,14 +2,13 @@ import Epub from "epubjs";
 import ePub, { Book } from "epubjs";
 import Section from "epubjs/types/section";
 import React from "react";
+import { decode } from "@/utils/helper";
 
 const parseEpub = () => {
   const getBookInfos = () => {};
 
   const getContents = async (url: string) => {
     const book = ePub(url);
-    const location = book.locations;
-    // console.log(location);
     const toc = book.ready.then(async () => {
       const navigationToc = book.navigation.toc;
       const cleanToc = navigationToc.map(({ id, label, href }) => ({
@@ -28,7 +27,6 @@ const parseEpub = () => {
     const documentsObjectArr = await book.ready
       .then(() => {
         const spine = book.spine;
-        console.log(spine);
         spine.each((section: Section) => {
           allDocumentPath.push(section.href);
         });
@@ -153,13 +151,7 @@ const parseEpub = () => {
       const bodyContent = doc.body.innerHTML;
 
       const chapterDiv = (
-        <div
-          key={path}
-          id={decodeURIComponent(path)
-            .replaceAll(" ", "")
-            .replace(/\.(xhtml|html).*/, "")}
-          className="epub_document_content"
-        >
+        <div key={path} id={decode(path)} className="epub_document_content">
           <div dangerouslySetInnerHTML={{ __html: bodyContent }} />
         </div>
       );

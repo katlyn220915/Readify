@@ -1,21 +1,21 @@
 "use client";
 
-import React, { Dispatch } from "react";
+import React from "react";
 import styles from "./EbookViewer.module.css";
 
 import EbookChapter from "../EbookChapter/EbookChapter";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import getSelectionData from "@/utils/getSelectionData";
 
-import { literata, roboto, inter } from "@/fonts/fonts";
 import {
   setActionMenuToggle,
   setActionMenuPosition,
   setDeleteHighlightMode,
   setCurrentChapter,
 } from "@/lib/redux/features/readSlice";
-import highlightHelper from "@/utils/highlightHelper";
+
+import getSelectionData from "@/utils/getSelectionData";
+import { findChapterElement } from "@/utils/helper";
 
 const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
   const { isDeleteMode, isActionMenuOpen, typeface } = useAppSelector(
@@ -42,10 +42,9 @@ const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     dispatch(setActionMenuToggle(false));
-    const highlight = highlightHelper();
     const target = e.target as HTMLElement;
     if (target.id === "viewer" || target.className === "epub_document") return;
-    const { chapterID } = highlight.findChapterElement(target);
+    const { chapterID } = findChapterElement(target);
     dispatch(setCurrentChapter(chapterID));
     if (target.className === "epub_highlight") {
       if (!isActionMenuOpen) {
