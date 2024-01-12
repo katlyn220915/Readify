@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { usePathname } from "next/navigation";
 import styles from "./Categorize.module.css";
 
@@ -117,9 +117,13 @@ function CategorizeItem({
 export default function Categorize({
   isMouseEnter,
   book,
+  tags,
+  onAddTag,
 }: {
   isMouseEnter: boolean;
   book: BookProps;
+  tags: string[] | null;
+  onAddTag: Dispatch<SetStateAction<string[]>>;
 }) {
   const { isMoreActionBtnOpen } = useAppSelector((state) => state.moreAction);
   return (
@@ -132,7 +136,9 @@ export default function Categorize({
               <CategorizeItem item={item} key={item.path} book={book} />
             ))}
           </ul>
-          {isMoreActionBtnOpen && <MoreActionList book={book} />}
+          {isMoreActionBtnOpen && (
+            <MoreActionList book={book} tags={tags} onAddTag={onAddTag} />
+          )}
         </div>
       )}
     </>

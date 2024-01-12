@@ -11,6 +11,7 @@ type bookState = {
   isError: boolean;
   bookList: Array<BookProps>;
   isSuccessful: boolean;
+  allTags: string[] | null;
 };
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
   isError: false,
   bookList: [],
   isSuccessful: false,
+  allTags: [],
 } as bookState;
 
 export const book = createSlice({

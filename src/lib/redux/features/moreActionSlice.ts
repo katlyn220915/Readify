@@ -9,11 +9,13 @@ type initialState = {
 type moreActionState = {
   isMoreActionBtnOpen: boolean;
   isOtherMoreActionBtnOpen: boolean;
+  allTags: any[];
 };
 
 const initialState = {
   isMoreActionBtnOpen: false,
   isOtherMoreActionBtnOpen: false,
+  allTags: [],
 } as moreActionState;
 
 export const moreAction = createSlice({
@@ -29,9 +31,22 @@ export const moreAction = createSlice({
       state.isMoreActionBtnOpen = false;
       state.isOtherMoreActionBtnOpen = false;
     },
+
+    setAllTags: (state, action) => {
+      state.allTags = action.payload;
+    },
+
+    onCreateTags: (state, action) => {
+      state.allTags = [...state.allTags, action.payload];
+    },
   },
 });
 
-export const { setMoreActionBtn, setMoreActionBtnClose } = moreAction.actions;
+export const {
+  setMoreActionBtn,
+  setMoreActionBtnClose,
+  setAllTags,
+  onCreateTags,
+} = moreAction.actions;
 export const selectMoreAction = (state: RootState) => state.moreAction;
 export default moreAction.reducer;

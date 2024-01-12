@@ -41,6 +41,10 @@
   position: relative;
 }
 
+.book:last-child {
+  margin-bottom: 10rem;
+}
+
 .book_active {
   background-color: rgba(255, 255, 255, 0.05);
   z-index: 100;

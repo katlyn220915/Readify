@@ -10,13 +10,15 @@ import Topbar from "@/components/Topbar/Topbar";
 import BookList from "@/components/BookList/BookList";
 import Spinner from "@/components/Spinner/Spinner";
 import StaticSidebarList from "@/components/StaticSidebarList/StaticSidebarList";
+import UploadFile from "@/components/UploadFile/UploadFile";
 
 /* CUSTOM HOOKS */
 import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { bookListInitialize } from "@/lib/redux/features/bookSlice";
-import UploadFile from "@/components/UploadFile/UploadFile";
+import { setAllTags } from "@/lib/redux/features/moreActionSlice";
+import path from "path";
 
 export default function Category() {
   const [isLoading, setIsLoading] = useState(true);
@@ -37,6 +39,14 @@ export default function Category() {
         const bookList = await firestoreCallback().getDocuments(
           `/users/${user.uid}/${pathname.split("/").pop()}`
         );
+
+        const data = await firestoreCallback().searchByQuery(
+          `/users`,
+          "email",
+          "==",
+          "test@test.com"
+        );
+        dispatch(setAllTags(data[0].tags));
         dispatchCallback(bookListInitialize(bookList));
       } catch (e) {
         console.error(e);
@@ -45,7 +55,7 @@ export default function Category() {
       }
     };
     getBookList();
-  }, [user, dispatchCallback, firestoreCallback, pathname]);
+  }, [user, dispatchCallback, firestoreCallback, pathname, dispatch]);
 
   return (
     <>

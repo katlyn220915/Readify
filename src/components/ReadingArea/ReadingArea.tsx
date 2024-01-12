@@ -98,6 +98,7 @@ export default function ReadingArea({
         const highlightsData = await firestore.getDocuments(
           `/users/${user.uid}/${category}/${bookId}/highlights`
         );
+
         let highlights: any[] = [];
         if (highlightsData.length > 0) {
           highlightsData.forEach((chapter: any) => {

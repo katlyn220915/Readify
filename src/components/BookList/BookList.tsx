@@ -22,6 +22,7 @@ import { setMoreActionBtnClose } from "@/lib/redux/features/moreActionSlice";
 
 function Book({ book }: { book: BookProps }) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
+  const [tags, setTags] = useState(book.tags);
   const { isMoreActionBtnOpen, isOtherMoreActionBtnOpen } = useAppSelector(
     (state) => state.moreAction
   );
@@ -70,14 +71,19 @@ function Book({ book }: { book: BookProps }) {
             <FontAwesomeIcon icon={faFeather} className="icon" />
             <span>{book.author}</span>
           </p>
-          {/* {book.tags.map((tag, id) => (
-            <span key={`${id}+ ${book.bookId}`} className={styles.tag}>
-            {tag}
+          {tags.map((tag, id) => (
+            <span key={`${id}${book.bookId}${tag}`} className={styles.tag}>
+              {tag}
             </span>
-          ))} */}
+          ))}
         </div>
       </div>
-      <Categorize isMouseEnter={isMouseEnter} book={book} />
+      <Categorize
+        isMouseEnter={isMouseEnter}
+        book={book}
+        tags={tags}
+        onAddTag={setTags}
+      />
     </li>
   );
 }

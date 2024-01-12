@@ -75,7 +75,6 @@ const ContentButton = ({ contentItem }: { contentItem: ContentItemProp }) => {
   const { user } = useAuth();
   const dispatch = useAppDispatch();
   const firebase = useFirestore();
-  console.log(contentItem.href);
 
   return (
     <button

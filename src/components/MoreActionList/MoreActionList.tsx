@@ -1,28 +1,40 @@
 "use client";
-
+import React, { Dispatch, SetStateAction, useState } from "react";
 import styles from "./MoreActionList.module.css";
+import { usePathname } from "next/navigation";
+
+import EditTagField from "../EditTagField/EditTagField";
+
+import BookProps from "@/types/BookProps";
 
 /* Custom_hook */
-import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
+import { useAppDispatch } from "@/hooks/redux/hooks";
 import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
 import { setMoreActionBtnClose } from "@/lib/redux/features/moreActionSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import useCloudStorage from "@/hooks/firebase_db/useCloudStorage";
 import { useAuth } from "@/context/AuthContext";
-import BookProps from "@/types/BookProps";
-import { usePathname } from "next/navigation";
 
-export default function MoreActionList({ book }: { book: BookProps }) {
+export default function MoreActionList({
+  book,
+  tags,
+  onAddTag,
+}: {
+  book: BookProps;
+  tags: string[] | null;
+  onAddTag: Dispatch<SetStateAction<string[]>>;
+}) {
+  const [isAddTagFieldOpen, setIsAddTagFieldOpen] = useState(false);
   const dispatch = useAppDispatch();
   const firestore = useFirestore();
   const cloudStorage = useCloudStorage();
   const { user } = useAuth();
   const pathname = usePathname();
+  const category = pathname.split("/").pop();
 
   const handleDelete = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    e.stopPropagation();
     const isDataDeletedFromStore = await firestore.deleteDocument(
-      `users/${user.uid}/${pathname.split("/").pop()}/${book.bookId}`
+      `users/${user.uid}/${category}/${book.bookId}`
     );
 
     if (isDataDeletedFromStore) {
@@ -37,11 +49,29 @@ export default function MoreActionList({ book }: { book: BookProps }) {
   };
 
   return (
-    <ul className={styles.more_action}>
-      <li>Add new tag</li>
-      <li className={styles.delete_btn} onClick={(e) => handleDelete(e)}>
-        Delete this book
-      </li>
-    </ul>
+    <>
+      <div className={styles.more_action} onClick={(e) => e.stopPropagation()}>
+        {!isAddTagFieldOpen && (
+          <>
+            <button
+              onClick={(e) => {
+                setIsAddTagFieldOpen(true);
+              }}
+            >
+              Add new tag
+            </button>
+            <button
+              className={styles.delete_btn}
+              onClick={(e) => handleDelete(e)}
+            >
+              Delete this book
+            </button>
+          </>
+        )}
+        {isAddTagFieldOpen && (
+          <EditTagField tags={tags} onAddTag={onAddTag} bookId={book.bookId} />
+        )}
+      </div>
+    </>
   );
 }
