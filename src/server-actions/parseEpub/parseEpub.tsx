@@ -1,4 +1,4 @@
-import Epub from "epubjs";
+import Epub, { NavItem } from "epubjs";
 import ePub, { Book } from "epubjs";
 import Section from "epubjs/types/section";
 import React from "react";
@@ -11,12 +11,25 @@ const parseEpub = () => {
     const book = ePub(url);
     const toc = book.ready.then(async () => {
       const navigationToc = book.navigation.toc;
-      const cleanToc = navigationToc.map(({ id, label, href }) => ({
-        id,
-        label,
-        href,
-      }));
-      return cleanToc;
+
+      const allToc = navigationToc.map(({ id, label, href, subitems }) => {
+        if (subitems && subitems.length > 0) {
+          return {
+            id,
+            label,
+            href,
+            subitems,
+          };
+        } else {
+          return {
+            id,
+            label,
+            href,
+            subitems,
+          };
+        }
+      });
+      return allToc;
     });
     return toc;
   };

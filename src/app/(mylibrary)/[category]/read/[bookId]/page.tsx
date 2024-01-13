@@ -7,7 +7,6 @@ import ActionMenu from "@/components/ActionMenu/ActionMenu";
 import ReadingArea from "@/components/ReadingArea/ReadingArea";
 import BookContent from "@/components/BookContent/BookContent";
 import ReadingNavigation from "@/components/ReadingNavigation/ReadingNavigation";
-import Editor from "@/components/Editor/Editor";
 
 import { useAppSelector } from "@/hooks/redux/hooks";
 import Notebook from "@/components/Notebook/Notebook";

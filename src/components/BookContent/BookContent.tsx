@@ -14,6 +14,7 @@ type ContentItemProp = {
   id: string;
   label: string;
   href: string;
+  subitems?: ContentItemProp[];
 };
 
 const BookContent = React.memo(
@@ -54,7 +55,17 @@ const BookContent = React.memo(
             <div className={styles.contents}>
               {toc &&
                 toc.map((toc: ContentItemProp) => (
-                  <ContentButton contentItem={toc} key={toc.href} />
+                  <>
+                    <ContentButton contentItem={toc} key={toc.href} />
+                    {toc.subitems &&
+                      toc.subitems.map((toc) => (
+                        <ContentButton
+                          contentItem={toc}
+                          key={toc.href}
+                          isSubitem={true}
+                        />
+                      ))}
+                  </>
                 ))}
             </div>
           </div>
@@ -68,17 +79,17 @@ BookContent.displayName = "BookContent";
 
 export default BookContent;
 
-const ContentButton = ({ contentItem }: { contentItem: ContentItemProp }) => {
+const ContentButton = ({
+  contentItem,
+  isSubitem,
+}: {
+  contentItem: ContentItemProp;
+  isSubitem?: boolean;
+}) => {
   const { currentChapter, currentBook } = useAppSelector((state) => state.read);
   const { user } = useAuth();
   const dispatch = useAppDispatch();
   const firebase = useFirestore();
-  if (currentChapter === decode(contentItem.href)) {
-    console.log(currentChapter);
-    console.log(decode(contentItem.href));
-  } else {
-    console.log(decode(contentItem.href));
-  }
 
   return (
     <button
@@ -102,7 +113,7 @@ const ContentButton = ({ contentItem }: { contentItem: ContentItemProp }) => {
         currentChapter === decode(contentItem.href)
           ? styles.contentBtn_active
           : ""
-      }`}
+      } ${isSubitem ? styles.subitem : ""}`}
     >
       {contentItem.label.trim()}
     </button>

@@ -41,6 +41,8 @@
 .contentBtn {
   display: block;
   color: #959faa;
+  text-align: left;
+  font-size: var(--font-size-small);
 }
 
 .contentBtn_active {
@@ -53,4 +55,8 @@
 
 .contentBtn:not(:last-child) {
   margin-bottom: 1.2rem;
+}
+
+.subitem {
+  transform: translateX(2rem);
 }
