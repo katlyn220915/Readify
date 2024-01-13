@@ -21,6 +21,7 @@ import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAuth } from "@/context/AuthContext";
 import BookProps from "@/types/BookProps";
 import ActionIcon from "../ActionIcon/ActionIcon";
+import BookId from "@/app/(mylibrary)/[category]/read/[bookId]/page";
 
 const staticItems = [
   {
@@ -79,19 +80,11 @@ function CategorizeItem({
   ) => {
     e.stopPropagation();
     if (pathname === item.path) return;
-    const isSetDocSuccess = await firestore.setDocument(
-      `users/${user.uid}/${item.path.split("/").pop()}`,
-      book.bookId,
-      book
-    );
-    const isDeleteDocSuccess = await firestore.deleteDocument(
-      `/users/${user.uid}/${pathname.split("/").pop()}/${book.bookId}`
-    );
-
-    if (isSetDocSuccess && isDeleteDocSuccess) {
-      dispatch(deleteBook(book.bookId));
-      dispatch(resetSuccessful());
-    }
+    await firestore.updateDocument(`users/${user.uid}/books`, book.bookId, {
+      category: item.path.split("/").pop(),
+    });
+    dispatch(deleteBook(book.bookId));
+    dispatch(resetSuccessful());
   };
   return (
     <>

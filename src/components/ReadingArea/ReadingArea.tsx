@@ -58,7 +58,7 @@ export default function ReadingArea({
         setIsLoading(true);
         if (user) {
           const bookData = await firestore.getDocumentById(
-            `/users/${user.uid}/${category}`,
+            `/users/${user.uid}/books`,
             bookId
           );
           if (bookData) {
@@ -96,7 +96,7 @@ export default function ReadingArea({
       const highlight = highlightHelper();
       try {
         const highlightsData = await firestore.getDocuments(
-          `/users/${user.uid}/${category}/${bookId}/highlights`
+          `/users/${user.uid}/books/${bookId}/highlights`
         );
 
         let highlights: any[] = [];

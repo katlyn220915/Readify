@@ -45,20 +45,9 @@ const EditTagField = ({
       setNewTagText("");
       setSearchTagList(null);
       if (category !== undefined && tags) {
-        await firestore.updateDocument(
-          `/users/${user.uid}/${category}`,
-          bookId,
-          {
-            tags: [...tags, newTag.textContent],
-          }
-        );
-        await firestore.updateDocument(
-          `/users/${user.uid}/tags/`,
-          newTag.textContent,
-          {
-            [bookId]: `users/${user.uid}/${category}/${bookId}`,
-          }
-        );
+        await firestore.updateDocument(`/users/${user.uid}/books`, bookId, {
+          tags: [...tags, newTag.textContent],
+        });
       }
     }
   };
@@ -71,7 +60,7 @@ const EditTagField = ({
       onAddTag((prev) => [...prev.filter((cur) => cur !== newTag.textContent)]);
       setSearchTagList(null);
     }
-    firestore.updateDocument(`/users/${user.uid}/${category}`, bookId, {
+    firestore.updateDocument(`/users/${user.uid}/books`, bookId, {
       tags: tags?.filter((cur) => cur !== newTag.textContent),
     });
   };
@@ -92,11 +81,8 @@ const EditTagField = ({
           tags: [...allTags, newTagText],
         });
       }
-      firestore.updateDocument(`/users/${user.uid}/${category}`, bookId, {
+      firestore.updateDocument(`/users/${user.uid}/books`, bookId, {
         tags: [...tags, newTagText],
-      });
-      firestore.setDocument(`/users/${user.uid}/tags`, newTagText, {
-        [bookId]: `/users/${user.uid}/${category}/${bookId}`,
       });
     }
   };

@@ -36,6 +36,7 @@ export default function UploadFile() {
   const parser = parseEpub();
   const store = storeFiles();
 
+  //修改firebase儲存路徑
   const storeEpubAllImages = async (
     url: string,
     bookId: string,
@@ -55,7 +56,7 @@ export default function UploadFile() {
     const updateData = {
       images: Object.fromEntries(map),
     };
-    firestore.updateDocument(`/users/${uuid}/mylibrary`, bookId, updateData);
+    firestore.updateDocument(`/users/${uuid}/books`, bookId, updateData);
   };
 
   const storeBookInfos = async (url: string, bookId: string, uuid: string) => {
@@ -74,6 +75,7 @@ export default function UploadFile() {
 
     const newBookInfos = {
       title: bookInfos.title,
+      category: "mylibrary",
       author: bookInfos.author,
       bookId,
       bookDownloadURL: url,
@@ -81,7 +83,7 @@ export default function UploadFile() {
       coverURL: imgUrl,
       images: {},
     };
-    firestore.setDocument(`users/${uuid}/mylibrary`, bookId, newBookInfos);
+    firestore.setDocument(`users/${uuid}/books`, bookId, newBookInfos);
     dispatch(addNewBook(newBookInfos));
     storeEpubAllImages(url, bookId, uuid);
   };
@@ -128,7 +130,6 @@ export default function UploadFile() {
       dispatch(uploading(fileList[0].name));
       const data = new FormData();
       data.set("file", fileList[0]);
-      console.log("準備fetch, user uid確認: ", user.uid);
       const res = await fetch("/api/upload_epub", {
         method: "POST",
         body: data,

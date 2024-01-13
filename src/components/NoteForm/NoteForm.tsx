@@ -74,7 +74,7 @@ const NoteForm = ({
         })
       );
       await firestore.updateDocument(
-        `/users/${user.uid}/${category}/${bookId}/highlights`,
+        `/users/${user.uid}/books/${bookId}/highlights`,
         currentChapter,
         {
           [`${currentHighlightId}.note`]: data.note,

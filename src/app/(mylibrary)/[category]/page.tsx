@@ -18,10 +18,11 @@ import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { bookListInitialize } from "@/lib/redux/features/bookSlice";
 import { setAllTags } from "@/lib/redux/features/moreActionSlice";
+import path from "path";
 
 export default function Category() {
   const [isLoading, setIsLoading] = useState(true);
-  const pathname = usePathname();
+  const category = usePathname().split("/").pop();
   const params = useSearchParams();
   const tag = params.get("tag");
 
@@ -37,9 +38,12 @@ export default function Category() {
     const getBookList = async () => {
       try {
         setIsLoading(true);
-        if (!tag) {
-          const bookList = await firestoreCallback().getDocuments(
-            `/users/${user.uid}/${pathname.split("/").pop()}`
+        if (!tag && category) {
+          const bookList = await firestoreCallback().searchByQuery(
+            `/users/${user.uid}/books`,
+            "category",
+            "==",
+            category
           );
           dispatchCallback(bookListInitialize(bookList));
         } else {
@@ -59,7 +63,7 @@ export default function Category() {
       }
     };
     getBookList();
-  }, [user, dispatchCallback, firestoreCallback, pathname, dispatch]);
+  }, [user, dispatchCallback, firestoreCallback, category, dispatch, tag]);
 
   return (
     <>

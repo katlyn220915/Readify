@@ -45,11 +45,7 @@ const ActionMenu = ({
   const { markerColor, isDeleteMode, deleteHighlightID, currentChapter } =
     useAppSelector((state) => state.read);
 
-  const pathname = usePathname();
-  const arrPath = pathname.split("/");
-  const category = arrPath[1];
-  const bookId = arrPath[arrPath.length - 1];
-
+  const bookId = usePathname().split("/").pop();
   const { highlightList } = useAppSelector((state) => state.note);
   const { user } = useAuth();
 
@@ -75,7 +71,7 @@ const ActionMenu = ({
 
       if (currentChapter) {
         await firestore.setDocument(
-          `/users/${user.uid}/${category}/${bookId}/highlights`,
+          `/users/${user.uid}/books/${bookId}/highlights`,
           `${currentChapter.replaceAll("/", "")}`,
           {
             [highlightId]: {
@@ -134,7 +130,7 @@ const ActionMenu = ({
         const highlight = highlightHelper();
         highlight.deleteHighlight(id);
         await firestore.deleteColumn(
-          `/users/${user.uid}/${category}/${bookId}/highlights`,
+          `/users/${user.uid}/books/${bookId}/highlights`,
           `${currentChapter.replaceAll("/", "")}`,
           id
         );

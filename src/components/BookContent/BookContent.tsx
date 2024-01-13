@@ -11,7 +11,7 @@ import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAuth } from "@/context/AuthContext";
 
 type ContentItemProp = {
-  id: string | number;
+  id: string;
   label: string;
   href: string;
 };
@@ -69,12 +69,16 @@ BookContent.displayName = "BookContent";
 export default BookContent;
 
 const ContentButton = ({ contentItem }: { contentItem: ContentItemProp }) => {
-  const { currentChapter, currentCategory, currentBook } = useAppSelector(
-    (state) => state.read
-  );
+  const { currentChapter, currentBook } = useAppSelector((state) => state.read);
   const { user } = useAuth();
   const dispatch = useAppDispatch();
   const firebase = useFirestore();
+  if (currentChapter === decode(contentItem.href)) {
+    console.log(currentChapter);
+    console.log(decode(contentItem.href));
+  } else {
+    console.log(decode(contentItem.href));
+  }
 
   return (
     <button
@@ -83,21 +87,24 @@ const ContentButton = ({ contentItem }: { contentItem: ContentItemProp }) => {
         const paragraphElement = document.getElementById(`${decodeedHref}`);
         if (paragraphElement && currentBook?.bookId) {
           scrollIntoScreen(paragraphElement, "start");
-          dispatch(setCurrentChapter(contentItem.id));
+          dispatch(setCurrentChapter(decodeedHref));
+
           firebase.updateDocument(
-            `/users/${user.uid}/${currentCategory}`,
+            `/users/${user.uid}/books`,
             currentBook?.bookId,
             {
-              record: contentItem.id,
+              record: decodeedHref,
             }
           );
         }
       }}
       className={`${styles.contentBtn} ${
-        currentChapter === contentItem.id ? styles.contentBtn_active : ""
+        currentChapter === decode(contentItem.href)
+          ? styles.contentBtn_active
+          : ""
       }`}
     >
-      {contentItem.label}
+      {contentItem.label.trim()}
     </button>
   );
 };

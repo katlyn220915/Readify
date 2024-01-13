@@ -30,11 +30,10 @@ export default function MoreActionList({
   const cloudStorage = useCloudStorage();
   const { user } = useAuth();
   const pathname = usePathname();
-  const category = pathname.split("/").pop();
 
   const handleDelete = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const isDataDeletedFromStore = await firestore.deleteDocument(
-      `users/${user.uid}/${category}/${book.bookId}`
+      `users/${user.uid}/books/${book.bookId}`
     );
 
     if (isDataDeletedFromStore) {

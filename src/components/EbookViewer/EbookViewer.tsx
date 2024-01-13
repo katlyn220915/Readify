@@ -26,9 +26,7 @@ const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
   const handleMouseUp = () => {
     const selectionData = getSelectionData();
     if (selectionData) {
-      const { rec, selectedText } = selectionData;
-      console.log(rec);
-      console.log(selectedText);
+      const { rec } = selectionData;
       if (rec) {
         dispatch(
           setActionMenuPosition({
@@ -45,6 +43,7 @@ const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
     const target = e.target as HTMLElement;
     if (target.id === "viewer" || target.className === "epub_document") return;
     const { chapterID } = findChapterElement(target);
+    console.log(chapterID);
     dispatch(setCurrentChapter(chapterID));
     if (target.className === "epub_highlight") {
       if (!isActionMenuOpen) {
