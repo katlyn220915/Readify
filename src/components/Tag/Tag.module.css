@@ -1,0 +1,12 @@
+.tag {
+  font-size: var(--font-size-small);
+  background-color: var(--color-blue-700);
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+
+  cursor: pointer;
+}
+
+.tag:hover {
+  background-color: var(--color-blue-500);
+}

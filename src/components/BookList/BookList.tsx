@@ -17,6 +17,7 @@ import { faFeather } from "@fortawesome/free-solid-svg-icons";
 /* CUSTOM-HOOKS */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { setMoreActionBtnClose } from "@/lib/redux/features/moreActionSlice";
+import Tag from "../Tag/Tag";
 
 /////////////////////////////////////////////////////////
 
@@ -72,9 +73,7 @@ function Book({ book }: { book: BookProps }) {
             <span>{book.author}</span>
           </p>
           {tags.map((tag, id) => (
-            <span key={`${id}${book.bookId}${tag}`} className={styles.tag}>
-              {tag}
-            </span>
+            <Tag key={`${id}${book.bookId}${tag}`} tag={tag} />
           ))}
         </div>
       </div>

@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "@/lib/redux/store";
-import BookProps from "@/types/BookProps";
 
 type initialState = {
   state: moreActionState;
@@ -37,7 +36,11 @@ export const moreAction = createSlice({
     },
 
     onCreateTags: (state, action) => {
-      state.allTags = [...state.allTags, action.payload];
+      if (state.allTags !== undefined) {
+        state.allTags = [...state.allTags, action.payload];
+      } else {
+        state.allTags = [action.payload];
+      }
     },
   },
 });

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import styles from "./page.module.css";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 /* COMPONENTS */
@@ -18,11 +18,12 @@ import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { bookListInitialize } from "@/lib/redux/features/bookSlice";
 import { setAllTags } from "@/lib/redux/features/moreActionSlice";
-import path from "path";
 
 export default function Category() {
   const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
+  const params = useSearchParams();
+  const tag = params.get("tag");
 
   const dispatch = useAppDispatch();
   const { bookList } = useAppSelector((state) => state.book);
@@ -36,10 +37,14 @@ export default function Category() {
     const getBookList = async () => {
       try {
         setIsLoading(true);
-        const bookList = await firestoreCallback().getDocuments(
-          `/users/${user.uid}/${pathname.split("/").pop()}`
-        );
-
+        if (!tag) {
+          const bookList = await firestoreCallback().getDocuments(
+            `/users/${user.uid}/${pathname.split("/").pop()}`
+          );
+          dispatchCallback(bookListInitialize(bookList));
+        } else {
+          // const bookList = await firestoreCallback().searchByQuery(`/users/${user.uid}`)
+        }
         const data = await firestoreCallback().searchByQuery(
           `/users`,
           "email",
@@ -47,7 +52,6 @@ export default function Category() {
           "test@test.com"
         );
         dispatch(setAllTags(data[0].tags));
-        dispatchCallback(bookListInitialize(bookList));
       } catch (e) {
         console.error(e);
       } finally {

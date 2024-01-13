@@ -52,6 +52,13 @@ const EditTagField = ({
             tags: [...tags, newTag.textContent],
           }
         );
+        await firestore.updateDocument(
+          `/users/${user.uid}/tags/`,
+          newTag.textContent,
+          {
+            [bookId]: `users/${user.uid}/${category}/${bookId}`,
+          }
+        );
       }
     }
   };
@@ -76,11 +83,20 @@ const EditTagField = ({
       setNewTagText("");
       dispatch(onCreateTags(newTagText));
       setSearchTagList(null);
-      firestore.updateDocument(`/users/`, user.uid, {
-        tags: [...allTags, newTagText],
-      });
+      if (allTags === undefined) {
+        firestore.updateDocument(`/users/`, user.uid, {
+          tags: [newTagText],
+        });
+      } else {
+        firestore.updateDocument(`/users/`, user.uid, {
+          tags: [...allTags, newTagText],
+        });
+      }
       firestore.updateDocument(`/users/${user.uid}/${category}`, bookId, {
         tags: [...tags, newTagText],
+      });
+      firestore.setDocument(`/users/${user.uid}/tags`, newTagText, {
+        [bookId]: `/users/${user.uid}/${category}/${bookId}`,
       });
     }
   };
@@ -104,11 +120,16 @@ const EditTagField = ({
                 return;
               }
               setNewTagText(e.target.value);
-              setSearchTagList(
-                allTags.filter(
-                  (cur) => cur.includes(e.target.value) && !tags?.includes(cur)
-                )
-              );
+              if (allTags) {
+                setSearchTagList(
+                  allTags.filter(
+                    (cur) =>
+                      cur.includes(e.target.value) && !tags?.includes(cur)
+                  )
+                );
+              } else {
+                setSearchTagList([]);
+              }
             }}
             value={newTagText}
           />
