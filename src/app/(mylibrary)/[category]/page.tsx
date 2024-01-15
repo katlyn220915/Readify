@@ -23,6 +23,7 @@ export default function Category() {
   const category = usePathname().split("/").pop();
   const params = useSearchParams();
   const tag = params.get("tag");
+  const tagId = params.get("id");
 
   const dispatch = useAppDispatch();
   const { bookList } = useAppSelector((state) => state.book);
@@ -49,7 +50,10 @@ export default function Category() {
             `/users/${user.uid}/books`,
             "tags",
             "array-contains",
-            tag
+            {
+              id: tagId,
+              name: tag,
+            }
           );
         }
         dispatchCallback(bookListInitialize(bookList));
@@ -60,7 +64,15 @@ export default function Category() {
       }
     };
     getBookList();
-  }, [user, dispatchCallback, firestoreCallback, category, dispatch, tag]);
+  }, [
+    user,
+    dispatchCallback,
+    firestoreCallback,
+    category,
+    dispatch,
+    tag,
+    tagId,
+  ]);
 
   return (
     <>

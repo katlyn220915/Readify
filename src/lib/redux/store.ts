@@ -4,6 +4,7 @@ import bookReducer from "./features/bookSlice";
 import moreActionReducer from "./features/moreActionSlice";
 import readReducer from "./features/readSlice";
 import noteReducer from "./features/noteSlice";
+import bookMarkReducer from "./features/bookMarkSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -13,6 +14,7 @@ export const makeStore = () => {
       moreAction: moreActionReducer,
       read: readReducer,
       note: noteReducer,
+      bookMark: bookMarkReducer,
     },
   });
 };

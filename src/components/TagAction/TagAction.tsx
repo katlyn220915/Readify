@@ -42,7 +42,7 @@ const TagAction = ({
         </>
       )}
       {mode === "search" && (
-        <Link href={`/search?tag=${tag.name}`}>{tag.name}</Link>
+        <Link href={`/search?tag=${tag.name}&id=${tag.id}`}>{tag.name}</Link>
       )}
       {mode === "edit" && (
         <>

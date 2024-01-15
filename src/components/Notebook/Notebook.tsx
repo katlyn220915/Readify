@@ -32,7 +32,6 @@ export default function Notebook({
       dispatch(resetNotes());
     };
   }, [dispatch]);
-  console.log(highlightList);
 
   return (
     <div
