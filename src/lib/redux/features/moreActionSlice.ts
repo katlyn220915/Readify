@@ -8,13 +8,19 @@ type initialState = {
 type moreActionState = {
   isMoreActionBtnOpen: boolean;
   isOtherMoreActionBtnOpen: boolean;
-  allTags: any[];
+  allUserTags: any[];
+  deleteId: any;
+  updateId: any;
+  updateName: any;
 };
 
 const initialState = {
   isMoreActionBtnOpen: false,
   isOtherMoreActionBtnOpen: false,
-  allTags: [],
+  allUserTags: [],
+  deleteId: null,
+  updateId: null,
+  updateName: null,
 } as moreActionState;
 
 export const moreAction = createSlice({
@@ -31,16 +37,39 @@ export const moreAction = createSlice({
       state.isOtherMoreActionBtnOpen = false;
     },
 
-    setAllTags: (state, action) => {
-      state.allTags = action.payload;
+    setAllUserTags: (state, action) => {
+      state.allUserTags = action.payload;
     },
 
-    onCreateTags: (state, action) => {
-      if (state.allTags !== undefined) {
-        state.allTags = [...state.allTags, action.payload];
-      } else {
-        state.allTags = [action.payload];
-      }
+    onCreateTag: (state, action) => {
+      state.allUserTags = [...state.allUserTags, action.payload];
+    },
+
+    onDeleteTag: (state, action) => {
+      state.allUserTags = state.allUserTags.filter(
+        (cur) => cur.id !== action.payload
+      );
+      state.deleteId = action.payload;
+    },
+
+    onUpdateTag: (state, action) => {
+      state.allUserTags = state.allUserTags.filter(
+        (cur) => cur.id !== action.payload.id
+      );
+      state.allUserTags = [
+        ...state.allUserTags,
+        {
+          id: action.payload.id,
+          name: action.payload.name,
+        },
+      ];
+      state.updateId = action.payload.id;
+      state.updateName = action.payload.name;
+    },
+    reset: (state) => {
+      state.deleteId = null;
+      state.updateId = null;
+      state.updateName = null;
     },
   },
 });
@@ -48,8 +77,11 @@ export const moreAction = createSlice({
 export const {
   setMoreActionBtn,
   setMoreActionBtnClose,
-  setAllTags,
-  onCreateTags,
+  setAllUserTags,
+  onCreateTag,
+  onDeleteTag,
+  onUpdateTag,
+  reset,
 } = moreAction.actions;
 export const selectMoreAction = (state: RootState) => state.moreAction;
 export default moreAction.reducer;

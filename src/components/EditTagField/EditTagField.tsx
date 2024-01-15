@@ -1,98 +1,97 @@
 "use client";
 
-import React, { useState, Dispatch, SetStateAction } from "react";
+import React, { useState, Dispatch, SetStateAction, useRef } from "react";
 import styles from "./EditTagField.module.css";
 
-import { usePathname } from "next/navigation";
-
-import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
-import { onCreateTags } from "@/lib/redux/features/moreActionSlice";
-import useFirestore from "@/hooks/firebase_db/useFirestore";
-import { useAuth } from "@/context/AuthContext";
+import TagProps from "@/types/TagProps";
+import useTag from "@/hooks/createTag/useTag";
+import { useAppSelector } from "@/hooks/redux/hooks";
 
 const EditTagField = ({
   tags,
   onAddTag,
   bookId,
 }: {
-  tags: string[] | null;
-  onAddTag: Dispatch<SetStateAction<string[]>>;
+  tags: TagProps[];
+  onAddTag: Dispatch<SetStateAction<TagProps[]>>;
   bookId: string;
 }) => {
-  const { allTags } = useAppSelector((state) => state.moreAction);
+  const { allUserTags } = useAppSelector((state) => state.moreAction);
+  const { createTag, addTagToBook, deleteTagFromBook } = useTag();
   const [newTagText, setNewTagText] = useState("");
-  const [searchTagList, setSearchTagList] = useState<any>();
-
-  const pathname = usePathname();
-  const category = pathname.split("/").pop();
-  const firestore = useFirestore();
-  const { user } = useAuth();
-  const dispatch = useAppDispatch();
+  const [searchTagList, setSearchTagList] = useState<any>([]);
+  const myRef = useRef(allUserTags);
 
   const handleAddTag = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     if (tags && tags.length > 5) return;
     const newTag = e.target as HTMLElement;
-    if (newTag && newTag.textContent) {
-      onAddTag((prev) => {
-        const newTagContent = newTag.textContent;
-        if (newTagContent !== null) {
-          return [...prev, newTagContent];
-        }
-        return prev;
-      });
-      setNewTagText("");
-      setSearchTagList(null);
-      if (category !== undefined && tags) {
-        await firestore.updateDocument(`/users/${user.uid}/books`, bookId, {
-          tags: [...tags, newTag.textContent],
-        });
+    if (newTag && newTag.textContent && newTag.id) {
+      addTagToBook(bookId, newTag.id, newTag.textContent);
+      if (tags.length === 0) {
+        onAddTag([
+          {
+            name: newTag.textContent!,
+            id: newTag.id,
+          },
+        ]);
+      } else {
+        onAddTag((prev) => [
+          ...prev,
+          {
+            name: newTag.textContent!,
+            id: newTag.id,
+          },
+        ]);
       }
+      myRef.current = myRef.current.filter((cur) => cur.id !== newTag.id);
+      setNewTagText("");
+      setSearchTagList([]);
     }
   };
 
   const handleDeleteTag = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    const newTag = e.target as HTMLElement;
-    if (newTag && newTag.textContent) {
-      onAddTag((prev) => [...prev.filter((cur) => cur !== newTag.textContent)]);
-      setSearchTagList(null);
+    let tag = e.target as HTMLElement;
+    if (!tag.id) {
+      tag = tag.parentElement as HTMLElement;
     }
-    firestore.updateDocument(`/users/${user.uid}/books`, bookId, {
-      tags: tags?.filter((cur) => cur !== newTag.textContent),
-    });
+    if (tag && tag.id && tag.textContent) {
+      deleteTagFromBook(
+        bookId,
+        tags.filter((cur) => cur.id !== tag.id)
+      );
+      onAddTag((tags) => tags.filter((cur) => cur.id !== tag.id));
+      setSearchTagList([]);
+    }
   };
 
   const handleCreateTag = async () => {
     if (tags && tags.length > 5) return;
     if (tags) {
-      onAddTag((prev) => [...prev, newTagText]);
+      const timestemp = String(Date.now());
+      onAddTag((prev) => [
+        ...prev,
+        {
+          name: newTagText,
+          id: timestemp,
+        },
+      ]);
       setNewTagText("");
-      dispatch(onCreateTags(newTagText));
-      setSearchTagList(null);
-      if (allTags === undefined) {
-        firestore.updateDocument(`/users/`, user.uid, {
-          tags: [newTagText],
-        });
-      } else {
-        firestore.updateDocument(`/users/`, user.uid, {
-          tags: [...allTags, newTagText],
-        });
-      }
-      firestore.updateDocument(`/users/${user.uid}/books`, bookId, {
-        tags: [...tags, newTagText],
-      });
+      setSearchTagList([]);
+      createTag(timestemp, newTagText);
+      addTagToBook(bookId, timestemp, newTagText);
     }
   };
 
   return (
     <>
       <div className={styles.select_tags_field}>
-        {tags?.map((tag, i) => (
-          <button key={`${i}${tag}`} onClick={(e) => handleDeleteTag(e)}>
-            <span>{tag}</span>
+        {tags?.map((tag) => (
+          <button key={tag.id} onClick={(e) => handleDeleteTag(e)} id={tag.id}>
+            <span>{tag.name}</span>
             <span>x</span>
           </button>
         ))}
@@ -102,15 +101,14 @@ const EditTagField = ({
             placeholder={tags?.length === 0 ? "Search or create a tag" : ""}
             onChange={(e) => {
               if (e.target.value === newTagText) {
-                setSearchTagList(null);
+                setSearchTagList([]);
                 return;
               }
               setNewTagText(e.target.value);
-              if (allTags) {
+              if (allUserTags) {
                 setSearchTagList(
-                  allTags.filter(
-                    (cur) =>
-                      cur.includes(e.target.value) && !tags?.includes(cur)
+                  myRef.current.filter((cur) =>
+                    cur.name.includes(e.target.value)
                   )
                 );
               } else {
@@ -123,12 +121,12 @@ const EditTagField = ({
       </div>
       <div className={styles.tag_options}>
         {searchTagList &&
-          searchTagList.map((tag: string, i: number) => (
-            <button key={`${tag}${i}`} onClick={(e) => handleAddTag(e)}>
-              {tag}
+          searchTagList.map((tag: TagProps) => (
+            <button key={tag.id} onClick={(e) => handleAddTag(e)} id={tag.id}>
+              {tag.name}
             </button>
           ))}
-        {searchTagList && searchTagList[0] !== newTagText && newTagText && (
+        {searchTagList.length === 0 && newTagText && (
           <p
             className={styles.btn_create_tag}
             onClick={() => handleCreateTag()}
@@ -137,7 +135,17 @@ const EditTagField = ({
             <span className={styles.new_tag}>{newTagText}</span>
           </p>
         )}
-        {!searchTagList && <p>No tags</p>}
+        {searchTagList[0] !== undefined &&
+          searchTagList[0].name !== newTagText &&
+          newTagText && (
+            <p
+              className={styles.btn_create_tag}
+              onClick={() => handleCreateTag()}
+            >
+              <span>Create tag</span>
+              <span className={styles.new_tag}>{newTagText}</span>
+            </p>
+          )}
       </div>
     </>
   );

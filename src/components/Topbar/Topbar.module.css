@@ -24,9 +24,24 @@
   line-height: 3rem;
 }
 
-.tools span {
+.tools {
+  padding: 1rem;
+  border-radius: 1rem;
+
+  position: relative;
+}
+
+.tools > span {
   display: flex;
   align-items: center;
   gap: 1rem;
   cursor: pointer;
+}
+
+.tools:hover {
+  background-color: var(--color-grey-700);
+}
+
+.tools_active {
+  background-color: var(--color-grey-700);
 }

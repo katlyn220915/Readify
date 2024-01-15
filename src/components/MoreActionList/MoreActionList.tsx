@@ -14,6 +14,7 @@ import { setMoreActionBtnClose } from "@/lib/redux/features/moreActionSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import useCloudStorage from "@/hooks/firebase_db/useCloudStorage";
 import { useAuth } from "@/context/AuthContext";
+import TagProps from "@/types/TagProps";
 
 export default function MoreActionList({
   book,
@@ -21,15 +22,14 @@ export default function MoreActionList({
   onAddTag,
 }: {
   book: BookProps;
-  tags: string[] | null;
-  onAddTag: Dispatch<SetStateAction<string[]>>;
+  tags: TagProps[];
+  onAddTag: Dispatch<SetStateAction<TagProps[]>>;
 }) {
   const [isAddTagFieldOpen, setIsAddTagFieldOpen] = useState(false);
   const dispatch = useAppDispatch();
   const firestore = useFirestore();
   const cloudStorage = useCloudStorage();
   const { user } = useAuth();
-  const pathname = usePathname();
 
   const handleDelete = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const isDataDeletedFromStore = await firestore.deleteDocument(

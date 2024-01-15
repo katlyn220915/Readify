@@ -13,8 +13,10 @@ import {
   faTags,
 } from "@fortawesome/free-solid-svg-icons";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
+import ManageTags from "../ManageTags/ManageTags";
 
 export default function Topbar() {
+  const [isManageTagsOpen, setIsManageTagsOpen] = useState(false);
   const pathname = usePathname();
   const params = useSearchParams();
   const tag = params.get("tag");
@@ -53,11 +55,19 @@ export default function Topbar() {
         <h3 className="heading__tertiary">{title}</h3>
         {tag && pathname === "/search" && <span>tag: {tag}</span>}
       </div>
-      <div className={styles.tools}>
+      <div
+        className={`${styles.tools} ${
+          isManageTagsOpen ? styles.tools_active : ""
+        }`}
+        onClick={() => {
+          setIsManageTagsOpen(!isManageTagsOpen);
+        }}
+      >
         <span>
           <FontAwesomeIcon icon={faTags} className="icon" />
           Manage tags
         </span>
+        {isManageTagsOpen && <ManageTags />}
       </div>
     </div>
   );

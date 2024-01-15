@@ -17,10 +17,9 @@ import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { bookListInitialize } from "@/lib/redux/features/bookSlice";
-import { setAllTags } from "@/lib/redux/features/moreActionSlice";
 
 export default function Category() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const category = usePathname().split("/").pop();
   const params = useSearchParams();
   const tag = params.get("tag");
@@ -54,13 +53,6 @@ export default function Category() {
           );
         }
         dispatchCallback(bookListInitialize(bookList));
-        const data = await firestoreCallback().searchByQuery(
-          `/users`,
-          "email",
-          "==",
-          "test@test.com"
-        );
-        dispatch(setAllTags(data[0].tags));
       } catch (e) {
         console.error(e);
       } finally {

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./BookList.module.css";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -16,21 +16,75 @@ import { faFeather } from "@fortawesome/free-solid-svg-icons";
 
 /* CUSTOM-HOOKS */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import { setMoreActionBtnClose } from "@/lib/redux/features/moreActionSlice";
+import {
+  onDeleteTag,
+  reset,
+  setMoreActionBtnClose,
+} from "@/lib/redux/features/moreActionSlice";
 import Tag from "../Tag/Tag";
+import TagProps from "@/types/TagProps";
+import { Firestore, arrayUnion } from "firebase/firestore";
+import useFirestore from "@/hooks/firebase_db/useFirestore";
+import { useAuth } from "@/context/AuthContext";
 
 /////////////////////////////////////////////////////////
 
 function Book({ book }: { book: BookProps }) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
-  const [tags, setTags] = useState(book.tags);
+  const [tags, setTags] = useState<TagProps[]>(book.tags);
   const { isMoreActionBtnOpen, isOtherMoreActionBtnOpen } = useAppSelector(
     (state) => state.moreAction
   );
-  const dispatch = useAppDispatch();
+  const { user } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const category = pathname.split("/").pop();
+  const firestore = useFirestore();
+
+  const dispatch = useAppDispatch();
+  const { deleteId, updateId, updateName } = useAppSelector(
+    (state) => state.moreAction
+  );
+
+  useEffect(() => {
+    if (tags && deleteId) {
+      const isContainDeletedTag = tags.filter((cur) => cur.id === deleteId);
+      if (isContainDeletedTag.length > 0) {
+        setTags((prev) => prev.filter((cur) => cur.id !== deleteId));
+        firestore.updateDocument(`/users/${user.uid}/books`, book.bookId, {
+          tags: tags.filter((cur) => cur.id !== deleteId),
+        });
+
+        dispatch(reset());
+      }
+    }
+  }, [deleteId]);
+
+  useEffect(() => {
+    if (tags && updateId) {
+      const isContainUpdateId = tags.filter((cur) => cur.id === updateId);
+      if (isContainUpdateId.length > 0) {
+        setTags((prev) => prev.filter((cur) => cur.id !== updateId));
+        setTags((prev) => [
+          ...prev,
+          {
+            id: updateId,
+            name: updateName,
+          },
+        ]);
+        firestore.updateDocument(`/users/${user.uid}/books`, book.bookId, {
+          tags: tags.filter((cur) => cur.id !== updateId),
+        });
+        firestore.updateDocument(`/users/${user.uid}/books`, book.bookId, {
+          tags: arrayUnion({
+            id: updateId,
+            name: updateName,
+          }),
+        });
+        dispatch(reset());
+      }
+    }
+  }, [updateId]);
 
   return (
     <li
@@ -72,9 +126,7 @@ function Book({ book }: { book: BookProps }) {
             <FontAwesomeIcon icon={faFeather} className="icon" />
             <span>{book.author}</span>
           </p>
-          {tags.map((tag, id) => (
-            <Tag key={`${id}${book.bookId}${tag}`} tag={tag} />
-          ))}
+          {tags && tags.map((tag) => <Tag key={tag.id} tag={tag} />)}
         </div>
       </div>
       <Categorize

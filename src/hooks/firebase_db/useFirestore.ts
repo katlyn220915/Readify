@@ -80,7 +80,6 @@ const useFirestore = () => {
     documentName: string,
     data: any
   ) => {
-    console.log(data);
     try {
       const ref = doc(db, collectionName, documentName);
       await updateDoc(ref, data);
@@ -124,7 +123,7 @@ const useFirestore = () => {
     path: string,
     field: string,
     operator: any,
-    value: string | boolean | number | null
+    value: any
   ) => {
     try {
       const q = query(collection(db, path), where(field, operator, value));

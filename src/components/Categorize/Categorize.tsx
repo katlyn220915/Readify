@@ -22,6 +22,7 @@ import { useAuth } from "@/context/AuthContext";
 import BookProps from "@/types/BookProps";
 import ActionIcon from "../ActionIcon/ActionIcon";
 import BookId from "@/app/(mylibrary)/[category]/read/[bookId]/page";
+import TagProps from "@/types/TagProps";
 
 const staticItems = [
   {
@@ -115,8 +116,8 @@ export default function Categorize({
 }: {
   isMouseEnter: boolean;
   book: BookProps;
-  tags: string[] | null;
-  onAddTag: Dispatch<SetStateAction<string[]>>;
+  tags: TagProps[];
+  onAddTag: Dispatch<SetStateAction<TagProps[]>>;
 }) {
   const { isMoreActionBtnOpen } = useAppSelector((state) => state.moreAction);
   return (
