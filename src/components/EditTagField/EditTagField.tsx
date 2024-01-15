@@ -3,7 +3,11 @@
 import React, { useState, Dispatch, SetStateAction, useRef } from "react";
 import styles from "./EditTagField.module.css";
 
+import TagAction from "../TagAction/TagAction";
+import CreateTagBtn from "../CreateTagBtn/CreateTagBtn";
+
 import TagProps from "@/types/TagProps";
+
 import useTag from "@/hooks/createTag/useTag";
 import { useAppSelector } from "@/hooks/redux/hooks";
 
@@ -17,10 +21,14 @@ const EditTagField = ({
   bookId: string;
 }) => {
   const { allUserTags } = useAppSelector((state) => state.moreAction);
-  const { createTag, addTagToBook, deleteTagFromBook } = useTag();
   const [newTagText, setNewTagText] = useState("");
   const [searchTagList, setSearchTagList] = useState<any>([]);
-  const myRef = useRef(allUserTags);
+
+  const { createTag, addTagToBook, deleteTagFromBook } = useTag();
+
+  const allArr = tags.map((cur) => cur.id);
+  const myRef = useRef(allUserTags.filter((cur) => !allArr.includes(cur.id)));
+  const tagNameRef = useRef(allUserTags.map((cur) => cur.name));
 
   const handleAddTag = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -58,12 +66,18 @@ const EditTagField = ({
     if (!tag.id) {
       tag = tag.parentElement as HTMLElement;
     }
+    console.log(tag);
     if (tag && tag.id && tag.textContent) {
+      console.log(tag.textContent.replace("x", ""));
       deleteTagFromBook(
         bookId,
         tags.filter((cur) => cur.id !== tag.id)
       );
       onAddTag((tags) => tags.filter((cur) => cur.id !== tag.id));
+      myRef.current = [
+        ...myRef.current,
+        { id: tag.id, name: tag.textContent.replace("x", "") },
+      ];
       setSearchTagList([]);
     }
   };
@@ -90,61 +104,66 @@ const EditTagField = ({
     <>
       <div className={styles.select_tags_field}>
         {tags?.map((tag) => (
-          <button key={tag.id} onClick={(e) => handleDeleteTag(e)} id={tag.id}>
-            <span>{tag.name}</span>
-            <span>x</span>
-          </button>
-        ))}
-        <div className={styles.select_tags_field_input_wrapper}>
-          <input
-            className={styles.select_tags_field_input}
-            placeholder={tags?.length === 0 ? "Search or create a tag" : ""}
-            onChange={(e) => {
-              if (e.target.value === newTagText) {
-                setSearchTagList([]);
-                return;
-              }
-              setNewTagText(e.target.value);
-              if (allUserTags) {
-                setSearchTagList(
-                  myRef.current.filter((cur) =>
-                    cur.name.includes(e.target.value)
-                  )
-                );
-              } else {
-                setSearchTagList([]);
-              }
-            }}
-            value={newTagText}
+          <TagAction
+            onAction={handleDeleteTag}
+            tag={tag}
+            key={tag.id}
+            mode="delete"
           />
-        </div>
+        ))}
+        {tags.length < 5 && (
+          <div className={styles.select_tags_field_input_wrapper}>
+            <input
+              className={styles.select_tags_field_input}
+              placeholder={tags?.length === 0 ? "Search or create a tag" : ""}
+              onChange={(e) => {
+                if (e.target.value === newTagText) {
+                  setSearchTagList([]);
+                  return;
+                }
+                setNewTagText(e.target.value);
+                if (allUserTags) {
+                  setSearchTagList(
+                    myRef.current.filter((cur) =>
+                      cur.name.includes(e.target.value)
+                    )
+                  );
+                } else {
+                  setSearchTagList([]);
+                }
+              }}
+              value={newTagText}
+              autoFocus
+            />
+          </div>
+        )}
       </div>
       <div className={styles.tag_options}>
         {searchTagList &&
           searchTagList.map((tag: TagProps) => (
-            <button key={tag.id} onClick={(e) => handleAddTag(e)} id={tag.id}>
-              {tag.name}
-            </button>
+            <TagAction
+              onAction={handleAddTag}
+              key={tag.id}
+              tag={tag}
+              mode="add"
+            />
           ))}
-        {searchTagList.length === 0 && newTagText && (
-          <p
-            className={styles.btn_create_tag}
-            onClick={() => handleCreateTag()}
-          >
-            <span>Create tag</span>
-            <span className={styles.new_tag}>{newTagText}</span>
-          </p>
-        )}
-        {searchTagList[0] !== undefined &&
+        {tags.length < 5 &&
+          searchTagList.length > 0 &&
           searchTagList[0].name !== newTagText &&
           newTagText && (
-            <p
-              className={styles.btn_create_tag}
-              onClick={() => handleCreateTag()}
-            >
-              <span>Create tag</span>
-              <span className={styles.new_tag}>{newTagText}</span>
-            </p>
+            <CreateTagBtn
+              onCreateTag={handleCreateTag}
+              newTagText={newTagText}
+            />
+          )}
+        {searchTagList.length === 0 &&
+          newTagText &&
+          !tagNameRef.current.includes(newTagText) && (
+            <CreateTagBtn
+              onCreateTag={handleCreateTag}
+              newTagText={newTagText}
+            />
           )}
       </div>
     </>

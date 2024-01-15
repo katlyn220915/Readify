@@ -5,6 +5,8 @@
   margin-bottom: 2rem;
   padding: 0 0.5rem;
   gap: 1rem;
+
+  width: 100%;
 }
 
 .select_tags_field > button,
@@ -22,10 +24,8 @@
 
 .select_tags_field_input {
   width: 100%;
-  max-width: 20rem;
   background-color: inherit;
   border: none;
-  border: 0.1rem solid var(--color-cta);
   border-radius: 0.5rem;
 }
 
@@ -33,9 +33,9 @@
   outline: none;
 }
 
-.select_tags_field_input_wrapper {
+/* .select_tags_field_input_wrapper {
   flex: 1;
-}
+} */
 
 .tag_options {
   width: 100%;

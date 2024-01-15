@@ -15,7 +15,7 @@ import {
 
 const useTag = () => {
   const firestore = useFirestore();
-  const { user } = useAuth();
+  const { user }: { user: any } = useAuth();
   const dispatch = useAppDispatch();
 
   const { allUserTags } = useAppSelector((state) => state.moreAction);
@@ -86,6 +86,30 @@ const useTag = () => {
     }
   };
 
+  const updateTagNameFromBook = async (
+    bookId: string,
+    id: string,
+    oldName: string,
+    newName: string
+  ) => {
+    try {
+      await firestore.updateDocument(`/users/${user.uid}/books`, bookId, {
+        tags: arrayRemove({
+          id,
+          name: oldName,
+        }),
+      });
+      await firestore.updateDocument(`/users/${user.uid}/books`, bookId, {
+        tags: arrayUnion({
+          id,
+          name: newName,
+        }),
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const updateTagName = async (
     id: string,
     oldName: string,
@@ -117,6 +141,7 @@ const useTag = () => {
     deleteTagFromBook,
     deleteTag,
     updateTagName,
+    updateTagNameFromBook,
   };
 };
 
