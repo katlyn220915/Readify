@@ -9,7 +9,6 @@ import BookMark from "../BookMark/BookMark";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import {
   setActionMenuToggle,
-  setActionMenuPosition,
   setDeleteHighlightMode,
   setCurrentChapter,
 } from "@/lib/redux/features/readSlice";
@@ -17,24 +16,21 @@ import { setPosition } from "@/lib/redux/features/bookMarkSlice";
 
 import getSelectionData from "@/utils/getSelectionData";
 import { findChapterElement } from "@/utils/helper";
+import ActionMenu from "../ActionMenu/ActionMenu";
 
 const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
   const { isDeleteMode, isActionMenuOpen, typeface, currentChapter } =
     useAppSelector((state) => state.read);
   const dispatch = useAppDispatch();
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const selectionData = getSelectionData();
-    if (selectionData) {
-      const { rec } = selectionData;
-      if (rec) {
-        dispatch(
-          setActionMenuPosition({
-            positionX: rec.left + rec.width / 2 - 75 / 2,
-            positionY: rec.top,
-          })
-        );
-      }
+    const target = e.target as HTMLElement;
+    if (!selectionData || target.className !== "epub_highlight") {
+      dispatch(setActionMenuToggle(false));
+    }
+    if (selectionData || target.className === "epub_highlight") {
+      dispatch(setActionMenuToggle(true));
     }
   };
 
@@ -56,12 +52,6 @@ const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
     if (target.className === "epub_highlight") {
       if (!isActionMenuOpen) {
         dispatch(
-          setActionMenuPosition({
-            positionX: e.pageX - 75,
-            positionY: e.pageY - 50,
-          })
-        );
-        dispatch(
           setDeleteHighlightMode({
             isDeleteMode: true,
             highlightId: target.dataset.highlightId,
@@ -80,21 +70,24 @@ const EbookViewer = ({ bookDocuments }: { bookDocuments: any[] }) => {
 
   return (
     <>
-      <div
-        id="viewer"
-        className={`${styles.viewer} ${typeface.className}`}
-        onMouseDown={(e) => {
-          handleMouseDown(e);
-        }}
-        onMouseUp={() => {
-          handleMouseUp();
-        }}
-      >
+      <div className={styles.root}>
+        <ActionMenu />
         <BookMark />
-        {bookDocuments !== undefined &&
-          bookDocuments.map((div) => (
-            <EbookChapter divElement={div} key={div.props.id} />
-          ))}
+        <div
+          id="viewer"
+          className={`${styles.viewer} ${typeface.className}`}
+          onMouseDown={(e) => {
+            handleMouseDown(e);
+          }}
+          onMouseUp={(e) => {
+            handleMouseUp(e);
+          }}
+        >
+          {bookDocuments !== undefined &&
+            bookDocuments.map((div) => (
+              <EbookChapter divElement={div} key={div.props.id} />
+            ))}
+        </div>
       </div>
     </>
   );

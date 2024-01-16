@@ -21,11 +21,8 @@ import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import parseEpub from "@/server-actions/parseEpub/parseEpub";
 
-import {
-  setCurrentBook,
-  setActionMenuPositionY,
-} from "@/lib/redux/features/readSlice";
-import { setHighlight, resetNotes } from "@/lib/redux/features/noteSlice";
+import { setCurrentBook } from "@/lib/redux/features/readSlice";
+import { setHighlight } from "@/lib/redux/features/noteSlice";
 import highlightHelper from "@/utils/highlightHelper";
 
 export default function ReadingArea({
@@ -35,9 +32,6 @@ export default function ReadingArea({
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [bookDocuments, setBookDocuments] = useState<any[]>([]);
-  const { actionMenuPositionY, isActionMenuOpen } = useAppSelector(
-    (state) => state.read
-  );
 
   const arrPath = usePathname().split("/");
   const category = arrPath[1];
@@ -135,8 +129,6 @@ export default function ReadingArea({
         className={`${styles.epubContainer}`}
         onWheel={(e) => {
           const delta = Math.round(e.deltaY);
-          if (isActionMenuOpen)
-            dispatch(setActionMenuPositionY(actionMenuPositionY - delta));
           if (delta < 0) {
             setIsNavigationVisible(true);
           } else {

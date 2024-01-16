@@ -22,8 +22,6 @@ type readState = {
     className: any;
   };
   isActionMenuOpen: boolean;
-  actionMenuPositionX: number;
-  actionMenuPositionY: number;
   markerColor: string;
   isDeleteMode: boolean;
   deleteHighlightID: string | null;
@@ -46,8 +44,6 @@ const initialState = {
     className: literata.className,
   },
   isActionMenuOpen: false,
-  actionMenuPositionX: 0,
-  actionMenuPositionY: 0,
   markerColor: "marker-default",
   isDeleteMode: false,
   deleteHighlightID: null,
@@ -98,16 +94,6 @@ export const read = createSlice({
       state.isActionMenuOpen = action.payload;
     },
 
-    setActionMenuPosition: (state, action) => {
-      state.isActionMenuOpen = true;
-      state.actionMenuPositionX = action.payload.positionX;
-      state.actionMenuPositionY = action.payload.positionY;
-    },
-
-    setActionMenuPositionY: (state, action) => {
-      state.actionMenuPositionY = action.payload;
-    },
-
     setMarkerColor: (state, action) => {
       state.markerColor = action.payload;
     },
@@ -135,8 +121,6 @@ export const {
   setLineSpacing,
   setLineWidth,
   setActionMenuToggle,
-  setActionMenuPosition,
-  setActionMenuPositionY,
   setMarkerColor,
   setDeleteHighlightMode,
   setIsAddNoteBlockOpen,

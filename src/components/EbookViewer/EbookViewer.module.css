@@ -1,3 +1,10 @@
+.root {
+  max-width: 80rem;
+  position: relative;
+
+  margin: 0 auto;
+}
+
 .viewer {
   max-width: 80rem;
   margin: 0 auto;

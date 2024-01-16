@@ -3,17 +3,12 @@
 import React, { useState } from "react";
 import styles from "./page.module.css";
 
-import ActionMenu from "@/components/ActionMenu/ActionMenu";
 import ReadingArea from "@/components/ReadingArea/ReadingArea";
 import BookContent from "@/components/BookContent/BookContent";
 import ReadingNavigation from "@/components/ReadingNavigation/ReadingNavigation";
-
-import { useAppSelector } from "@/hooks/redux/hooks";
 import Notebook from "@/components/Notebook/Notebook";
 
 export default function BookId() {
-  const { isActionMenuOpen, actionMenuPositionX, actionMenuPositionY } =
-    useAppSelector((state) => state.read);
   const [isNotebookOpen, setIsNotebookOpen] = useState(true);
   const [isContentListOpen, setIsContentListOpen] = useState(false);
   const [isNavigationVisible, setIsNavigationVisible] = useState(false);
@@ -22,12 +17,6 @@ export default function BookId() {
 
   return (
     <>
-      {isActionMenuOpen && (
-        <ActionMenu
-          xPosition={actionMenuPositionX}
-          yPosition={actionMenuPositionY - 30}
-        />
-      )}
       <ReadingNavigation
         isContentListOpen={isContentListOpen}
         onSetContentListOpen={setIsContentListOpen}

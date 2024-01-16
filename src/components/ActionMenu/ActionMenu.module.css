@@ -4,7 +4,8 @@
 }
 
 .action_menu {
-  width: 100%;
+  position: absolute;
+  z-index: 1000000000;
 }
 
 .action_menu_inner {
