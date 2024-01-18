@@ -52,7 +52,6 @@ const ActionMenu = () => {
 
   const handleHighlight = async () => {
     const selectionData = getSelectionData();
-    console.log("執行");
     if (selectionData) {
       const { range, startContainer, endContainer, selectedText } =
         selectionData;
@@ -143,6 +142,8 @@ const ActionMenu = () => {
       console.log("Delete fail");
     }
   };
+
+  const handleBookMark = () => {};
 
   useEffect(() => {
     const { rec } = getSelectionData() || { rec: null };

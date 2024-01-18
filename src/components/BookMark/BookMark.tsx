@@ -1,12 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./BookMark.module.css";
-import { useAppSelector } from "@/hooks/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import { setIndicatorIntersecting } from "@/lib/redux/features/bookMarkSlice";
 
 export default function BookMark({}: {}) {
   const { height, transform } = useAppSelector((state) => state.bookMark);
+  const dispatch = useAppDispatch();
+  const bookIndicator = useRef(null);
+
   // useEffect(() => {
   //   // const window = document
   //   // var elem = document.elementFromPoint(window.width/2, window.height/2);
+
   //   // 獲取視窗的寬度和高度
   //   var windowWidth =
   //     window.innerWidth ||
@@ -25,7 +30,22 @@ export default function BookMark({}: {}) {
   //   var elem = document.elementFromPoint(centerX, centerY);
   //   console.log(elem);
   // });
+  // console.log(bookIndicator.current);
 
+  useEffect(() => {
+    if (bookIndicator.current) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) dispatch(setIndicatorIntersecting(false));
+          if (entry.isIntersecting) dispatch(setIndicatorIntersecting(true));
+        },
+        {
+          threshold: 0.5,
+        }
+      );
+      observer.observe(bookIndicator.current);
+    }
+  });
   return (
     <div
       className={styles.bookMark}
@@ -33,6 +53,8 @@ export default function BookMark({}: {}) {
         height: `${height}px`,
         transform: `translate(-10px, ${transform}px)`,
       }}
+      ref={bookIndicator}
+      id="indicator"
     ></div>
   );
 }

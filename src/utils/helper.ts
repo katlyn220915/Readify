@@ -30,4 +30,25 @@ function scrollIntoScreen(target: HTMLElement, position: "center" | "start") {
   });
 }
 
-export { decode, findChapterElement, scrollIntoScreen };
+function getElementPositionY(
+  rootElementId: string,
+  currentElement: HTMLElement
+) {
+  const rootRect = document
+    .getElementById(rootElementId)
+    ?.getBoundingClientRect();
+  const currentElementRect = currentElement.getBoundingClientRect();
+  if (rootRect && currentElementRect) {
+    return {
+      height: currentElementRect.height,
+      positionY: currentElementRect.top - rootRect.top,
+    };
+  } else {
+    return {
+      height: undefined,
+      positionY: undefined,
+    };
+  }
+}
+
+export { decode, findChapterElement, scrollIntoScreen, getElementPositionY };

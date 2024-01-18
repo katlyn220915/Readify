@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import styles from "./page.module.css";
 
 import ReadingArea from "@/components/ReadingArea/ReadingArea";
-import BookContent from "@/components/BookContent/BookContent";
 import ReadingNavigation from "@/components/ReadingNavigation/ReadingNavigation";
 import Notebook from "@/components/Notebook/Notebook";
+import BookIndices from "@/components/BookIndices/BookIndices";
 
 export default function BookId() {
   const [isNotebookOpen, setIsNotebookOpen] = useState(true);
@@ -25,7 +25,7 @@ export default function BookId() {
         isNavigationVisible={isNavigationVisible}
       />
       <div className={`${styles.container}`}>
-        <BookContent isContentListOpen={isContentListOpen} />
+        <BookIndices isContentListOpen={isContentListOpen} />
         <ReadingArea setIsNavigationVisible={setIsNavigationVisible} />
         <Notebook isNotebookOpen={isNotebookOpen} />
       </div>

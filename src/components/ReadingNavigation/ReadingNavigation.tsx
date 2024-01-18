@@ -12,6 +12,7 @@ import {
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import CustomStylePlatte from "../CustomStylePlatte/CustomStylePlatte";
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 
 const ReadingNavigation = ({
   isContentListOpen,
@@ -29,6 +30,11 @@ const ReadingNavigation = ({
   const [isCustomizeBoxOpen, setIsCustomizeBoxOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+
+  const addBookMark = () => {
+    const indicator = document.getElementById("indicator");
+    console.log(indicator);
+  };
 
   return (
     <>
@@ -69,6 +75,15 @@ const ReadingNavigation = ({
           {isCustomizeBoxOpen && <CustomStylePlatte />}
         </div>
         <div className={styles.right_btn_wrapper}>
+          <ActionIcon
+            iconProp={faBookmark}
+            promptText="Add book mark"
+            position="bottom"
+            showPrompt={true}
+            onAction={() => {
+              addBookMark();
+            }}
+          />
           <ActionIcon
             iconProp={faPenToSquare}
             promptText={isNotebookOpen ? "Close Notebook" : "Open Notebook"}

@@ -11,7 +11,7 @@ import React, {
 import styles from "./ReadingArea.module.css";
 
 import Spinner from "../Spinner/Spinner";
-import EbookViewer from "../EbookViewer/EbookViewer";
+import EbookViewer from "../ContentsRoot/ContentsRoot";
 import EbookIntroductionHeader from "../EbookIntroductionHeader/EbookIntroductionHeader";
 
 /* HOOKS */
