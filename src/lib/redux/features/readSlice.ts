@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "@/lib/redux/store";
 import BookProps from "@/types/BookProps";
-import { literata, roboto, inter } from "@/fonts/fonts";
+import { literata, roboto, inter } from "@/app/fonts/fonts";
+import { stat } from "fs";
 
 type initialState = {
   state: readState;
@@ -110,6 +111,7 @@ export const read = createSlice({
 
     setTypeface: (state, action) => {
       state.typeface = action.payload;
+      console.log(state.typeface);
     },
   },
 });

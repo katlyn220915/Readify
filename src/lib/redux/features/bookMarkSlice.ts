@@ -14,7 +14,7 @@ type bookMarkState = {
 const initialState = {
   height: 0,
   transform: 0,
-  isIndicatorIntersecting: false,
+  isIndicatorIntersecting: true,
   bookMarkParagraph: 0,
 } as bookMarkState;
 

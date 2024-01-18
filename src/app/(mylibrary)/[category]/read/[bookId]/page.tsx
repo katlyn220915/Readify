@@ -10,8 +10,8 @@ import BookIndices from "@/components/BookIndices/BookIndices";
 
 export default function BookId() {
   const [isNotebookOpen, setIsNotebookOpen] = useState(true);
-  const [isContentListOpen, setIsContentListOpen] = useState(false);
-  const [isNavigationVisible, setIsNavigationVisible] = useState(false);
+  const [isContentListOpen, setIsContentListOpen] = useState(true);
+  const [isNavigationVisible, setIsNavigationVisible] = useState(true);
 
   // console.log("render -", " BookId page");
 

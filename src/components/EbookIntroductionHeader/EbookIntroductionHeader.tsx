@@ -1,3 +1,4 @@
+import TagAction from "../TagAction/TagAction";
 import styles from "./EbookIntroductionHeader.module.css";
 import { useAppSelector } from "@/hooks/redux/hooks";
 
@@ -6,7 +7,19 @@ const EbookIntroductionHeader = () => {
   return (
     <div className={styles.book_intro}>
       <h2 className={styles.book_intro_title}>{currentBook?.title}</h2>
-      <p className={styles.book_intro_autor}>{currentBook?.author}</p>
+      <div className={styles.book_intro_bottom}>
+        <span className={styles.book_intro_author}>{currentBook?.author}</span>
+        <span className={styles.book_intro_tags}>
+          {currentBook?.tags.map((tag) => (
+            <TagAction
+              key={tag.id}
+              onAction={() => {}}
+              tag={tag}
+              mode="search"
+            />
+          ))}
+        </span>
+      </div>
     </div>
   );
 };

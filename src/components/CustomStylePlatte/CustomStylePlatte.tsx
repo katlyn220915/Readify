@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styles from "./CustomStylePlatte.module.css";
-import { literata, roboto, inter, notoSerif } from "@/fonts/fonts";
+import { literata, roboto, inter, notoSerif } from "@/app/fonts/fonts";
 
 import CustomStylePlatteItem from "../CustomStylePlatteItem/CustomStylePlatteItem";
 

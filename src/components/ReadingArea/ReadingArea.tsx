@@ -11,7 +11,7 @@ import React, {
 import styles from "./ReadingArea.module.css";
 
 import Spinner from "../Spinner/Spinner";
-import EbookViewer from "../ContentsRoot/ContentsRoot";
+import ContentsRoot from "../ContentsRoot/ContentsRoot";
 import EbookIntroductionHeader from "../EbookIntroductionHeader/EbookIntroductionHeader";
 
 /* HOOKS */
@@ -32,6 +32,7 @@ export default function ReadingArea({
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [bookDocuments, setBookDocuments] = useState<any[]>([]);
+  const [bookData, setBookData] = useState<any>();
 
   const arrPath = usePathname().split("/");
   const category = arrPath[1];
@@ -56,6 +57,7 @@ export default function ReadingArea({
             bookId
           );
           if (bookData) {
+            setBookData(bookData);
             const recordChapter = bookData.record ? bookData.record : undefined;
             dispatch(
               setCurrentBook({
@@ -138,7 +140,12 @@ export default function ReadingArea({
       >
         {isLoading && <Spinner />}
         <EbookIntroductionHeader />
-        {bookDocuments && <EbookViewer bookDocuments={bookDocuments} />}
+        {bookDocuments && (
+          <ContentsRoot
+            bookDocuments={bookDocuments}
+            bookMark={bookData?.bookMark}
+          />
+        )}
       </div>
     </>
   );

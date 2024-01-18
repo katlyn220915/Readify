@@ -1,7 +1,8 @@
 import { Roboto, Literata, Inter, Noto_Serif } from "next/font/google";
 
 export const literata = Literata({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-literata",
   display: "swap",
 });

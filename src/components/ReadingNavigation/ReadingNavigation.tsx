@@ -1,18 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "./ReadingNavigation.module.css";
 
 import ActionIcon from "../ActionIcon/ActionIcon";
+import CustomStylePlatte from "../CustomStylePlatte/CustomStylePlatte";
+
 import {
   faList,
   faFont,
   faCircleArrowLeft,
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
-import CustomStylePlatte from "../CustomStylePlatte/CustomStylePlatte";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+import useBook from "@/hooks/useBook/useBook";
+import ActionPrompt from "../ActionPrompt/ActionPrompt";
 
 const ReadingNavigation = ({
   isContentListOpen,
@@ -28,13 +31,28 @@ const ReadingNavigation = ({
   isNavigationVisible: boolean;
 }) => {
   const [isCustomizeBoxOpen, setIsCustomizeBoxOpen] = useState(false);
+  const [isStoreBookMarkError, setIsStoreBookMarkError] = useState(false);
+  const [isStoreBookMarkSuccess, setIsStoreBookMarkSuccess] = useState(false);
+  const { storeBookMark } = useBook();
   const router = useRouter();
   const pathname = usePathname();
 
   const addBookMark = () => {
-    const indicator = document.getElementById("indicator");
-    console.log(indicator);
+    const indicator = document.querySelector("[data-indicator]") as HTMLElement;
+    if (indicator) {
+      storeBookMark(indicator);
+      setIsStoreBookMarkSuccess(true);
+
+      setTimeout(() => setIsStoreBookMarkSuccess(false), 3000);
+    } else {
+      setIsStoreBookMarkError(true);
+      setTimeout(() => setIsStoreBookMarkError(false), 3000);
+    }
   };
+
+  useEffect(() => {
+    if (!isNavigationVisible) setIsCustomizeBoxOpen(false);
+  }, [isNavigationVisible]);
 
   return (
     <>
@@ -93,6 +111,12 @@ const ReadingNavigation = ({
           />
         </div>
       </nav>
+      <ActionPrompt
+        isError={isStoreBookMarkError}
+        errorMes="Click a paragraph to add book mark"
+        isSuccessful={isStoreBookMarkSuccess}
+        successfulMes="Book mark added"
+      />
     </>
   );
 };

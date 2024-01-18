@@ -1,36 +1,38 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import styles from "./BookMark.module.css";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import { setIndicatorIntersecting } from "@/lib/redux/features/bookMarkSlice";
+import {
+  setIndicatorIntersecting,
+  setPosition,
+} from "@/lib/redux/features/bookMarkSlice";
+import useFirestore from "@/hooks/firebase_db/useFirestore";
+import { getElementPositionY, scrollIntoScreen } from "@/utils/helper";
 
-export default function BookMark({}: {}) {
+export default function BookMark({ bookMark }: { bookMark: any }) {
   const { height, transform } = useAppSelector((state) => state.bookMark);
+  const { currentBook, isLoading } = useAppSelector((state) => state.read);
   const dispatch = useAppDispatch();
   const bookIndicator = useRef(null);
+  const currentParagraph = useRef<any>(null);
 
-  // useEffect(() => {
-  //   // const window = document
-  //   // var elem = document.elementFromPoint(window.width/2, window.height/2);
+  // const changeTargetCb = useCallback(
+  //   function changeTargetElement(
+  //     lastTarget: HTMLElement | null,
+  //     newTarget: HTMLElement
+  //   ) {
+  //     lastTarget = document.querySelector("[data-indicator]");
+  //     if (lastTarget) lastTarget.removeAttribute("data-indicator");
+  //     newTarget.dataset.indicator = "true";
+  //     const { height, positionY } = getElementPositionY("viewer", newTarget);
+  //     dispatch(setPosition({ height, transform: positionY }));
+  //     return newTarget;
+  //   },
+  //   [dispatch]
+  // );
 
-  //   // 獲取視窗的寬度和高度
-  //   var windowWidth =
-  //     window.innerWidth ||
-  //     document.documentElement.clientWidth ||
-  //     document.body.clientWidth;
-  //   var windowHeight =
-  //     window.innerHeight ||
-  //     document.documentElement.clientHeight ||
-  //     document.body.clientHeight;
-
-  //   // 計算中心點的坐標
-  //   var centerX = windowWidth / 2;
-  //   var centerY = windowHeight / 2;
-
-  //   // 使用 document.elementFromPoint 獲取位於中心的元素
-  //   var elem = document.elementFromPoint(centerX, centerY);
-  //   console.log(elem);
-  // });
-  // console.log(bookIndicator.current);
+  // const currentBookMemo = useMemo(() => {
+  //   return currentBook;
+  // }, [currentBook]);
 
   useEffect(() => {
     if (bookIndicator.current) {
@@ -46,6 +48,7 @@ export default function BookMark({}: {}) {
       observer.observe(bookIndicator.current);
     }
   });
+
   return (
     <div
       className={styles.bookMark}

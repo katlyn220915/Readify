@@ -164,9 +164,12 @@ const parseEpub = () => {
       const bodyContent = doc.body.innerHTML;
 
       const chapterDiv = (
-        <div key={path} id={decode(path)} className="epub_document_content">
-          <div dangerouslySetInnerHTML={{ __html: bodyContent }} />
-        </div>
+        <div
+          dangerouslySetInnerHTML={{ __html: bodyContent }}
+          key={path}
+          id={decode(path)}
+          className="epub_document_content"
+        />
       );
       return chapterDiv;
     });

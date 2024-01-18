@@ -5,12 +5,18 @@ import BookMark from "../BookMark/BookMark";
 import ActionMenu from "../ActionMenu/ActionMenu";
 import BookContents from "../Contents/BookContents";
 
-const ContentsRoot = ({ bookDocuments }: { bookDocuments: any[] }) => {
+const ContentsRoot = ({
+  bookDocuments,
+  bookMark,
+}: {
+  bookDocuments: any[];
+  bookMark: any;
+}) => {
   return (
     <>
       <div className={styles.root}>
         <ActionMenu />
-        <BookMark />
+        <BookMark bookMark={bookMark} />
         <BookContents bookDocuments={bookDocuments} />
       </div>
     </>

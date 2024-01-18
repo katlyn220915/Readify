@@ -14,21 +14,25 @@ const EbookChapter = React.memo(
       currentCategory,
       currentBook,
       currentChapter,
+      typeface,
     } = useAppSelector((state) => state.read);
     const firestoreMemo = useCallback(useFirestore, [useFirestore]);
     const { user } = useAuth();
 
-    useEffect(() => {
-      if (currentChapter !== undefined) {
-        const chapterElement = document.getElementById(currentChapter);
-        if (chapterElement) scrollIntoScreen(chapterElement, "start");
-      }
-    }, []);
+    // useEffect(() => {
+    //   if (currentChapter !== undefined) {
+    //     const chapterElement = document.getElementById(currentChapter);
+    //     if (chapterElement) scrollIntoScreen(chapterElement, "start");
+    //   }
+    // }, []);
 
     return (
       <div
-        className="epub_document"
-        style={{ fontSize: `${fontSize}px`, lineHeight: lineSpacing }}
+        className={`epub_document`}
+        style={{
+          fontSize: `${fontSize}px`,
+          lineHeight: lineSpacing,
+        }}
       >
         {divElement}
       </div>

@@ -2,26 +2,28 @@
   max-width: 80rem;
   padding-top: 1rem;
   padding-left: 1.5rem;
-  margin: 0 auto 4rem auto;
+  margin: 8rem auto 4rem auto;
 }
 
 .book_intro .book_intro_title {
   font-size: 4rem;
-  padding-bottom: 3rem;
-  position: relative;
+  padding-bottom: 2rem;
+
+  border-bottom: 1px solid var(--color-grey-700);
+  margin-bottom: 3rem;
 }
 
-/* .book_intro .book_intro_title::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 0.2rem;
-  bottom: 0;
-  left: 0;
-  border-bottom: 0.1rem solid var(--color-grey-500);
-} */
-
-.book_intro .book_intro_author {
+.book_intro_author {
   font-size: var(--font-size-small);
-  color: var(--color-grey-500);
+  color: var(--color-grey-400);
+}
+
+.book_intro_bottom {
+  display: flex;
+  gap: 2rem;
+}
+
+.book_intro_tags {
+  display: flex;
+  gap: 1rem;
 }

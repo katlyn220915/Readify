@@ -7,6 +7,10 @@ type BookProps = {
   coverURL: string | null;
   title: string;
   tags: TagProps[];
+  bookMark?: {
+    chapter: string;
+    index: string | number;
+  };
 };
 
 export default BookProps;

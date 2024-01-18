@@ -12,23 +12,28 @@ import {
 import { setPosition } from "@/lib/redux/features/bookMarkSlice";
 
 import getSelectionData from "@/utils/getSelectionData";
-import { findChapterElement } from "@/utils/helper";
-
+import { findChapterElement, scrollIntoScreen } from "@/utils/helper";
 import { getElementPositionY } from "@/utils/helper";
+import useBook from "@/hooks/useBook/useBook";
 
 const BookContents = ({ bookDocuments }: { bookDocuments: any[] }) => {
   const currentParagraph = useRef<null | HTMLElement>(null);
 
-  const { isDeleteMode, isActionMenuOpen, typeface, currentChapter } =
-    useAppSelector((state) => state.read);
+  const {
+    isDeleteMode,
+    isActionMenuOpen,
+    typeface,
+    currentChapter,
+    currentBook,
+  } = useAppSelector((state) => state.read);
   const { isIndicatorIntersecting } = useAppSelector((state) => state.bookMark);
-
   const dispatch = useAppDispatch();
   const changeTargetCb = useCallback(
     function changeTargetElement(
       lastTarget: HTMLElement | null,
       newTarget: HTMLElement
     ) {
+      lastTarget = document.querySelector("[data-indicator]");
       if (lastTarget) lastTarget.removeAttribute("data-indicator");
       newTarget.dataset.indicator = "true";
       const { height, positionY } = getElementPositionY("viewer", newTarget);
@@ -81,13 +86,26 @@ const BookContents = ({ bookDocuments }: { bookDocuments: any[] }) => {
   };
 
   useEffect(() => {
-    if (!currentParagraph.current) return;
-    if (!isIndicatorIntersecting) {
+    if (!currentParagraph.current && bookDocuments.length > 0) {
+      let target;
+      if (currentBook && currentBook.bookMark) {
+        const chapterChildren = document.getElementById(
+          currentBook.bookMark.chapter
+        )?.children;
+        if (chapterChildren) {
+          const index = Number(currentBook.bookMark.index) + 1;
+          target = chapterChildren[index] as HTMLElement;
+          currentParagraph.current = changeTargetCb(null, target);
+          scrollIntoScreen(currentParagraph.current, "center");
+        }
+      }
+    } else if (currentParagraph.current && !isIndicatorIntersecting) {
       const left = document
         .querySelector(".epub_document_content")
         ?.getBoundingClientRect().left as number;
       const top = { x: left + 100, y: 100 };
       const topEl = document.elementFromPoint(top.x, top.y) as HTMLElement;
+      console.log(topEl);
 
       if (topEl && topEl.tagName.toLowerCase() === "p") {
         currentParagraph.current = changeTargetCb(
