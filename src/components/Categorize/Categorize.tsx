@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { usePathname } from "next/navigation";
 import styles from "./Categorize.module.css";
 
@@ -21,6 +21,8 @@ import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAuth } from "@/context/AuthContext";
 import BookProps from "@/types/BookProps";
 import ActionIcon from "../ActionIcon/ActionIcon";
+import BookId from "@/app/(mylibrary)/[category]/read/[bookId]/page";
+import TagProps from "@/types/TagProps";
 
 const staticItems = [
   {
@@ -79,19 +81,11 @@ function CategorizeItem({
   ) => {
     e.stopPropagation();
     if (pathname === item.path) return;
-    const isSetDocSuccess = await firestore.setDocument(
-      `users/${user.uid}/${item.path.split("/").pop()}`,
-      book.bookId,
-      book
-    );
-    const isDeleteDocSuccess = await firestore.deleteDocument(
-      `/users/${user.uid}/${pathname.split("/").pop()}/${book.bookId}`
-    );
-
-    if (isSetDocSuccess && isDeleteDocSuccess) {
-      dispatch(deleteBook(book.bookId));
-      dispatch(resetSuccessful());
-    }
+    await firestore.updateDocument(`users/${user.uid}/books`, book.bookId, {
+      category: item.path.split("/").pop(),
+    });
+    dispatch(deleteBook(book.bookId));
+    dispatch(resetSuccessful());
   };
   return (
     <>
@@ -117,9 +111,13 @@ function CategorizeItem({
 export default function Categorize({
   isMouseEnter,
   book,
+  tags,
+  onAddTag,
 }: {
   isMouseEnter: boolean;
   book: BookProps;
+  tags: TagProps[];
+  onAddTag: Dispatch<SetStateAction<TagProps[]>>;
 }) {
   const { isMoreActionBtnOpen } = useAppSelector((state) => state.moreAction);
   return (
@@ -132,7 +130,9 @@ export default function Categorize({
               <CategorizeItem item={item} key={item.path} book={book} />
             ))}
           </ul>
-          {isMoreActionBtnOpen && <MoreActionList book={book} />}
+          {isMoreActionBtnOpen && (
+            <MoreActionList book={book} tags={tags} onAddTag={onAddTag} />
+          )}
         </div>
       )}
     </>

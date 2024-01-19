@@ -1,0 +1,48 @@
+.book_tag {
+  font-size: var(--font-size-small);
+  background-color: var(--color-blue-700);
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+
+  cursor: pointer;
+}
+
+.book_tag:hover {
+  background-color: var(--color-blue-500);
+}
+
+.user_tag {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user_tag_actions {
+  display: flex;
+}
+
+.user_tag_actions > button {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  padding: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user_tag_actions > button:hover {
+  background-color: var(--color-grey-700);
+}
+
+.input {
+  max-width: 10rem;
+  background: none;
+  border: none;
+}
+
+.input:focus-visible,
+.input:focus,
+.input:target {
+  outline: none;
+}

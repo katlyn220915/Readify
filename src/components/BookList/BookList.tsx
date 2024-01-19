@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./BookList.module.css";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -16,19 +16,64 @@ import { faFeather } from "@fortawesome/free-solid-svg-icons";
 
 /* CUSTOM-HOOKS */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import { setMoreActionBtnClose } from "@/lib/redux/features/moreActionSlice";
+import {
+  reset,
+  setMoreActionBtnClose,
+} from "@/lib/redux/features/moreActionSlice";
+import TagProps from "@/types/TagProps";
+import useTag from "@/hooks/createTag/useTag";
+import TagAction from "../TagAction/TagAction";
 
 /////////////////////////////////////////////////////////
 
 function Book({ book }: { book: BookProps }) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
+  const [tags, setTags] = useState<TagProps[]>(book.tags);
   const { isMoreActionBtnOpen, isOtherMoreActionBtnOpen } = useAppSelector(
     (state) => state.moreAction
   );
-  const dispatch = useAppDispatch();
+  const { deleteTagFromBook, updateTagNameFromBook } = useTag();
   const router = useRouter();
   const pathname = usePathname();
   const category = pathname.split("/").pop();
+
+  const dispatch = useAppDispatch();
+  const { deleteId, updateId, updateName } = useAppSelector(
+    (state) => state.moreAction
+  );
+
+  useEffect(() => {
+    if (tags && deleteId) {
+      const isContainDeletedTag = tags.filter((cur) => cur.id === deleteId);
+      if (isContainDeletedTag.length > 0) {
+        setTags((prev) => prev.filter((cur) => cur.id !== deleteId));
+        deleteTagFromBook(
+          book.bookId,
+          tags.filter((cur) => cur.id !== deleteId)
+        );
+        dispatch(reset());
+      }
+    }
+  }, [deleteId]);
+
+  useEffect(() => {
+    if (tags && updateId) {
+      const isContainUpdateId = tags.filter((cur) => cur.id === updateId);
+      if (isContainUpdateId.length > 0) {
+        const oldName = isContainUpdateId[0].name;
+        setTags((prev) => prev.filter((cur) => cur.id !== updateId));
+        setTags((prev) => [
+          ...prev,
+          {
+            id: updateId,
+            name: updateName,
+          },
+        ]);
+        updateTagNameFromBook(book.bookId, updateId, oldName, updateName);
+        dispatch(reset());
+      }
+    }
+  }, [updateId]);
 
   return (
     <li
@@ -70,14 +115,25 @@ function Book({ book }: { book: BookProps }) {
             <FontAwesomeIcon icon={faFeather} className="icon" />
             <span>{book.author}</span>
           </p>
-          {/* {book.tags.map((tag, id) => (
-            <span key={`${id}+ ${book.bookId}`} className={styles.tag}>
-            {tag}
-            </span>
-          ))} */}
+          {tags &&
+            tags.map((tag) => (
+              <TagAction
+                onAction={(e) => {
+                  e.stopPropagation();
+                }}
+                key={tag.id}
+                tag={tag}
+                mode="search"
+              />
+            ))}
         </div>
       </div>
-      <Categorize isMouseEnter={isMouseEnter} book={book} />
+      <Categorize
+        isMouseEnter={isMouseEnter}
+        book={book}
+        tags={tags}
+        onAddTag={setTags}
+      />
     </li>
   );
 }

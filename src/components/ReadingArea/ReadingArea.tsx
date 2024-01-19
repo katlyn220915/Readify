@@ -11,7 +11,7 @@ import React, {
 import styles from "./ReadingArea.module.css";
 
 import Spinner from "../Spinner/Spinner";
-import EbookViewer from "../EbookViewer/EbookViewer";
+import ContentsRoot from "../ContentsRoot/ContentsRoot";
 import EbookIntroductionHeader from "../EbookIntroductionHeader/EbookIntroductionHeader";
 
 /* HOOKS */
@@ -21,11 +21,9 @@ import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import parseEpub from "@/server-actions/parseEpub/parseEpub";
 
-import {
-  setCurrentBook,
-  setActionMenuPositionY,
-  setCurrentChapter,
-} from "@/lib/redux/features/readSlice";
+import { setCurrentBook } from "@/lib/redux/features/readSlice";
+import { setHighlight } from "@/lib/redux/features/noteSlice";
+import highlightHelper from "@/utils/highlightHelper";
 
 export default function ReadingArea({
   setIsNavigationVisible,
@@ -34,15 +32,9 @@ export default function ReadingArea({
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [bookDocuments, setBookDocuments] = useState<any[]>([]);
-  const { actionMenuPositionY, isActionMenuOpen } = useAppSelector(
-    (state) => state.read
-  );
-  const [chapterArr, setChapterArr] = useState<any>([]);
-  const [hasMoreChapter, setHasMoreChapter] = useState(true);
-  const [chapterCount, setChapterCount] = useState(0);
+  const [bookData, setBookData] = useState<any>();
 
-  const pathname = usePathname();
-  const arrPath = pathname.split("/");
+  const arrPath = usePathname().split("/");
   const category = arrPath[1];
   const bookId = arrPath[arrPath.length - 1];
 
@@ -61,11 +53,19 @@ export default function ReadingArea({
         setIsLoading(true);
         if (user) {
           const bookData = await firestore.getDocumentById(
-            `/users/${user.uid}/${category}`,
+            `/users/${user.uid}/books`,
             bookId
           );
-          dispatch(setCurrentBook({ currentBook: bookData, category }));
           if (bookData) {
+            setBookData(bookData);
+            const recordChapter = bookData.record ? bookData.record : undefined;
+            dispatch(
+              setCurrentBook({
+                currentBook: bookData,
+                category,
+                chapter: recordChapter,
+              })
+            );
             const epubDocuments = await parser.getAllDocuments(
               bookData.bookDownloadURL
             );
@@ -74,7 +74,6 @@ export default function ReadingArea({
               bookData.images
             );
             setBookDocuments(customReactJSXDivs);
-            setChapterArr([customReactJSXDivs[0]]);
           }
         }
       } catch (e) {
@@ -86,29 +85,44 @@ export default function ReadingArea({
     bookRender();
   }, [user, bookId, category, dispatch, parserMemo, firestoreMemo]);
 
-  console.log("目前新陣列為：", chapterArr);
-
-  //When the observered div element has been triggered, the chapterCount would change, then this effect would be triggered too.
   useEffect(() => {
-    if (
-      hasMoreChapter &&
-      bookDocuments[chapterCount] !== undefined &&
-      bookDocuments[chapterCount] !== null
-    ) {
-      console.log(
-        "setChapterCount 已經執行，目前chapterCount為: ",
-        chapterCount
-      );
-      setChapterArr((prevChapters: any) => [
-        ...prevChapters,
-        bookDocuments[chapterCount],
-      ]);
-      if (chapterCount === bookDocuments.length - 1) {
-        setHasMoreChapter(false);
-        console.log("目前chapterCount = ", chapterCount, "已經無下一章節了");
+    const getHighlights = async () => {
+      if (bookDocuments.length === 0) return;
+      const firestore = firestoreMemo();
+      const highlight = highlightHelper();
+      try {
+        const highlightsData = await firestore.getDocuments(
+          `/users/${user.uid}/books/${bookId}/highlights`
+        );
+
+        let highlights: any[] = [];
+        if (highlightsData.length > 0) {
+          highlightsData.forEach((chapter: any) => {
+            for (const key in chapter) {
+              console.log(key, "=>", chapter[key]);
+              highlights.push(chapter[key]);
+              const { startNode, endNode } = highlight.findCertainNodes(
+                chapter[key].range.start,
+                chapter[key].range.end
+              );
+              highlight.highlightText(
+                startNode,
+                endNode,
+                chapter[key].range.startOffset,
+                chapter[key].range.endOffset,
+                chapter[key].id,
+                chapter[key].markerColor
+              );
+            }
+          });
+          dispatch(setHighlight(highlights.reverse()));
+        }
+      } catch (e) {
+        console.log("ReadingArea component error: ", e);
       }
-    }
-  }, [chapterCount, hasMoreChapter]);
+    };
+    getHighlights();
+  }, [bookDocuments.length, category, firestoreMemo, user, bookId, dispatch]);
 
   return (
     <>
@@ -117,8 +131,6 @@ export default function ReadingArea({
         className={`${styles.epubContainer}`}
         onWheel={(e) => {
           const delta = Math.round(e.deltaY);
-          if (isActionMenuOpen)
-            dispatch(setActionMenuPositionY(actionMenuPositionY - delta));
           if (delta < 0) {
             setIsNavigationVisible(true);
           } else {
@@ -129,10 +141,9 @@ export default function ReadingArea({
         {isLoading && <Spinner />}
         <EbookIntroductionHeader />
         {bookDocuments && (
-          <EbookViewer
-            bookDocuments={chapterArr}
-            onSetChapterCount={setChapterCount}
-            hasMoreChapter={hasMoreChapter}
+          <ContentsRoot
+            bookDocuments={bookDocuments}
+            bookMark={bookData?.bookMark}
           />
         )}
       </div>

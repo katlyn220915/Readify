@@ -6,8 +6,6 @@
   width: 100%;
   overflow: scroll;
   transition: all 0.3s;
-
-  margin-top: 7.5rem;
 }
 
 .epubContainer::-webkit-scrollbar {

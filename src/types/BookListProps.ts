@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import TagProps from "./TagProps";
 
 interface BookListProps {
   bookList: Array<BookProps>;
@@ -10,7 +11,7 @@ type BookProps = {
   bookId: string;
   coverURL: string | null;
   title: string;
-  tags: string[];
+  tags: TagProps[];
 };
 
 export type { BookListProps, BookProps };

@@ -1,0 +1,17 @@
+.manageTags_field {
+  position: absolute;
+  background-color: #28313b;
+  top: 8.1rem;
+  right: 0;
+  padding: 1rem;
+  z-index: 100000;
+
+  width: 20rem;
+  border-radius: 0.5rem;
+}
+
+.tags {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

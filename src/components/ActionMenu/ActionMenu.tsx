@@ -1,11 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ActionMenu.module.css";
 
 import ActionIcon from "../ActionIcon/ActionIcon";
 import MarkerColorPlatte from "../MarkerColorPlatte/MarkerColorPlatte";
 import NoteForm from "../NoteForm/NoteForm";
 
+import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { setDeleteHighlightMode } from "@/lib/redux/features/readSlice";
@@ -14,11 +15,7 @@ import {
   setActionMenuToggle,
   setIsAddNoteBlockOpen,
 } from "@/lib/redux/features/readSlice";
-import {
-  addHighlight,
-  deleteHighlight,
-  upDateNote,
-} from "@/lib/redux/features/noteSlice";
+import { addHighlight, deleteHighlight } from "@/lib/redux/features/noteSlice";
 
 import getSelectionData from "@/utils/getSelectionData";
 
@@ -30,15 +27,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { fromRange } from "xpath-range";
 import highlightHelper from "@/utils/highlightHelper";
-import findChapterElement from "@/utils/findIndexOfParentElement";
 
-const ActionMenu = ({
-  xPosition,
-  yPosition,
-}: {
-  xPosition: number;
-  yPosition: number;
-}) => {
+const ActionMenu = () => {
+  const [positionX, setPositionX] = useState(800 / 2 - 55);
   const [isColorPlatteOpen, setIsColorPlatteOpen] = useState(false);
   const [isAddNoteBlockOpen, setIsAddNoteBlockOpen] = useState(false);
   const [currentHighlightId, setCurrentHighlightId] = useState("");
@@ -50,13 +41,14 @@ const ActionMenu = ({
     markerColor,
     isDeleteMode,
     deleteHighlightID,
-    currentBook,
-    currentCategory,
     currentChapter,
+    isActionMenuOpen,
   } = useAppSelector((state) => state.read);
 
+  const bookId = usePathname().split("/").pop();
   const { highlightList } = useAppSelector((state) => state.note);
   const { user } = useAuth();
+  const { transform } = useAppSelector((state) => state.bookMark);
 
   const handleHighlight = async () => {
     const selectionData = getSelectionData();
@@ -80,24 +72,16 @@ const ActionMenu = ({
 
       if (currentChapter) {
         await firestore.setDocument(
-          `/users/${user.uid}/${currentCategory}/${
-            currentBook?.bookId
-          }/${currentChapter.replaceAll("/", "")}`,
-          highlightId,
+          `/users/${user.uid}/books/${bookId}/highlights`,
+          `${currentChapter.replaceAll("/", "")}`,
           {
-            highlightId,
-            markerColor,
-            text: selectedText,
-            range: xpath,
-          }
-        );
-        await firestore.setDocument(
-          `/users/${user.uid}/${currentCategory}/${currentBook?.bookId}/highlights`,
-          highlightId,
-          {
-            id: highlightId,
-            text: selectedText,
-            markerColor,
+            [highlightId]: {
+              id: highlightId,
+              markerColor,
+              text: selectedText,
+              range: xpath,
+              note: "",
+            },
           }
         );
         setCurrentHighlightId(highlightId);
@@ -143,16 +127,13 @@ const ActionMenu = ({
       if (!id) {
         id = currentHighlightId;
       }
-      if (id) {
+      if (id && currentChapter) {
         const highlight = highlightHelper();
         highlight.deleteHighlight(id);
-        await firestore.deleteDocument(
-          `/users/${user.uid}/${currentCategory}/${
-            currentBook?.bookId
-          }/${currentChapter?.replaceAll("/", "")}/${id}`
-        );
-        await firestore.deleteDocument(
-          `/users/${user.uid}/${currentCategory}/${currentBook?.bookId}/highlights/${id}`
+        await firestore.deleteColumn(
+          `/users/${user.uid}/books/${bookId}/highlights`,
+          `${currentChapter.replaceAll("/", "")}`,
+          id
         );
         dispatch(deleteHighlight(id));
         dispatch(setActionMenuToggle(false));
@@ -162,62 +143,72 @@ const ActionMenu = ({
     }
   };
 
-  return (
-    <div className={styles.action_menu_container}>
-      <div
-        className={styles.action_menu}
-        style={{
-          position: "absolute",
-          top: `${yPosition}px`,
-          left: `${xPosition}px`,
-          zIndex: 100,
-        }}
-      >
-        {isAddNoteBlockOpen && (
-          <NoteForm
-            onIsAddNoteBlockOpen={setIsAddNoteBlockOpen}
-            currentHighlightId={currentHighlightId}
-            isFirstTime={isNew}
-            onDeleteHighlight={handleDeleteHighlight}
-            note={note}
-          />
-        )}
-        {!isAddNoteBlockOpen && (
-          <div className={styles.action_menu_inner}>
-            {isDeleteMode ? (
-              <ActionIcon
-                iconProp={faTrashCan}
-                promptText="Delete highlight"
-                position="top"
-                onAction={() => handleDeleteHighlight()}
-              />
-            ) : (
-              <ActionIcon
-                iconProp={faHighlighter}
-                promptText="Create highlight"
-                position={isColorPlatteOpen ? "bottom" : "top"}
-                onAction={() => handleHighlight()}
-                color={markerColor}
-              />
-            )}
+  const handleBookMark = () => {};
 
-            <ActionIcon
-              iconProp={faNoteSticky}
-              promptText="Add note"
-              position={isColorPlatteOpen ? "bottom" : "top"}
-              onAction={() => handleAddNote()}
+  useEffect(() => {
+    const { rec } = getSelectionData() || { rec: null };
+    if (!isActionMenuOpen || !rec) return;
+    setPositionX(rec.width / 2 - 20 - 30);
+    return () => {
+      setPositionX(800 / 2 - 55);
+    };
+  }, [isActionMenuOpen]);
+
+  return (
+    <>
+      {isActionMenuOpen && (
+        <div
+          className={styles.action_menu}
+          style={{
+            transform: `translate(${positionX}px, ${transform - 38}px)`,
+          }}
+        >
+          {isAddNoteBlockOpen && (
+            <NoteForm
+              onIsAddNoteBlockOpen={setIsAddNoteBlockOpen}
+              currentHighlightId={currentHighlightId}
+              isFirstTime={isNew}
+              onDeleteHighlight={handleDeleteHighlight}
+              note={note}
             />
-            <ActionIcon
-              iconProp={faEllipsis}
-              promptText="Pick marker color"
-              position={isColorPlatteOpen ? "bottom" : "top"}
-              onAction={() => setIsColorPlatteOpen(!isColorPlatteOpen)}
-            />
-            {isColorPlatteOpen && <MarkerColorPlatte />}
-          </div>
-        )}
-      </div>
-    </div>
+          )}
+          {!isAddNoteBlockOpen && (
+            <div className={styles.action_menu_inner}>
+              {isDeleteMode ? (
+                <ActionIcon
+                  iconProp={faTrashCan}
+                  promptText="Delete highlight"
+                  position="top"
+                  onAction={() => handleDeleteHighlight()}
+                />
+              ) : (
+                <ActionIcon
+                  iconProp={faHighlighter}
+                  promptText="Create highlight"
+                  position={isColorPlatteOpen ? "bottom" : "top"}
+                  onAction={() => handleHighlight()}
+                  color={markerColor}
+                />
+              )}
+
+              <ActionIcon
+                iconProp={faNoteSticky}
+                promptText="Add note"
+                position={isColorPlatteOpen ? "bottom" : "top"}
+                onAction={() => handleAddNote()}
+              />
+              <ActionIcon
+                iconProp={faEllipsis}
+                promptText="Pick marker color"
+                position={isColorPlatteOpen ? "bottom" : "top"}
+                onAction={() => setIsColorPlatteOpen(!isColorPlatteOpen)}
+              />
+              {isColorPlatteOpen && <MarkerColorPlatte />}
+            </div>
+          )}
+        </div>
+      )}
+    </>
   );
 };
 

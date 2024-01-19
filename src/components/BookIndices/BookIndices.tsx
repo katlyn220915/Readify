@@ -1,20 +1,17 @@
 "use client";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import styles from "./BookContent.module.css";
+import styles from "./BookIndices.module.css";
+
+import IndexItemProp from "@/types/IndexItemProp";
+import IndexButton from "../IndexButton/IndexButton";
 
 import { useAppSelector } from "@/hooks/redux/hooks";
 import parseEpub from "@/server-actions/parseEpub/parseEpub";
 
-type ContentItemProp = {
-  id: string | number;
-  label: string;
-  href: string;
-};
-
-const BookContent = React.memo(
+const BookIndices = React.memo(
   ({ isContentListOpen }: { isContentListOpen: boolean }) => {
     const { currentBook } = useAppSelector((state) => state.read);
-    const [toc, setToc] = useState<null | ContentItemProp[]>();
+    const [toc, setToc] = useState<null | IndexItemProp[]>();
 
     const currentBookMemo = useMemo(() => {
       return currentBook;
@@ -32,6 +29,9 @@ const BookContent = React.memo(
         }
       };
       getBookContents();
+      return () => {
+        setToc(null);
+      };
     }, [currentBookMemo, parserMemo]);
 
     return (
@@ -43,11 +43,20 @@ const BookContent = React.memo(
         >
           <div className={styles.contents_wrapper}>
             <p className={styles.title}>{currentBook?.title}</p>
-            <div className={styles.empty_block}></div>
             <div className={styles.contents}>
               {toc &&
-                toc.map((toc: ContentItemProp) => (
-                  <ContentButton contentItem={toc} key={toc.href} />
+                toc.map((toc: IndexItemProp) => (
+                  <>
+                    <IndexButton contentItem={toc} key={toc.href} />
+                    {toc.subitems &&
+                      toc.subitems.map((toc) => (
+                        <IndexButton
+                          contentItem={toc}
+                          key={toc.href}
+                          isSubitem={true}
+                        />
+                      ))}
+                  </>
                 ))}
             </div>
           </div>
@@ -57,29 +66,6 @@ const BookContent = React.memo(
   }
 );
 
-BookContent.displayName = "BookContent";
+BookIndices.displayName = "BookIndices";
 
-export default BookContent;
-
-const ContentButton = ({ contentItem }: { contentItem: ContentItemProp }) => {
-  return (
-    <button
-      onClick={() => {
-        const decodeedHref = decodeURIComponent(contentItem.href)
-          .replaceAll(" ", "")
-          .replace(/\.(xhtml|html).*/, "");
-        console.log("click", decodeedHref);
-        const paragraphElement = document.getElementById(`${decodeedHref}`);
-        console.log(paragraphElement);
-        if (paragraphElement) {
-          paragraphElement.scrollIntoView({
-            behavior: "smooth",
-          });
-        }
-      }}
-      className={styles.contentBtn}
-    >
-      {contentItem.label}
-    </button>
-  );
-};
+export default BookIndices;

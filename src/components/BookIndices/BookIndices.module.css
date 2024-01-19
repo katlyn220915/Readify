@@ -19,12 +19,7 @@
   transition: all 0.3s;
 }
 
-.contents_wrapper {
-  position: relative;
-}
-
 .contents_wrapper .title {
-  width: 30rem;
   padding: 2rem 3rem;
 
   border-bottom: 0.1rem solid var(--color-grey-700);
@@ -37,17 +32,4 @@
 
 .contents_wrapper .contents {
   padding: 2rem 3rem;
-}
-
-.contentBtn {
-  display: block;
-  color: #959faa;
-}
-
-.contentBtn:hover {
-  color: #76b2ed;
-}
-
-.contentBtn:not(:last-child) {
-  margin-bottom: 1.2rem;
 }

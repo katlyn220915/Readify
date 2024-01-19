@@ -164,10 +164,13 @@ const highlightHelper = () => {
     highlightId: string,
     markerColor: string
   ) => {
-    console.log(startNode);
     const range = document.createRange();
     range.setStart(startNode, startOffset);
-    range.setEnd(endNode, endOffset);
+    if (endOffset > endNode.length) {
+      range.setEnd(endNode, endNode.length);
+    } else {
+      range.setEnd(endNode, endOffset);
+    }
     const spanElement = document.createElement("span");
     spanElement.className = "epub_highlight";
     spanElement.setAttribute("data-highlight-id", highlightId);
@@ -259,16 +262,24 @@ const highlightHelper = () => {
   const findCertainNodes = (startXpath: string, endXpath: string) => {
     console.log("解析", startXpath, "字串");
     console.log("解析", endXpath, "字串");
-    const startPathArr = startXpath
+    let startPathArr;
+    let endPathArr;
+    let startNode;
+    let endNode;
+
+    startPathArr = startXpath
       .split("/")
       .filter((cur) => cur !== "/" && cur !== "" && cur !== "");
-    const endPathArr = endXpath
-      .split("/")
-      .filter((cur) => cur !== "/" && cur !== "" && cur !== "");
-    console.log("startPath array :", startPathArr);
-    console.log("endPath array :", endPathArr);
-    const startNode = getNode(startPathArr);
-    const endNode = getNode(endPathArr);
+    if (startXpath === endXpath) {
+      startNode = getNode(startPathArr);
+      endNode = startNode;
+    } else {
+      endPathArr = endXpath
+        .split("/")
+        .filter((cur) => cur !== "/" && cur !== "" && cur !== "");
+      startNode = getNode(startPathArr);
+      endNode = getNode(endPathArr);
+    }
     return { startNode, endNode };
   };
 
@@ -276,52 +287,47 @@ const highlightHelper = () => {
     let root = document.querySelectorAll(".epub_document");
     let node: any;
     arr.map((cur: any, i: number) => {
+      console.log("目前是在目標陣列的第", i, "個位置上，目前父層為", node);
       let [element, index] = cur.split(/\[(\d+)\]/);
-      console.log(
-        "正要尋找第",
-        i,
-        "層，是",
-        element,
-        "在父層節點的第",
-        index,
-        "位置"
-      );
       index = parseInt(index);
       element = element.replaceAll("()", "");
+      console.log(
+        "已經切割字串完成，元素為：",
+        element,
+        "在父層的第",
+        index,
+        "個位置"
+      );
       if (element === "text" && node !== undefined) {
-        console.log("最後一層，正要尋找文本節點：", node.childNodes);
-        if (node.childNodes[index - 1] === undefined) {
-          node = node.childNodes[0];
+        console.log(
+          "目標陣列的最後一個節點，正開始尋找文本節點：",
+          node.childNodes
+        );
+        let tempList: any[] = [];
+        Array.from(node.childNodes).forEach((n: any) => {
+          if (n.nodeType === 3) tempList.push(n);
+        });
+
+        if (tempList[index - 1] === undefined) {
+          node = tempList[0];
         } else {
-          node = node.childNodes[index - 1];
+          node = tempList[index - 1];
         }
         console.log("找到文本節點 :", node);
       } else if (i === 0) {
+        console.log("第一個層章節元素：在第", index - 1, "個章節");
         node = root[index - 1];
       } else if (node !== undefined) {
-        let tempList = node.querySelectorAll(element);
+        console.log("父層元素的child Elements", node.children);
+        let tempList: any[] = [];
+        Array.from(node.children).forEach((n: any) => {
+          if (n.nodeName === element.toUpperCase()) tempList.push(n);
+        });
         node = tempList[index - 1];
       }
     });
     return node;
   };
-
-  function findChapterElement(element: any) {
-    let chapterDiv;
-    let currentElement = element;
-
-    while (currentElement.parentNode) {
-      currentElement = currentElement.parentNode;
-      if (currentElement.className === "epub_document_content") {
-        chapterDiv = currentElement;
-        break;
-      }
-    }
-
-    return {
-      chapterID: chapterDiv.id,
-    };
-  }
 
   return {
     highlightText,
@@ -329,7 +335,6 @@ const highlightHelper = () => {
     setRange,
     deleteHighlight,
     findCertainNodes,
-    findChapterElement,
   };
 };
 

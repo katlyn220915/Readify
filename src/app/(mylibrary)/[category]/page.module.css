@@ -12,6 +12,12 @@
   background-color: #10161d;
 }
 
+@media (min-width: 650px) {
+  .nav {
+    display: flex;
+  }
+}
+
 .nav .ul {
   display: flex;
   flex-direction: column;

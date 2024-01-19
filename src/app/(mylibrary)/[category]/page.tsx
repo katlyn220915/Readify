@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import styles from "./page.module.css";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 /* COMPONENTS */
@@ -10,17 +10,20 @@ import Topbar from "@/components/Topbar/Topbar";
 import BookList from "@/components/BookList/BookList";
 import Spinner from "@/components/Spinner/Spinner";
 import StaticSidebarList from "@/components/StaticSidebarList/StaticSidebarList";
+import UploadFile from "@/components/UploadFile/UploadFile";
 
 /* CUSTOM HOOKS */
 import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { bookListInitialize } from "@/lib/redux/features/bookSlice";
-import UploadFile from "@/components/UploadFile/UploadFile";
 
 export default function Category() {
   const [isLoading, setIsLoading] = useState(false);
-  const pathname = usePathname();
+  const category = usePathname().split("/").pop();
+  const params = useSearchParams();
+  const tag = params.get("tag");
+  const tagId = params.get("id");
 
   const dispatch = useAppDispatch();
   const { bookList } = useAppSelector((state) => state.book);
@@ -34,9 +37,25 @@ export default function Category() {
     const getBookList = async () => {
       try {
         setIsLoading(true);
-        const bookList = await firestoreCallback().getDocuments(
-          `/users/${user.uid}/${pathname.split("/").pop()}`
-        );
+        let bookList;
+        if (!tag && category) {
+          bookList = await firestoreCallback().searchByQuery(
+            `/users/${user.uid}/books`,
+            "category",
+            "==",
+            category
+          );
+        } else {
+          bookList = await firestoreCallback().searchByQuery(
+            `/users/${user.uid}/books`,
+            "tags",
+            "array-contains",
+            {
+              id: tagId,
+              name: tag,
+            }
+          );
+        }
         dispatchCallback(bookListInitialize(bookList));
       } catch (e) {
         console.error(e);
@@ -45,7 +64,15 @@ export default function Category() {
       }
     };
     getBookList();
-  }, [user, dispatchCallback, firestoreCallback, pathname]);
+  }, [
+    user,
+    dispatchCallback,
+    firestoreCallback,
+    category,
+    dispatch,
+    tag,
+    tagId,
+  ]);
 
   return (
     <>
@@ -61,13 +88,13 @@ export default function Category() {
         </nav>
         <section className={styles.middle_container}>
           <Topbar />
-          {isLoading ? (
-            <Spinner />
-          ) : bookList.length === 0 ? (
+          {isLoading && <Spinner />}
+          {!isLoading && bookList.length === 0 && (
             <p className={styles.empty_hint}>
               Ooops...! There is no book in this category!
             </p>
-          ) : (
+          )}
+          {!isLoading && bookList.length > 0 && (
             <BookList bookList={bookList} />
           )}
         </section>

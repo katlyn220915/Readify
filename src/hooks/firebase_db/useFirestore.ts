@@ -1,5 +1,4 @@
 import app from "../../lib/firebase/initialize";
-import { getFirestore, updateDoc } from "firebase/firestore";
 
 import {
   collection,
@@ -8,6 +7,11 @@ import {
   getDocs,
   getDoc,
   deleteDoc,
+  deleteField,
+  query,
+  where,
+  updateDoc,
+  getFirestore,
 } from "firebase/firestore";
 
 const useFirestore = () => {
@@ -88,12 +92,63 @@ const useFirestore = () => {
     }
   };
 
+  const deleteColumn = async (
+    collectionName: string,
+    documentName: string,
+    deleteColumnId: string
+  ) => {
+    try {
+      const ref = doc(db, collectionName, documentName);
+      await updateDoc(ref, {
+        [deleteColumnId]: deleteField(),
+      });
+      console.log("Firebase delete column sucessfully");
+    } catch (e) {
+      console.log("Firebase Error: ", e);
+    }
+  };
+
+  const getDocsByObj = async (path: string) => {
+    const querySnapshot = await getDocs(collection(db, path));
+    const data: any = [];
+    querySnapshot.forEach((doc) => {
+      data.push({
+        [doc.id]: doc.data(),
+      });
+    });
+    return data;
+  };
+
+  const searchByQuery = async (
+    path: string,
+    field: string,
+    operator: any,
+    value: any
+  ) => {
+    try {
+      const q = query(collection(db, path), where(field, operator, value));
+      const querySnapshot = await getDocs(q);
+      const data: any = [];
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        // console.log(doc.id, " => ", doc.data());
+        data.push(doc.data());
+      });
+      return data;
+    } catch (e) {
+      console.error("Firebase error: ", e);
+    }
+  };
+
   return {
     setDocument,
     getDocuments,
     deleteDocument,
     getDocumentById,
     updateDocument,
+    deleteColumn,
+    getDocsByObj,
+    searchByQuery,
   };
 };
 

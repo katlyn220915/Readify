@@ -1,5 +1,12 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import styles from "./ActionPrompt.module.css";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircleCheck,
+  faCircleXmark,
+} from "@fortawesome/free-regular-svg-icons";
 
 type ActionPromptPropsType = {
   isError: boolean;
@@ -14,15 +21,20 @@ export default function ActionPrompt({
   isSuccessful,
   successfulMes,
 }: ActionPromptPropsType) {
-  // const { isUploading, isError, errorMes, fileName, isSuccessful } =
-  //   useAppSelector((state) => state.upload);
   return (
-    <div
-      className={`${styles.container} ${isError ? styles.error : ""} ${
-        isSuccessful ? styles.successful : ""
-      }`}
-    >
-      <p>{isError ? errorMes : successfulMes}</p>
-    </div>
+    <>
+      <div
+        className={`${styles.container} ${isError ? styles.error : ""} ${
+          isSuccessful ? styles.successful : ""
+        }`}
+      >
+        <span>
+          <FontAwesomeIcon
+            icon={isSuccessful ? faCircleCheck : faCircleXmark}
+          />
+        </span>
+        <p>{isError ? errorMes : successfulMes}</p>
+      </div>
+    </>
   );
 }

@@ -55,7 +55,7 @@ export default function SignupForm() {
     try {
       const userUid = await firebaseAuth.userSignUp(data.email, data.password);
       if (userUid !== undefined) {
-        await firestore.setDocument("users", userUid, data);
+        await firestore.setDocument("users", userUid, { email: data.email });
         const isUserSignIn = await firebaseAuth.userSignin(
           data.email,
           data.password
