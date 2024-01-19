@@ -31,7 +31,7 @@ export default function RootLayout({
           className={`${
             pathname === "/" || pathname === "/signin" || pathname === "/signup"
               ? "wrapper"
-              : ""
+              : "root"
           }`}
         >
           <AuthProvider>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import styles from "./BookContents.module.css";
 
 import EbookChapter from "../EbookChapter/EbookChapter";
@@ -14,7 +14,6 @@ import { setPosition } from "@/lib/redux/features/bookMarkSlice";
 import getSelectionData from "@/utils/getSelectionData";
 import { findChapterElement, scrollIntoScreen } from "@/utils/helper";
 import { getElementPositionY } from "@/utils/helper";
-import useBook from "@/hooks/useBook/useBook";
 
 const BookContents = ({ bookDocuments }: { bookDocuments: any[] }) => {
   const currentParagraph = useRef<null | HTMLElement>(null);
@@ -28,6 +27,9 @@ const BookContents = ({ bookDocuments }: { bookDocuments: any[] }) => {
   } = useAppSelector((state) => state.read);
   const { isIndicatorIntersecting } = useAppSelector((state) => state.bookMark);
   const dispatch = useAppDispatch();
+  const currentBookMemo = useMemo(() => {
+    return currentBook;
+  }, [currentBook]);
   const changeTargetCb = useCallback(
     function changeTargetElement(
       lastTarget: HTMLElement | null,
@@ -88,12 +90,12 @@ const BookContents = ({ bookDocuments }: { bookDocuments: any[] }) => {
   useEffect(() => {
     if (!currentParagraph.current && bookDocuments.length > 0) {
       let target;
-      if (currentBook && currentBook.bookMark) {
+      if (currentBookMemo && currentBookMemo.bookMark) {
         const chapterChildren = document.getElementById(
-          currentBook.bookMark.chapter
+          currentBookMemo.bookMark.chapter
         )?.children;
         if (chapterChildren) {
-          const index = Number(currentBook.bookMark.index) + 1;
+          const index = Number(currentBookMemo.bookMark.index) + 1;
           target = chapterChildren[index] as HTMLElement;
           currentParagraph.current = changeTargetCb(null, target);
           scrollIntoScreen(currentParagraph.current, "center");
@@ -105,7 +107,6 @@ const BookContents = ({ bookDocuments }: { bookDocuments: any[] }) => {
         ?.getBoundingClientRect().left as number;
       const top = { x: left + 100, y: 100 };
       const topEl = document.elementFromPoint(top.x, top.y) as HTMLElement;
-      console.log(topEl);
 
       if (topEl && topEl.tagName.toLowerCase() === "p") {
         currentParagraph.current = changeTargetCb(
@@ -119,7 +120,13 @@ const BookContents = ({ bookDocuments }: { bookDocuments: any[] }) => {
         );
       }
     }
-  }, [bookDocuments.length, isIndicatorIntersecting, dispatch, changeTargetCb]);
+  }, [
+    bookDocuments.length,
+    isIndicatorIntersecting,
+    dispatch,
+    changeTargetCb,
+    currentBookMemo,
+  ]);
 
   return (
     <div

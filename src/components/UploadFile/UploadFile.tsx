@@ -178,13 +178,16 @@ export default function UploadFile() {
           </label>
         </form>
       </div>
-      <UploadingField />
-      <ActionPrompt
-        isError={isError}
-        errorMes={errorMes}
-        isSuccessful={isSuccessful}
-        successfulMes="Upload successfully !"
-      />
+      {isUploading && <UploadingField />}
+      {isError ||
+        (isSuccessful && (
+          <ActionPrompt
+            isError={isError}
+            errorMes={errorMes}
+            isSuccessful={isSuccessful}
+            successfulMes="Upload successfully !"
+          />
+        ))}
     </>
   );
 }
