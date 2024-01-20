@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useFirestore from "../firebase_db/useFirestore";
 import { useAuth } from "@/context/AuthContext";
 import TagProps from "@/types/TagProps";
@@ -15,14 +15,16 @@ import {
 
 const useTag = () => {
   const firestore = useFirestore();
+  const firestoreCached = useCallback(useFirestore, [useFirestore]);
   const { user }: { user: any } = useAuth();
   const dispatch = useAppDispatch();
 
   const { allUserTags } = useAppSelector((state) => state.moreAction);
+
   useEffect(() => {
     const getUserTags = async () => {
       if (user) {
-        const data = await firestore.searchByQuery(
+        const data = await firestoreCached().searchByQuery(
           `/users`,
           "email",
           "==",
@@ -33,11 +35,11 @@ const useTag = () => {
     };
 
     getUserTags();
-  }, [dispatch, user]);
+  }, [dispatch, user, firestoreCached]);
 
   const createTag = async (id: string, name: string) => {
     try {
-      await firestore.updateDocument(`/users/`, user.uid, {
+      await firestoreCached().updateDocument(`/users/`, user.uid, {
         tags: arrayUnion({
           id,
           name,
@@ -76,39 +78,52 @@ const useTag = () => {
     }
   };
 
-  const deleteTagFromBook = async (bookId: string, data: any) => {
-    try {
-      await firestore.updateDocument(`/users/${user.uid}/books`, bookId, {
-        tags: data,
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const deleteTagFromBookCached = useCallback(
+    async (bookId: string, data: any) => {
+      try {
+        await firestoreCached().updateDocument(
+          `/users/${user.uid}/books`,
+          bookId,
+          {
+            tags: data,
+          }
+        );
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    [firestoreCached, user.uid]
+  );
 
-  const updateTagNameFromBook = async (
-    bookId: string,
-    id: string,
-    oldName: string,
-    newName: string
-  ) => {
-    try {
-      await firestore.updateDocument(`/users/${user.uid}/books`, bookId, {
-        tags: arrayRemove({
-          id,
-          name: oldName,
-        }),
-      });
-      await firestore.updateDocument(`/users/${user.uid}/books`, bookId, {
-        tags: arrayUnion({
-          id,
-          name: newName,
-        }),
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const updateTagNameFromBookCached = useCallback(
+    async (bookId: string, id: string, oldName: string, newName: string) => {
+      try {
+        await firestoreCached().updateDocument(
+          `/users/${user.uid}/books`,
+          bookId,
+          {
+            tags: arrayRemove({
+              id,
+              name: oldName,
+            }),
+          }
+        );
+        await firestoreCached().updateDocument(
+          `/users/${user.uid}/books`,
+          bookId,
+          {
+            tags: arrayUnion({
+              id,
+              name: newName,
+            }),
+          }
+        );
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    [user.uid, firestoreCached]
+  );
 
   const updateTagName = async (
     id: string,
@@ -138,10 +153,10 @@ const useTag = () => {
     allUserTags,
     createTag,
     addTagToBook,
-    deleteTagFromBook,
+    deleteTagFromBookCached,
     deleteTag,
     updateTagName,
-    updateTagNameFromBook,
+    updateTagNameFromBookCached,
   };
 };
 

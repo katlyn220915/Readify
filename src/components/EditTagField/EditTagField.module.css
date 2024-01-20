@@ -11,10 +11,11 @@
 
 .select_tags_field > button,
 .tag_options > button {
-  min-width: calc(25rem / 3.5);
+  width: calc(25rem / 3.5);
+  max-width: 19rem;
   background-color: var(--color-grey-700);
   border-radius: 0.5rem;
-  text-wrap: nowrap;
+  /* text-wrap: nowrap; */
   padding: 0 0.5rem;
   display: flex;
   justify-content: center;
@@ -41,6 +42,10 @@
   width: 100%;
   border-top: 0.1rem solid var(--color-grey-700);
   padding-top: 1rem;
+}
+
+.tag_options > p {
+  text-align: center;
 }
 
 .new_tag {

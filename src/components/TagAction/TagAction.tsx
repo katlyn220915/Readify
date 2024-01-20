@@ -7,7 +7,8 @@ import ActionIcon from "../ActionIcon/ActionIcon";
 import TagProps from "@/types/TagProps";
 import useTag from "@/hooks/createTag/useTag";
 
-import { faCheck, faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPen } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 const TagAction = ({
   onAction,

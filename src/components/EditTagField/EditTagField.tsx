@@ -66,9 +66,7 @@ const EditTagField = ({
     if (!tag.id) {
       tag = tag.parentElement as HTMLElement;
     }
-    console.log(tag);
     if (tag && tag.id && tag.textContent) {
-      console.log(tag.textContent.replace("x", ""));
       deleteTagFromBook(
         bookId,
         tags.filter((cur) => cur.id !== tag.id)
@@ -139,6 +137,7 @@ const EditTagField = ({
         )}
       </div>
       <div className={styles.tag_options}>
+        {tags.length === 5 && <p>A book can have a maximum of five tags.</p>}
         {searchTagList &&
           searchTagList.map((tag: TagProps) => (
             <TagAction

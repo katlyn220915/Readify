@@ -12,9 +12,9 @@
   background-color: #10161d;
 }
 
-@media (min-width: 650px) {
+@media (max-width: 700px) {
   .nav {
-    display: flex;
+    display: none;
   }
 }
 

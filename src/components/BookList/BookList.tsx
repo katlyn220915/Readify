@@ -12,7 +12,7 @@ import ActionPrompt from "../ActionPrompt/ActionPrompt";
 
 /* THIRD-LIB */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFeather } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faFeather } from "@fortawesome/free-solid-svg-icons";
 
 /* CUSTOM-HOOKS */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
@@ -23,16 +23,21 @@ import {
 import TagProps from "@/types/TagProps";
 import useTag from "@/hooks/createTag/useTag";
 import TagAction from "../TagAction/TagAction";
+import { useRWD } from "@/hooks/useRWD/useRWD";
+import ActionIcon from "../ActionIcon/ActionIcon";
+import MoreActionList from "../MoreActionList/MoreActionList";
 
 /////////////////////////////////////////////////////////
 
 function Book({ book }: { book: BookProps }) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
+  const [isMoreActionListOpen, setIsMoreActionListOpen] = useState(false);
+  const { screenWidth } = useRWD();
   const [tags, setTags] = useState<TagProps[]>(book.tags);
   const { isMoreActionBtnOpen, isOtherMoreActionBtnOpen } = useAppSelector(
     (state) => state.moreAction
   );
-  const { deleteTagFromBook, updateTagNameFromBook } = useTag();
+  const { deleteTagFromBookCached, updateTagNameFromBookCached } = useTag();
   const router = useRouter();
   const pathname = usePathname();
   const category = pathname.split("/").pop();
@@ -47,14 +52,14 @@ function Book({ book }: { book: BookProps }) {
       const isContainDeletedTag = tags.filter((cur) => cur.id === deleteId);
       if (isContainDeletedTag.length > 0) {
         setTags((prev) => prev.filter((cur) => cur.id !== deleteId));
-        deleteTagFromBook(
+        deleteTagFromBookCached(
           book.bookId,
           tags.filter((cur) => cur.id !== deleteId)
         );
         dispatch(reset());
       }
     }
-  }, [deleteId]);
+  }, [deleteId, book.bookId, dispatch, tags, deleteTagFromBookCached]);
 
   useEffect(() => {
     if (tags && updateId) {
@@ -69,27 +74,57 @@ function Book({ book }: { book: BookProps }) {
             name: updateName,
           },
         ]);
-        updateTagNameFromBook(book.bookId, updateId, oldName, updateName);
+        updateTagNameFromBookCached(book.bookId, updateId, oldName, updateName);
         dispatch(reset());
       }
     }
-  }, [updateId]);
+  }, [
+    updateId,
+    dispatch,
+    book.bookId,
+    tags,
+    updateName,
+    updateTagNameFromBookCached,
+  ]);
 
   return (
     <li
       className={`${styles.book} ${isMouseEnter ? styles.book_active : ""}`}
       onMouseEnter={() => {
-        if (!isMoreActionBtnOpen && !isOtherMoreActionBtnOpen)
+        if (
+          !isMoreActionBtnOpen &&
+          !isOtherMoreActionBtnOpen &&
+          screenWidth > 1024
+        )
           setIsMouseEnter(true);
       }}
       onMouseLeave={() => {
-        if (!isMoreActionBtnOpen) setIsMouseEnter(false);
+        if (!isMoreActionBtnOpen && screenWidth > 1024) setIsMouseEnter(false);
       }}
       onClick={() => {
         dispatch(setMoreActionBtnClose());
         router.push(`${category}/read/${book.bookId}`);
       }}
     >
+      {screenWidth <= 1024 && (
+        <span
+          className={styles.mobile_moreAction_btn}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsMoreActionListOpen(!isMoreActionListOpen);
+          }}
+        >
+          <ActionIcon
+            iconProp={faEllipsis}
+            promptText="More Actions"
+            showPrompt={false}
+            position="right"
+          />
+          {isMoreActionListOpen && (
+            <MoreActionList book={book} tags={tags} onAddTag={setTags} />
+          )}
+        </span>
+      )}
       <div className={styles.img_container}>
         {book.coverURL && (
           <Image
@@ -115,17 +150,19 @@ function Book({ book }: { book: BookProps }) {
             <FontAwesomeIcon icon={faFeather} className="icon" />
             <span>{book.author}</span>
           </p>
-          {tags &&
-            tags.map((tag) => (
-              <TagAction
-                onAction={(e) => {
-                  e.stopPropagation();
-                }}
-                key={tag.id}
-                tag={tag}
-                mode="search"
-              />
-            ))}
+          <div className={styles.tags}>
+            {tags &&
+              tags.map((tag) => (
+                <TagAction
+                  onAction={(e) => {
+                    e.stopPropagation();
+                  }}
+                  key={tag.id}
+                  tag={tag}
+                  mode="search"
+                />
+              ))}
+          </div>
         </div>
       </div>
       <Categorize

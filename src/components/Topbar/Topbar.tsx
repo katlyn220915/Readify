@@ -7,6 +7,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import Icon from "@/components/Icon/Icon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faBars,
   faBookOpen,
   faBoxArchive,
   faMagnifyingGlass,
@@ -14,9 +15,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import ManageTags from "../ManageTags/ManageTags";
+import { useRWD } from "@/hooks/useRWD/useRWD";
 
 export default function Topbar() {
   const [isManageTagsOpen, setIsManageTagsOpen] = useState(false);
+  const { screenWidth } = useRWD();
   const pathname = usePathname();
   const params = useSearchParams();
   const tag = params.get("tag");
@@ -56,17 +59,24 @@ export default function Topbar() {
         {tag && pathname === "/search" && <span>tag: {tag}</span>}
       </div>
       <div
-        className={`${styles.tools} ${
-          isManageTagsOpen ? styles.tools_active : ""
-        }`}
+        className={styles.tools}
         onClick={() => {
           setIsManageTagsOpen(!isManageTagsOpen);
         }}
       >
-        <span>
+        <span
+          className={`${styles.tool} ${
+            isManageTagsOpen ? styles.tool_active : ""
+          }`}
+        >
           <FontAwesomeIcon icon={faTags} className="icon" />
-          Manage tags
+          {screenWidth > 700 && "Manage tags"}
         </span>
+        {screenWidth < 700 && (
+          <span className={styles.tool}>
+            <FontAwesomeIcon icon={faBars} className="icon" />
+          </span>
+        )}
         {isManageTagsOpen && <ManageTags />}
       </div>
     </div>
