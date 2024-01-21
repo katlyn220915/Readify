@@ -1,23 +1,35 @@
-import Epub from "epubjs";
+import Epub, { NavItem } from "epubjs";
 import ePub, { Book } from "epubjs";
 import Section from "epubjs/types/section";
 import React from "react";
+import { decode } from "@/utils/helper";
 
 const parseEpub = () => {
   const getBookInfos = () => {};
 
   const getContents = async (url: string) => {
     const book = ePub(url);
-    const location = book.locations;
-    // console.log(location);
     const toc = book.ready.then(async () => {
       const navigationToc = book.navigation.toc;
-      const cleanToc = navigationToc.map(({ id, label, href }) => ({
-        id,
-        label,
-        href,
-      }));
-      return cleanToc;
+
+      const allToc = navigationToc.map(({ id, label, href, subitems }) => {
+        if (subitems && subitems.length > 0) {
+          return {
+            id,
+            label,
+            href,
+            subitems,
+          };
+        } else {
+          return {
+            id,
+            label,
+            href,
+            subitems,
+          };
+        }
+      });
+      return allToc;
     });
     return toc;
   };
@@ -28,7 +40,6 @@ const parseEpub = () => {
     const documentsObjectArr = await book.ready
       .then(() => {
         const spine = book.spine;
-        console.log(spine);
         spine.each((section: Section) => {
           allDocumentPath.push(section.href);
         });
@@ -154,14 +165,11 @@ const parseEpub = () => {
 
       const chapterDiv = (
         <div
+          dangerouslySetInnerHTML={{ __html: bodyContent }}
           key={path}
-          id={decodeURIComponent(path)
-            .replaceAll(" ", "")
-            .replace(/\.(xhtml|html).*/, "")}
+          id={decode(path)}
           className="epub_document_content"
-        >
-          <div dangerouslySetInnerHTML={{ __html: bodyContent }} />
-        </div>
+        />
       );
       return chapterDiv;
     });

@@ -1,9 +1,0 @@
-.viewer {
-  max-width: 80rem;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-
-  gap: 4rem;
-  padding: 2rem;
-}

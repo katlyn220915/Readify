@@ -1,0 +1,35 @@
+.sidebar {
+  width: 25rem;
+  flex-grow: 0;
+  flex-shrink: 0;
+  background-color: var(--color-blue-bg-darker);
+  overflow: scroll;
+
+  transition: all 0.3s;
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
+  padding: 1.5rem;
+}
+
+.sidebar_close {
+  width: 0;
+  transform: translateX(-30rem);
+  transition: all 0.3s;
+}
+
+.contents_wrapper .title {
+  padding: 2rem 3rem;
+
+  border-bottom: 0.1rem solid var(--color-grey-700);
+  background-color: var(--color-blue-bg-darker);
+}
+
+.empty_block {
+  height: 6.5rem;
+}
+
+.contents_wrapper .contents {
+  padding: 2rem 3rem;
+}

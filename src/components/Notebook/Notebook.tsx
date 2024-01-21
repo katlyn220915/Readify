@@ -5,15 +5,20 @@ import styles from "./Notebook.module.css";
 
 import { useAuth } from "@/context/AuthContext";
 import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
-import { setHighlight } from "@/lib/redux/features/noteSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import Highlight from "../Highlight/Highlight";
+import { usePathname } from "next/navigation";
+import { resetNotes } from "@/lib/redux/features/noteSlice";
 
 export default function Notebook({
   isNotebookOpen,
 }: {
   isNotebookOpen: boolean;
 }) {
+  const arrPath = usePathname().split("/");
+  const category = arrPath[1];
+  const bookId = arrPath[arrPath.length - 1];
+
   const firestoreMemo = useCallback(useFirestore, [useFirestore]);
   const { user } = useAuth();
   const { currentCategory, currentBook } = useAppSelector(
@@ -23,22 +28,10 @@ export default function Notebook({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const getHighlightData = async () => {
-      console.log(currentBook, currentCategory);
-      if (user && currentBook && currentCategory) {
-        const firestore = firestoreMemo();
-        const data = await firestore.getDocuments(
-          `/users/${user.uid}/${currentCategory}/${currentBook?.bookId}/highlights`
-        );
-        console.log("獲取到資料：", data);
-        if (data) {
-          dispatch(setHighlight(data));
-        }
-      }
+    return () => {
+      dispatch(resetNotes());
     };
-
-    getHighlightData();
-  }, [user, currentCategory, currentBook, firestoreMemo, dispatch]);
+  }, [dispatch]);
 
   return (
     <div
@@ -49,8 +42,14 @@ export default function Notebook({
       <div className={styles.title}>highlights</div>
       <div className={styles.highlight_list}>
         {highlightList &&
-          highlightList.map((highlight) => (
-            <Highlight key={highlight.id} highlight={highlight}></Highlight>
+          highlightList.map(({ id, markerColor, text, note }) => (
+            <Highlight
+              key={id}
+              id={id}
+              markerColor={markerColor}
+              text={text}
+              note={note}
+            ></Highlight>
           ))}
       </div>
     </div>

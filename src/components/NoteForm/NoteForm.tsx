@@ -16,8 +16,9 @@ import useFirestore from "@/hooks/firebase_db/useFirestore";
 import {
   setHighlight,
   setIsEditNoteFieldOpen,
-  upDateNote,
+  updateNote,
 } from "@/lib/redux/features/noteSlice";
+import { usePathname } from "next/navigation";
 
 type dataType = {
   note: string;
@@ -33,18 +34,19 @@ const NoteForm = ({
   isFirstTime,
   onDeleteHighlight,
   note,
-  onChangeNote,
 }: {
   onIsAddNoteBlockOpen?: Dispatch<boolean>;
   currentHighlightId: string;
   isFirstTime?: boolean;
   onDeleteHighlight?: () => void;
   note?: string;
-  onChangeNote?: Dispatch<any>;
 }) => {
+  const arrPath = usePathname().split("/");
+  const category = arrPath[1];
+  const bookId = arrPath[arrPath.length - 1];
+
   const dispatch = useAppDispatch();
-  const { currentBook, deleteHighlightID, currentCategory, currentChapter } =
-    useAppSelector((state) => state.read);
+  const { currentChapter } = useAppSelector((state) => state.read);
 
   const { highlightList } = useAppSelector((state) => state.note);
   const firestore = useFirestore();
@@ -60,25 +62,30 @@ const NoteForm = ({
 
   const onSubmit: SubmitHandler<dataType> = async (data) => {
     if (data.note.length === 0) return;
-    if (currentHighlightId) {
+    if (currentChapter) {
       const index = highlightList.findIndex(
         (cur) => cur.id === currentHighlightId
       );
       if (highlightList[index].note === data.note) return;
-      await firestore.updateDocument(
-        `/users/${user.uid}/${currentCategory}/${currentBook?.bookId}/highlights`,
-        currentHighlightId,
-        { note: data.note }
+      dispatch(
+        updateNote({
+          index,
+          note: data.note,
+        })
       );
-
-      if (onChangeNote) {
-        onChangeNote(data.note);
-      }
+      await firestore.updateDocument(
+        `/users/${user.uid}/books/${bookId}/highlights`,
+        currentChapter,
+        {
+          [`${currentHighlightId}.note`]: data.note,
+        }
+      );
 
       if (onIsAddNoteBlockOpen) {
         onIsAddNoteBlockOpen(false);
       }
       dispatch(setIsEditNoteFieldOpen(false));
+      dispatch(setActionMenuToggle(false));
     }
   };
 
@@ -91,9 +98,8 @@ const NoteForm = ({
           rows={1}
           className={styles.textarea}
           {...register("note")}
-        >
-          {note && note}
-        </textarea>
+          defaultValue={note}
+        ></textarea>
         <div className={styles.button_wrapper}>
           <button
             id={"btn_cancel_add_note"}
@@ -118,6 +124,9 @@ const NoteForm = ({
             type="submit"
             id={"btn_save_note"}
             className={styles.button_save}
+            onClick={() => {
+              handleSubmit(onSubmit);
+            }}
           >
             Save
           </button>

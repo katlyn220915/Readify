@@ -1,0 +1,12 @@
+.new_tag {
+  background-color: var(--color-grey-700);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  margin-left: 1rem;
+}
+
+.btn_create_tag {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}

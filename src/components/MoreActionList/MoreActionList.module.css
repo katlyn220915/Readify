@@ -2,24 +2,95 @@
   position: absolute;
   width: 25rem;
   top: 5rem;
-  left: -5rem;
+  left: -8rem;
   z-index: 100000;
   margin-top: 0.5rem;
   padding: 1.5rem 0;
 
   background-color: #28313b;
   border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  border: 0.1rem solid var(--color-grey-600);
 }
 
-.more_action li {
+.more_action > button {
+  width: 100%;
   padding: 0.5rem 2rem;
   cursor: pointer;
+  text-align: left;
 }
 
-.more_action li:hover {
+.more_action > button:hover {
   background-color: rgba(255, 255, 255, 0.05);
 }
 
 .more_action .delete_btn {
   color: var(--color-red-700);
+}
+
+.select_tags_field,
+.tag_options {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  padding: 0 0.5rem;
+  gap: 1rem;
+}
+
+.select_tags_field > button,
+.tag_options > button {
+  min-width: calc(25rem / 3.5);
+  background-color: var(--color-grey-700);
+  border-radius: 0.5rem;
+  text-wrap: nowrap;
+  padding: 0 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.select_tags_field_input {
+  width: 100%;
+  max-width: 20rem;
+  background-color: inherit;
+  border: none;
+  border: 0.1rem solid var(--color-cta);
+  border-radius: 0.5rem;
+}
+
+.select_tags_field_input:focus {
+  outline: none;
+}
+
+.select_tags_field_input_wrapper {
+  flex: 1;
+}
+
+.tag_options {
+  width: 100%;
+  border-top: 0.1rem solid var(--color-grey-700);
+  padding-top: 1rem;
+}
+
+.new_tag {
+  background-color: var(--color-grey-700);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  margin-left: 1rem;
+}
+
+.btn_create_tag {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+  .more_action {
+    left: -20rem;
+  }
 }

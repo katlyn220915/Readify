@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "@/lib/redux/store";
 import BookProps from "@/types/BookProps";
+import { literata, roboto, inter } from "@/app/fonts/fonts";
+import { stat } from "fs";
 
 type initialState = {
   state: readState;
@@ -14,9 +16,13 @@ type readState = {
   fontSize: number;
   lineSpacing: number;
   lineWidth: string;
+  typeface: {
+    title: string;
+    type: "serif" | "sans-serif";
+    variable: string;
+    className: any;
+  };
   isActionMenuOpen: boolean;
-  actionMenuPositionX: number;
-  actionMenuPositionY: number;
   markerColor: string;
   isDeleteMode: boolean;
   deleteHighlightID: string | null;
@@ -32,9 +38,13 @@ const initialState = {
   fontSize: 20,
   lineSpacing: 1.4,
   lineWidth: "X-large",
+  typeface: {
+    title: "Literata",
+    type: "serif",
+    variable: "--font-literata",
+    className: literata.className,
+  },
   isActionMenuOpen: false,
-  actionMenuPositionX: 0,
-  actionMenuPositionY: 0,
   markerColor: "marker-default",
   isDeleteMode: false,
   deleteHighlightID: null,
@@ -49,10 +59,12 @@ export const read = createSlice({
     setCurrentBook: (state, action) => {
       state.currentBook = action.payload.currentBook;
       state.currentCategory = action.payload.category;
+      state.currentChapter = action.payload.chapter;
     },
 
     setCurrentChapter: (state, action) => {
-      state.currentChapter = action.payload;
+      const chapter = action.payload.replaceAll("/", "");
+      state.currentChapter = chapter;
     },
 
     setFontSize: (state, action) => {
@@ -62,6 +74,7 @@ export const read = createSlice({
         state.fontSize = state.fontSize - 1;
       }
     },
+
     setLineSpacing: (state, action) => {
       if (action.payload && state.lineSpacing >= 2.2) return;
       if (!action.payload && state.lineSpacing <= 1.2) return;
@@ -73,30 +86,32 @@ export const read = createSlice({
         state.lineSpacing = Number(newLineSpacing.toFixed(1));
       }
     },
+
     setLineWidth: (state, action) => {
       state.lineWidth = action.payload;
     },
+
     setActionMenuToggle: (state, action) => {
       state.isActionMenuOpen = action.payload;
     },
-    setActionMenuPosition: (state, action) => {
-      state.isActionMenuOpen = true;
-      state.actionMenuPositionX = action.payload.positionX;
-      state.actionMenuPositionY = action.payload.positionY;
-    },
-    setActionMenuPositionY: (state, action) => {
-      state.actionMenuPositionY = action.payload;
-    },
+
     setMarkerColor: (state, action) => {
       state.markerColor = action.payload;
     },
+
     setDeleteHighlightMode: (state, action) => {
       state.isDeleteMode = action.payload.isDeleteMode;
       state.deleteHighlightID = action.payload.highlightId;
     },
+
     setIsAddNoteBlockOpen: (state, action) => {
       state.isActionMenuOpen = action.payload;
       state.isAddNoteBlockOpen = action.payload;
+    },
+
+    setTypeface: (state, action) => {
+      state.typeface = action.payload;
+      console.log(state.typeface);
     },
   },
 });
@@ -108,11 +123,10 @@ export const {
   setLineSpacing,
   setLineWidth,
   setActionMenuToggle,
-  setActionMenuPosition,
-  setActionMenuPositionY,
   setMarkerColor,
   setDeleteHighlightMode,
   setIsAddNoteBlockOpen,
+  setTypeface,
 } = read.actions;
 export const selectRead = (state: RootState) => state.read;
 export default read.reducer;

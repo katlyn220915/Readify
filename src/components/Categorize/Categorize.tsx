@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { usePathname } from "next/navigation";
 import styles from "./Categorize.module.css";
 
@@ -21,22 +21,25 @@ import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAuth } from "@/context/AuthContext";
 import BookProps from "@/types/BookProps";
 import ActionIcon from "../ActionIcon/ActionIcon";
+import BookId from "@/app/(mylibrary)/[category]/read/[bookId]/page";
+import TagProps from "@/types/TagProps";
+import { CategorizeItem } from "../CategorizeItem/CategorizeItem";
 
 const staticItems = [
   {
-    title: "Move to MyLibrary",
+    title: "Move to My Library",
     iconProp: faBookOpen,
-    path: "/mylibrary",
+    path: "mylibrary",
   },
   {
     title: "Move to Later",
     iconProp: faClock,
-    path: "/later",
+    path: "later",
   },
   {
     title: "Move to Archive",
     iconProp: faArchive,
-    path: "/archive",
+    path: "archive",
   },
 ];
 
@@ -61,65 +64,16 @@ function MoreActionBtn() {
   );
 }
 
-function CategorizeItem({
-  item,
-  book,
-}: {
-  item: { title: string; iconProp: any; path: string };
-  book: BookProps;
-}) {
-  const { user } = useAuth();
-  const firestore = useFirestore();
-  const dispatch = useAppDispatch();
-  const pathname = usePathname();
-  const isCurrentCategory = pathname === item.path;
-
-  const handleCategorizeBook = async (
-    e: React.MouseEvent<HTMLElement, MouseEvent>
-  ) => {
-    e.stopPropagation();
-    if (pathname === item.path) return;
-    const isSetDocSuccess = await firestore.setDocument(
-      `users/${user.uid}/${item.path.split("/").pop()}`,
-      book.bookId,
-      book
-    );
-    const isDeleteDocSuccess = await firestore.deleteDocument(
-      `/users/${user.uid}/${pathname.split("/").pop()}/${book.bookId}`
-    );
-
-    if (isSetDocSuccess && isDeleteDocSuccess) {
-      dispatch(deleteBook(book.bookId));
-      dispatch(resetSuccessful());
-    }
-  };
-  return (
-    <>
-      <li
-        className={`${styles.li} ${
-          isCurrentCategory ? styles.current_path : ""
-        }`}
-        onClick={(e) => handleCategorizeBook(e)}
-      >
-        <ActionIcon
-          iconProp={item.iconProp}
-          promptText={item.title}
-          position="top"
-          showPrompt={!isCurrentCategory}
-          onAction={() => {}}
-          color={`${isCurrentCategory ? "grey-600" : "grey-300"}`}
-        />
-      </li>
-    </>
-  );
-}
-
 export default function Categorize({
   isMouseEnter,
   book,
+  tags,
+  onAddTag,
 }: {
   isMouseEnter: boolean;
   book: BookProps;
+  tags: TagProps[];
+  onAddTag: Dispatch<SetStateAction<TagProps[]>>;
 }) {
   const { isMoreActionBtnOpen } = useAppSelector((state) => state.moreAction);
   return (
@@ -132,7 +86,9 @@ export default function Categorize({
               <CategorizeItem item={item} key={item.path} book={book} />
             ))}
           </ul>
-          {isMoreActionBtnOpen && <MoreActionList book={book} />}
+          {isMoreActionBtnOpen && (
+            <MoreActionList book={book} tags={tags} onAddTag={onAddTag} />
+          )}
         </div>
       )}
     </>

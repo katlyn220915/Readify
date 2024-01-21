@@ -1,0 +1,22 @@
+.contentBtn {
+  display: block;
+  color: #959faa;
+  text-align: left;
+  font-size: var(--font-size-small);
+}
+
+.contentBtn_active {
+  color: #76b2ed;
+}
+
+.contentBtn:hover {
+  color: #76b2ed;
+}
+
+.contentBtn:not(:last-child) {
+  margin-bottom: 1.2rem;
+}
+
+.subitem {
+  transform: translateX(2rem);
+}

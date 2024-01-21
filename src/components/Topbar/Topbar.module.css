@@ -12,6 +12,13 @@
 .topbar .tools {
   display: flex;
   align-items: center;
+}
+
+.topbar .title {
+  gap: 1rem;
+}
+
+.topbar .tools {
   gap: 1rem;
 }
 
@@ -24,9 +31,24 @@
   line-height: 3rem;
 }
 
-.tools span {
+.tools {
+  position: relative;
+  justify-content: end;
+}
+
+.tool {
   display: flex;
   align-items: center;
   gap: 1rem;
   cursor: pointer;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.tool:hover {
+  background-color: var(--color-grey-700);
+}
+
+.tool_active {
+  background-color: var(--color-grey-700);
 }

@@ -1,4 +1,4 @@
-.ul {
+.nav {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -6,7 +6,7 @@
   margin: 2rem 0;
 }
 
-.ul .li {
+.nav .action_btn {
   width: 4rem;
   height: 4rem;
   text-align: center;
@@ -15,7 +15,7 @@
   position: relative;
 }
 
-.ul .li::before {
+.nav .action_btn::before {
   content: "";
   position: absolute;
   width: 0.3rem;
@@ -26,18 +26,22 @@
   border-radius: 0.3rem;
 }
 
-
-.ul .li a {
+.nav .action_btn a {
   display: inline-block;
   line-height: 4rem;
 }
 
-.ul .li:hover {
-  background-color: rgba(255, 255, 255, .3);
+.nav .action_btn:hover {
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
-.ul .li[data-iscurrentpath='true'],
-.ul .li[data-iscurrentpath="true"]:before{
+.nav .action_btn[data-iscurrentpath="true"],
+.nav .action_btn[data-iscurrentpath="true"]:before {
   background-color: rgba(14, 165, 233, 0.6);
 }
 
+@media (max-width: 1024px) {
+  .nav .action_btn {
+    width: 10rem;
+  }
+}

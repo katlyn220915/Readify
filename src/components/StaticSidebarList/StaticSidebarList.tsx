@@ -1,8 +1,12 @@
 "use client";
 
-import React, { LiHTMLAttributes, useState } from "react";
+import React, { useState } from "react";
 import styles from "./StaticSidebarList.module.css";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+
 import Icon from "../Icon/Icon";
+import Prompt from "../Prompt/Prompt";
 
 import {
   faBookOpen,
@@ -10,9 +14,8 @@ import {
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
-import Prompt from "../Prompt/Prompt";
 
-import { usePathname } from "next/navigation";
+import { useRWD } from "@/hooks/useRWD/useRWD";
 
 type ListItemProps = {
   item: { title: string; path: string; iconProp: any };
@@ -34,22 +37,23 @@ const staticList = [
     path: "archive",
     iconProp: faBoxArchive,
   },
-  // {
-  //   title: "Search",
-  //   path: "search",
-  //   iconProp: faMagnifyingGlass,
-  // },
+  {
+    title: "Search",
+    path: "search",
+    iconProp: faMagnifyingGlass,
+  },
 ];
 
 function ListItem({ item }: ListItemProps) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
+  const { screenWidth } = useRWD();
   const pathName = usePathname();
   const arrPathname = pathName.split("/");
   const category = arrPathname[arrPathname.length - 1];
 
   return (
-    <li
-      className={`${styles.li}`}
+    <button
+      className={`${styles.action_btn}`}
       onMouseEnter={() => {
         setIsMouseEnter(true);
       }}
@@ -58,20 +62,25 @@ function ListItem({ item }: ListItemProps) {
       }}
       data-iscurrentpath={category === item.path}
     >
-      <Icon path={item.path} iconProp={item.iconProp} />
-      <Prompt isMouseEnter={isMouseEnter} position="right">
-        {item.title}
-      </Prompt>
-    </li>
+      {screenWidth < 1024 && <Link href={`/${item.path}`}>{item.title}</Link>}
+      {screenWidth > 1024 && (
+        <>
+          <Icon path={item.path} iconProp={item.iconProp} />
+          <Prompt isMouseEnter={isMouseEnter} position="right">
+            {item.title}
+          </Prompt>
+        </>
+      )}
+    </button>
   );
 }
 
 export default function StaticSidebarList() {
   return (
-    <ul className={styles.ul}>
+    <nav className={styles.nav}>
       {staticList.map((item) => (
         <ListItem item={item} key={item.path} />
       ))}
-    </ul>
+    </nav>
   );
 }

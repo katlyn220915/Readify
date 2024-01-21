@@ -41,6 +41,10 @@
   position: relative;
 }
 
+.book:last-child {
+  margin-bottom: 30rem;
+}
+
 .book_active {
   background-color: rgba(255, 255, 255, 0.05);
   z-index: 100;
@@ -92,9 +96,36 @@
   margin-left: 0.5rem;
 }
 
-.book_row .tag {
-  font-size: var(--font-size-small);
-  background-color: var(--color-blue-700);
-  padding: 0.2rem 0.5rem;
-  border-radius: 1rem;
+.tags {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .book {
+    flex-direction: column;
+    border: 0.1rem solid var(--color-grey-600);
+    margin-bottom: 1rem;
+  }
+
+  .book_intro {
+    align-items: center;
+  }
+
+  .book_row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tags {
+    flex-wrap: wrap;
+  }
+
+  .mobile_moreAction_btn {
+    position: absolute;
+    right: 2rem;
+    padding: 1rem;
+    border-radius: 50%;
+  }
 }

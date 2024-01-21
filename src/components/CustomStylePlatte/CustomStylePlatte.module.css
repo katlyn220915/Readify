@@ -17,3 +17,55 @@
   background-color: var(--color-blue-bg-tine);
   border-radius: 1rem;
 }
+
+.typeface_header {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.typeface_header button {
+  color: var(--color-grey-500);
+}
+
+.typeface_options:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.typeface_title {
+  color: var(--color-grey-500);
+  font-size: 1.6rem;
+}
+
+.typeface_options {
+  padding: 1rem;
+}
+
+.options {
+  border: 0.1rem solid var(--color-grey-500);
+  border-radius: 1rem;
+}
+
+.option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.option:not(:last-child) {
+  border-bottom: 0.1rem solid var(--color-grey-500);
+}
+
+.check_box {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 0.1rem solid var(--color-grey-300);
+  border-radius: 50%;
+}
+
+.check_box_active {
+  background-color: var(--color-cta);
+}

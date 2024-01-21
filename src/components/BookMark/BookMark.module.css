@@ -1,0 +1,9 @@
+.bookMark {
+  height: 5rem;
+  width: 0.3rem;
+  background-color: var(--color-cta);
+
+  position: absolute;
+  top: 0;
+  transition: all 0.2s;
+}

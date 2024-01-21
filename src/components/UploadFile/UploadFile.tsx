@@ -36,6 +36,7 @@ export default function UploadFile() {
   const parser = parseEpub();
   const store = storeFiles();
 
+  //修改firebase儲存路徑
   const storeEpubAllImages = async (
     url: string,
     bookId: string,
@@ -55,7 +56,7 @@ export default function UploadFile() {
     const updateData = {
       images: Object.fromEntries(map),
     };
-    firestore.updateDocument(`/users/${uuid}/mylibrary`, bookId, updateData);
+    firestore.updateDocument(`/users/${uuid}/books`, bookId, updateData);
   };
 
   const storeBookInfos = async (url: string, bookId: string, uuid: string) => {
@@ -74,6 +75,7 @@ export default function UploadFile() {
 
     const newBookInfos = {
       title: bookInfos.title,
+      category: "mylibrary",
       author: bookInfos.author,
       bookId,
       bookDownloadURL: url,
@@ -81,7 +83,7 @@ export default function UploadFile() {
       coverURL: imgUrl,
       images: {},
     };
-    firestore.setDocument(`users/${uuid}/mylibrary`, bookId, newBookInfos);
+    firestore.setDocument(`users/${uuid}/books`, bookId, newBookInfos);
     dispatch(addNewBook(newBookInfos));
     storeEpubAllImages(url, bookId, uuid);
   };
@@ -116,7 +118,6 @@ export default function UploadFile() {
 
   const upload = async (fileList: FileList) => {
     dispatch(reset());
-    console.log(fileList);
     if (fileList[0].type !== "application/epub+zip") {
       dispatch(error("Incorrect data type"));
       setTimeout(() => {
@@ -163,6 +164,9 @@ export default function UploadFile() {
                 console.log(e.target.value);
                 if (e.target.files && e.target.files.length > 0) {
                   upload(e.target.files);
+                } else {
+                  console.log("上傳資料錯誤");
+                  return;
                 }
               }}
               className={styles.input}
@@ -174,13 +178,16 @@ export default function UploadFile() {
           </label>
         </form>
       </div>
-      <UploadingField />
-      <ActionPrompt
-        isError={isError}
-        errorMes={errorMes}
-        isSuccessful={isSuccessful}
-        successfulMes="Upload successfully !"
-      />
+      {isUploading && <UploadingField />}
+      {isError ||
+        (isSuccessful && (
+          <ActionPrompt
+            isError={isError}
+            errorMes={errorMes}
+            isSuccessful={isSuccessful}
+            successfulMes="Upload successfully !"
+          />
+        ))}
     </>
   );
 }

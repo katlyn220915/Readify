@@ -8,7 +8,7 @@ const getSelectionData = () => {
   range = selection?.getRangeAt(0);
   const isOneLine = range.startContainer === range.endContainer;
   rec = range?.getBoundingClientRect();
-  console.log("Range: ", range);
+  // console.log("Range: ", range);
 
   return {
     rec,
