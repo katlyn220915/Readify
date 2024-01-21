@@ -24,7 +24,7 @@ const EditTagField = ({
   const [newTagText, setNewTagText] = useState("");
   const [searchTagList, setSearchTagList] = useState<any>([]);
 
-  const { createTag, addTagToBook, deleteTagFromBook } = useTag();
+  const { createTag, addTagToBook, deleteTagFromBookCached } = useTag();
 
   const allArr = tags.map((cur) => cur.id);
   const myRef = useRef(allUserTags.filter((cur) => !allArr.includes(cur.id)));
@@ -66,10 +66,8 @@ const EditTagField = ({
     if (!tag.id) {
       tag = tag.parentElement as HTMLElement;
     }
-    console.log(tag);
     if (tag && tag.id && tag.textContent) {
-      console.log(tag.textContent.replace("x", ""));
-      deleteTagFromBook(
+      deleteTagFromBookCached(
         bookId,
         tags.filter((cur) => cur.id !== tag.id)
       );
@@ -139,6 +137,7 @@ const EditTagField = ({
         )}
       </div>
       <div className={styles.tag_options}>
+        {tags.length === 5 && <p>A book can have a maximum of five tags.</p>}
         {searchTagList &&
           searchTagList.map((tag: TagProps) => (
             <TagAction

@@ -1,0 +1,4 @@
+.current_path button svg {
+  cursor: default;
+  color: var(--color-grey-600);
+}

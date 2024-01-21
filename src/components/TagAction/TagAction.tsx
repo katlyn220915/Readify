@@ -7,7 +7,8 @@ import ActionIcon from "../ActionIcon/ActionIcon";
 import TagProps from "@/types/TagProps";
 import useTag from "@/hooks/createTag/useTag";
 
-import { faCheck, faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPen } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 const TagAction = ({
   onAction,
@@ -46,7 +47,7 @@ const TagAction = ({
       )}
       {mode === "edit" && (
         <>
-          <span>
+          <span className={styles.user_tag_text}>
             {isEditModeOpen && (
               <input
                 type="text"
@@ -57,12 +58,7 @@ const TagAction = ({
               />
             )}
             {!isEditModeOpen && (
-              <input
-                type="text"
-                defaultValue={text}
-                className={styles.input}
-                readOnly
-              />
+              <Link href={`/search?tag=${text}&id=${tag.id}`}>{text}</Link>
             )}
           </span>
           <span className={styles.user_tag_actions}>

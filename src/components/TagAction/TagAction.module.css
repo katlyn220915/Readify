@@ -14,9 +14,25 @@
 .user_tag {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 0.5rem;
+}
+
+.user_tag:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.user_tag_text {
+  width: 10rem;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-align: left;
 }
 
 .user_tag_actions {
+  width: 6rem;
   display: flex;
 }
 

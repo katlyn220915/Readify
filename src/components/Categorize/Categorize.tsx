@@ -23,22 +23,23 @@ import BookProps from "@/types/BookProps";
 import ActionIcon from "../ActionIcon/ActionIcon";
 import BookId from "@/app/(mylibrary)/[category]/read/[bookId]/page";
 import TagProps from "@/types/TagProps";
+import { CategorizeItem } from "../CategorizeItem/CategorizeItem";
 
 const staticItems = [
   {
-    title: "Move to MyLibrary",
+    title: "Move to My Library",
     iconProp: faBookOpen,
-    path: "/mylibrary",
+    path: "mylibrary",
   },
   {
     title: "Move to Later",
     iconProp: faClock,
-    path: "/later",
+    path: "later",
   },
   {
     title: "Move to Archive",
     iconProp: faArchive,
-    path: "/archive",
+    path: "archive",
   },
 ];
 
@@ -60,51 +61,6 @@ function MoreActionBtn() {
         onAction={() => {}}
       />
     </div>
-  );
-}
-
-function CategorizeItem({
-  item,
-  book,
-}: {
-  item: { title: string; iconProp: any; path: string };
-  book: BookProps;
-}) {
-  const { user } = useAuth();
-  const firestore = useFirestore();
-  const dispatch = useAppDispatch();
-  const pathname = usePathname();
-  const isCurrentCategory = pathname === item.path;
-
-  const handleCategorizeBook = async (
-    e: React.MouseEvent<HTMLElement, MouseEvent>
-  ) => {
-    e.stopPropagation();
-    if (pathname === item.path) return;
-    await firestore.updateDocument(`users/${user.uid}/books`, book.bookId, {
-      category: item.path.split("/").pop(),
-    });
-    dispatch(deleteBook(book.bookId));
-    dispatch(resetSuccessful());
-  };
-  return (
-    <>
-      <li
-        className={`${styles.li} ${
-          isCurrentCategory ? styles.current_path : ""
-        }`}
-        onClick={(e) => handleCategorizeBook(e)}
-      >
-        <ActionIcon
-          iconProp={item.iconProp}
-          promptText={item.title}
-          position="top"
-          showPrompt={!isCurrentCategory}
-          onAction={() => {}}
-          color={`${isCurrentCategory ? "grey-600" : "grey-300"}`}
-        />
-      </li>
-    </>
   );
 }
 

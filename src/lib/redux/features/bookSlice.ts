@@ -9,7 +9,7 @@ type initialState = {
 type bookState = {
   isProcessing: boolean;
   isError: boolean;
-  bookList: Array<BookProps>;
+  bookList: BookProps[];
   isSuccessful: boolean;
   allTags: string[] | null;
 };

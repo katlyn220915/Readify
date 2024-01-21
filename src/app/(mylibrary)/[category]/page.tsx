@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import styles from "./page.module.css";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 /* COMPONENTS */
@@ -17,10 +17,16 @@ import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { bookListInitialize } from "@/lib/redux/features/bookSlice";
+import Link from "next/link";
+import ActionIcon from "@/components/ActionIcon/ActionIcon";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { SearchField } from "@/components/SearchField/SearchField";
+import useBook from "@/hooks/useBook/useBook";
 
 export default function Category() {
   const [isLoading, setIsLoading] = useState(false);
-  const category = usePathname().split("/").pop();
+  const { books } = useBook();
+  const path = useParams<{ category: string }>();
   const params = useSearchParams();
   const tag = params.get("tag");
   const tagId = params.get("id");
@@ -30,23 +36,23 @@ export default function Category() {
   const { user } = useAuth();
 
   //Solve the dispatch in effect dependency array problem
-  const dispatchCallback = useCallback(dispatch, [dispatch]);
-  const firestoreCallback = useCallback(useFirestore, [useFirestore]);
+  const dispatchCached = useCallback(dispatch, [dispatch]);
+  const firestoreCached = useCallback(useFirestore, [useFirestore]);
 
   useEffect(() => {
     const getBookList = async () => {
       try {
         setIsLoading(true);
         let bookList;
-        if (!tag && category) {
-          bookList = await firestoreCallback().searchByQuery(
+        if (!tag && path.category) {
+          bookList = await firestoreCached().searchByQuery(
             `/users/${user.uid}/books`,
             "category",
             "==",
-            category
+            path.category
           );
-        } else {
-          bookList = await firestoreCallback().searchByQuery(
+        } else if (path.category === "search") {
+          bookList = await firestoreCached().searchByQuery(
             `/users/${user.uid}/books`,
             "tags",
             "array-contains",
@@ -56,7 +62,7 @@ export default function Category() {
             }
           );
         }
-        dispatchCallback(bookListInitialize(bookList));
+        dispatchCached(bookListInitialize(bookList));
       } catch (e) {
         console.error(e);
       } finally {
@@ -66,33 +72,58 @@ export default function Category() {
     getBookList();
   }, [
     user,
-    dispatchCallback,
-    firestoreCallback,
-    category,
+    dispatchCached,
+    firestoreCached,
+    path.category,
     dispatch,
     tag,
     tagId,
   ]);
 
+  const handleSearchBook = (keyword: string) => {
+    if (keyword === "") {
+      dispatchCached(bookListInitialize([]));
+    } else {
+      dispatchCached(
+        bookListInitialize(
+          books.filter(
+            (cur) => cur.title.includes(keyword) || cur.author.includes(keyword)
+          )
+        )
+      );
+    }
+  };
+
   return (
     <>
       <div className={styles.container}>
-        <nav className={styles.nav}>
-          <Image
-            src="/image/Readify.png"
-            alt="readify logo"
-            width={70}
-            height={70}
-          />
-          <StaticSidebarList />
-        </nav>
+        <aside className={styles.sidebar}>
+          <Link href="/">
+            <Image
+              src="/image/Readify.png"
+              alt="readify logo"
+              width={70}
+              height={70}
+            />
+          </Link>
+          <div className={styles.sidebar_user_actions}>
+            <StaticSidebarList />
+          </div>
+        </aside>
         <section className={styles.middle_container}>
           <Topbar />
           {isLoading && <Spinner />}
-          {!isLoading && bookList.length === 0 && (
-            <p className={styles.empty_hint}>
-              Ooops...! There is no book in this category!
-            </p>
+          {!isLoading &&
+            bookList.length === 0 &&
+            path.category !== "search" && (
+              <p className={styles.empty_hint}>
+                Ooops...! There is no book in this category!
+              </p>
+            )}
+          {path.category === "search" && (
+            <div className={styles.search_field}>
+              <SearchField onSearchBook={handleSearchBook} />
+            </div>
           )}
           {!isLoading && bookList.length > 0 && (
             <BookList bookList={bookList} />
