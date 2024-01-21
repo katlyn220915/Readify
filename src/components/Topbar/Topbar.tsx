@@ -23,7 +23,7 @@ import StaticSidebarList from "../StaticSidebarList/StaticSidebarList";
 export default function Topbar() {
   const [isManageTagsOpen, setIsManageTagsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { screenWidth } = useRWD();
+  const { screenWidth } = useRWD(); 
   const pathname = usePathname();
   const params = useSearchParams();
   const tag = params.get("tag");

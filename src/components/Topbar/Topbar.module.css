@@ -33,6 +33,7 @@
 
 .tools {
   position: relative;
+  justify-content: end;
 }
 
 .tool {
