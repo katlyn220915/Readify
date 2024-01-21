@@ -47,7 +47,7 @@ const TagAction = ({
       )}
       {mode === "edit" && (
         <>
-          <span>
+          <span className={styles.user_tag_text}>
             {isEditModeOpen && (
               <input
                 type="text"
@@ -58,12 +58,7 @@ const TagAction = ({
               />
             )}
             {!isEditModeOpen && (
-              <input
-                type="text"
-                defaultValue={text}
-                className={styles.input}
-                readOnly
-              />
+              <Link href={`/search?tag=${text}&id=${tag.id}`}>{text}</Link>
             )}
           </span>
           <span className={styles.user_tag_actions}>

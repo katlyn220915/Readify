@@ -9,10 +9,13 @@
   width: 100%;
 }
 
+.select_tags_field {
+  overflow: hidden;
+}
+
 .select_tags_field > button,
 .tag_options > button {
-  width: calc(25rem / 3.5);
-  max-width: 19rem;
+  max-width: 100%;
   background-color: var(--color-grey-700);
   border-radius: 0.5rem;
   /* text-wrap: nowrap; */

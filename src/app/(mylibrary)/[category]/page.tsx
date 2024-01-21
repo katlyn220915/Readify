@@ -17,6 +17,9 @@ import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { bookListInitialize } from "@/lib/redux/features/bookSlice";
+import Link from "next/link";
+import ActionIcon from "@/components/ActionIcon/ActionIcon";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
 
 export default function Category() {
   const [isLoading, setIsLoading] = useState(false);
@@ -77,15 +80,26 @@ export default function Category() {
   return (
     <>
       <div className={styles.container}>
-        <nav className={styles.nav}>
-          <Image
-            src="/image/Readify.png"
-            alt="readify logo"
-            width={70}
-            height={70}
-          />
-          <StaticSidebarList />
-        </nav>
+        <aside className={styles.sidebar}>
+          <Link href="/">
+            <Image
+              src="/image/Readify.png"
+              alt="readify logo"
+              width={70}
+              height={70}
+            />
+          </Link>
+          <div className={styles.sidebar_user_actions}>
+            <StaticSidebarList />
+            <div>
+              <ActionIcon
+                iconProp={faGear}
+                promptText="Account settings"
+                position="right"
+              />
+            </div>
+          </div>
+        </aside>
         <section className={styles.middle_container}>
           <Topbar />
           {isLoading && <Spinner />}

@@ -29,17 +29,17 @@ const staticItems = [
   {
     title: "Move to My Library",
     iconProp: faBookOpen,
-    path: "/mylibrary",
+    path: "mylibrary",
   },
   {
     title: "Move to Later",
     iconProp: faClock,
-    path: "/later",
+    path: "later",
   },
   {
     title: "Move to Archive",
     iconProp: faArchive,
-    path: "/archive",
+    path: "archive",
   },
 ];
 

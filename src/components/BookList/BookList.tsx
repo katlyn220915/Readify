@@ -4,7 +4,7 @@ import styles from "./BookList.module.css";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 /* TYPE */
-import { BookListProps, BookProps } from "@/types/BookListProps";
+import BookProps from "@/types/BookProps";
 
 /* COMPONENT */
 import Categorize from "../Categorize/Categorize";
@@ -18,6 +18,7 @@ import { faEllipsis, faFeather } from "@fortawesome/free-solid-svg-icons";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import {
   reset,
+  setMoreActionBtn,
   setMoreActionBtnClose,
 } from "@/lib/redux/features/moreActionSlice";
 import TagProps from "@/types/TagProps";
@@ -31,7 +32,8 @@ import MoreActionList from "../MoreActionList/MoreActionList";
 
 function Book({ book }: { book: BookProps }) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
-  const [isMoreActionListOpen, setIsMoreActionListOpen] = useState(false);
+  const [isMobileMoreActionListOpen, setIsMobileMoreActionListOpen] =
+    useState(false);
   const { screenWidth } = useRWD();
   const [tags, setTags] = useState<TagProps[]>(book.tags);
   const { isMoreActionBtnOpen, isOtherMoreActionBtnOpen } = useAppSelector(
@@ -111,7 +113,7 @@ function Book({ book }: { book: BookProps }) {
           className={styles.mobile_moreAction_btn}
           onClick={(e) => {
             e.stopPropagation();
-            setIsMoreActionListOpen(!isMoreActionListOpen);
+            setIsMobileMoreActionListOpen(!isMobileMoreActionListOpen);
           }}
         >
           <ActionIcon
@@ -120,7 +122,8 @@ function Book({ book }: { book: BookProps }) {
             showPrompt={false}
             position="right"
           />
-          {isMoreActionListOpen && (
+
+          {isMobileMoreActionListOpen && (
             <MoreActionList book={book} tags={tags} onAddTag={setTags} />
           )}
         </span>
@@ -175,12 +178,12 @@ function Book({ book }: { book: BookProps }) {
   );
 }
 
-export default function BookList({ bookList }: BookListProps) {
+export default function BookList({ bookList }: { bookList: BookProps[] }) {
   const { isError, isSuccessful } = useAppSelector((state) => state.book);
   return (
     <>
       <ul className={styles.books}>
-        {bookList.map((book) => (
+        {bookList.map((book: BookProps) => (
           <Book book={book} key={book.bookId} />
         ))}
       </ul>

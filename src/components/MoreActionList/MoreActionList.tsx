@@ -4,6 +4,7 @@ import styles from "./MoreActionList.module.css";
 import { useParams } from "next/navigation";
 
 import EditTagField from "../EditTagField/EditTagField";
+import { CategorizeItem } from "../CategorizeItem/CategorizeItem";
 
 import BookProps from "@/types/BookProps";
 import TagProps from "@/types/TagProps";
@@ -14,9 +15,8 @@ import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
 import { setMoreActionBtnClose } from "@/lib/redux/features/moreActionSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import useCloudStorage from "@/hooks/firebase_db/useCloudStorage";
-import { useAuth } from "@/context/AuthContext";
 import { useRWD } from "@/hooks/useRWD/useRWD";
-import { CategorizeItem } from "../CategorizeItem/CategorizeItem";
+import { useAuth } from "@/context/AuthContext";
 
 const staticItems = [
   {
@@ -37,13 +37,15 @@ export default function MoreActionList({
   book,
   tags,
   onAddTag,
+  opendBookId,
 }: {
   book: BookProps;
   tags: TagProps[];
   onAddTag: Dispatch<SetStateAction<TagProps[]>>;
+  opendBookId?: string;
 }) {
   const [isAddTagFieldOpen, setIsAddTagFieldOpen] = useState(false);
-  const [categoryList, setCategoryList] = useState<any[]>(staticItems);
+  const [categoryList, setCategoryList] = useState<any[]>();
   const params = useParams<{ category: string }>();
   const { screenWidth } = useRWD();
   const dispatch = useAppDispatch();
@@ -68,17 +70,18 @@ export default function MoreActionList({
   };
 
   useEffect(() => {
-    setCategoryList((prev) =>
-      prev.filter((cur) => cur.path !== params.category)
-    );
-  }, [params.category, screenWidth]);
+    setCategoryList(staticItems.filter((cur) => cur.path !== book.category));
+
+    return () => {};
+  }, [params.category, screenWidth, book.category]);
 
   return (
     <>
       <div className={styles.more_action} onClick={(e) => e.stopPropagation()}>
         {!isAddTagFieldOpen && (
           <>
-            {screenWidth < 700 &&
+            {screenWidth < 1024 &&
+              categoryList &&
               categoryList.map((item) => (
                 <CategorizeItem key={item.path} item={item} book={book} />
               ))}

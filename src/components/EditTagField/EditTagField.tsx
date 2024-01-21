@@ -24,7 +24,7 @@ const EditTagField = ({
   const [newTagText, setNewTagText] = useState("");
   const [searchTagList, setSearchTagList] = useState<any>([]);
 
-  const { createTag, addTagToBook, deleteTagFromBook } = useTag();
+  const { createTag, addTagToBook, deleteTagFromBookCached } = useTag();
 
   const allArr = tags.map((cur) => cur.id);
   const myRef = useRef(allUserTags.filter((cur) => !allArr.includes(cur.id)));
@@ -67,7 +67,7 @@ const EditTagField = ({
       tag = tag.parentElement as HTMLElement;
     }
     if (tag && tag.id && tag.textContent) {
-      deleteTagFromBook(
+      deleteTagFromBookCached(
         bookId,
         tags.filter((cur) => cur.id !== tag.id)
       );

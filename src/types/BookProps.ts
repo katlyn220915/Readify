@@ -11,6 +11,7 @@ type BookProps = {
     chapter: string;
     index: string | number;
   };
+  category: string;
 };
 
 export default BookProps;

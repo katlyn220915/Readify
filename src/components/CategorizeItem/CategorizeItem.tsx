@@ -1,14 +1,14 @@
 import React from "react";
 import styles from "./CategorizeItem.module.css";
-import { usePathname } from "next/navigation";
+import BookProps from "@/types/BookProps";
 
 import ActionIcon from "../ActionIcon/ActionIcon";
-import BookProps from "@/types/BookProps";
+
 import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch } from "@/hooks/redux/hooks";
-import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
 import { useRWD } from "@/hooks/useRWD/useRWD";
+import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
 
 export const CategorizeItem = ({
   item,
@@ -21,14 +21,13 @@ export const CategorizeItem = ({
   const { screenWidth } = useRWD();
   const firestore = useFirestore();
   const dispatch = useAppDispatch();
-  const pathname = usePathname();
-  const isCurrentCategory = pathname === item.path;
+  const isCurrentCategory = book.category === item.path;
 
   const handleCategorizeBook = async (
     e: React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    if (pathname === item.path) return;
+    if (book.category === item.path) return;
     await firestore.updateDocument(`users/${user.uid}/books`, book.bookId, {
       category: item.path.split("/").pop(),
     });
@@ -37,7 +36,7 @@ export const CategorizeItem = ({
   };
   return (
     <>
-      {screenWidth > 700 && (
+      {screenWidth > 1024 && (
         <li
           className={`${styles.li} ${
             isCurrentCategory ? styles.current_path : ""
@@ -54,7 +53,7 @@ export const CategorizeItem = ({
           />
         </li>
       )}
-      {screenWidth <= 700 && (
+      {screenWidth <= 1024 && (
         <button onClick={(e) => handleCategorizeBook(e)}>{item.title}</button>
       )}
     </>

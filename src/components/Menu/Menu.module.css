@@ -1,0 +1,19 @@
+.manageTags_field {
+  max-width: 20rem;
+  max-height: 30rem;
+  position: absolute;
+  background-color: #28313b;
+  top: 8.1rem;
+  right: 0;
+  padding: 1rem;
+  z-index: 100000;
+
+  width: 20rem;
+  border-radius: 0.5rem;
+  border: 0.1rem solid var(--color-grey-600);
+  overflow: scroll;
+}
+
+.manageTags_field::-webkit-scrollbar {
+  display: none;
+}

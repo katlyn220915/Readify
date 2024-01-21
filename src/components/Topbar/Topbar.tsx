@@ -5,6 +5,9 @@ import styles from "./Topbar.module.css";
 import { usePathname, useSearchParams } from "next/navigation";
 
 import Icon from "@/components/Icon/Icon";
+import Menu from "../Menu/Menu";
+import { ManageTags } from "../ManageTags/ManageTags";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
@@ -14,11 +17,12 @@ import {
   faTags,
 } from "@fortawesome/free-solid-svg-icons";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
-import ManageTags from "../ManageTags/ManageTags";
 import { useRWD } from "@/hooks/useRWD/useRWD";
+import StaticSidebarList from "../StaticSidebarList/StaticSidebarList";
 
 export default function Topbar() {
   const [isManageTagsOpen, setIsManageTagsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { screenWidth } = useRWD();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -58,26 +62,40 @@ export default function Topbar() {
         <h3 className="heading__tertiary">{title}</h3>
         {tag && pathname === "/search" && <span>tag: {tag}</span>}
       </div>
-      <div
-        className={styles.tools}
-        onClick={() => {
-          setIsManageTagsOpen(!isManageTagsOpen);
-        }}
-      >
+      <div className={styles.tools}>
         <span
           className={`${styles.tool} ${
             isManageTagsOpen ? styles.tool_active : ""
           }`}
+          onClick={() => {
+            setIsManageTagsOpen(!isManageTagsOpen);
+            if (isMenuOpen) setIsMenuOpen(false);
+          }}
         >
           <FontAwesomeIcon icon={faTags} className="icon" />
-          {screenWidth > 700 && "Manage tags"}
+          {screenWidth > 1024 && "Manage tags"}
         </span>
-        {screenWidth < 700 && (
-          <span className={styles.tool}>
+        {screenWidth < 1024 && (
+          <span
+            className={styles.tool}
+            onClick={() => {
+              setIsMenuOpen(!isMenuOpen);
+              if (isManageTagsOpen) setIsManageTagsOpen(false);
+            }}
+          >
             <FontAwesomeIcon icon={faBars} className="icon" />
           </span>
         )}
-        {isManageTagsOpen && <ManageTags />}
+        {isManageTagsOpen && (
+          <Menu>
+            <ManageTags />
+          </Menu>
+        )}
+        {isMenuOpen && (
+          <Menu>
+            <StaticSidebarList />
+          </Menu>
+        )}
       </div>
     </div>
   );
