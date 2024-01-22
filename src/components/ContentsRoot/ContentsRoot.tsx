@@ -4,6 +4,7 @@ import styles from "./ContentsRoot.module.css";
 import BookMark from "../BookMark/BookMark";
 import ActionMenu from "../ActionMenu/ActionMenu";
 import BookContents from "../Contents/BookContents";
+import { useRWD } from "@/hooks/useRWD/useRWD";
 
 const ContentsRoot = ({
   bookDocuments,
@@ -12,11 +13,16 @@ const ContentsRoot = ({
   bookDocuments: any[];
   bookMark: any;
 }) => {
+  const { screenWidth } = useRWD();
   return (
     <>
       <div className={styles.root}>
-        <ActionMenu />
-        <BookMark bookMark={bookMark} />
+        {screenWidth > 700 && (
+          <>
+            <ActionMenu />
+            <BookMark bookMark={bookMark} />
+          </>
+        )}
         <BookContents bookDocuments={bookDocuments} />
       </div>
     </>

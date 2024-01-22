@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useCallback, useState } from "react";
+import React, {
+  useEffect,
+  useCallback,
+  useState,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import styles from "./Notebook.module.css";
 
 import { useAuth } from "@/context/AuthContext";
@@ -9,11 +15,16 @@ import useFirestore from "@/hooks/firebase_db/useFirestore";
 import Highlight from "../Highlight/Highlight";
 import { usePathname } from "next/navigation";
 import { resetNotes } from "@/lib/redux/features/noteSlice";
+import { useRWD } from "@/hooks/useRWD/useRWD";
+import ActionIcon from "../ActionIcon/ActionIcon";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 export default function Notebook({
   isNotebookOpen,
+  onSetIsNotebookOpen,
 }: {
   isNotebookOpen: boolean;
+  onSetIsNotebookOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const arrPath = usePathname().split("/");
   const category = arrPath[1];
@@ -21,17 +32,18 @@ export default function Notebook({
 
   const firestoreMemo = useCallback(useFirestore, [useFirestore]);
   const { user } = useAuth();
+  const { screenWidth } = useRWD();
   const { currentCategory, currentBook } = useAppSelector(
     (state) => state.read
   );
   const { highlightList } = useAppSelector((state) => state.note);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    return () => {
-      dispatch(resetNotes());
-    };
-  }, [dispatch]);
+  // useEffect(() => {
+  //   return () => {
+  //     dispatch(resetNotes());
+  //   };
+  // }, [dispatch]);
 
   return (
     <div
@@ -39,7 +51,20 @@ export default function Notebook({
         !isNotebookOpen ? styles.notebook_close : ""
       }`}
     >
-      <div className={styles.title}>highlights</div>
+      <div className={styles.title}>
+        <span>highlights</span>
+        {screenWidth < 1024 && (
+          <ActionIcon
+            iconProp={faXmark}
+            promptText="Close notebooks"
+            position="left"
+            showPrompt={false}
+            onAction={() => {
+              onSetIsNotebookOpen(false);
+            }}
+          />
+        )}
+      </div>
       <div className={styles.highlight_list}>
         {highlightList &&
           highlightList.map(({ id, markerColor, text, note }) => (

@@ -1,5 +1,12 @@
 "use client";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import styles from "./BookIndices.module.css";
 
 import IndexItemProp from "@/types/IndexItemProp";
@@ -7,9 +14,17 @@ import IndexButton from "../IndexButton/IndexButton";
 
 import { useAppSelector } from "@/hooks/redux/hooks";
 import parseEpub from "@/server-actions/parseEpub/parseEpub";
+import ActionIcon from "../ActionIcon/ActionIcon";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const BookIndices = React.memo(
-  ({ isContentListOpen }: { isContentListOpen: boolean }) => {
+  ({
+    isContentListOpen,
+    onContentListOpen,
+  }: {
+    isContentListOpen: boolean;
+    onContentListOpen: Dispatch<SetStateAction<boolean>>;
+  }) => {
     const { currentBook } = useAppSelector((state) => state.read);
     const [toc, setToc] = useState<null | IndexItemProp[]>();
 
@@ -42,7 +57,16 @@ const BookIndices = React.memo(
           }`}
         >
           <div className={styles.contents_wrapper}>
-            <p className={styles.title}>{currentBook?.title}</p>
+            <p className={styles.title}>
+              <span>{currentBook?.title}</span>
+              <ActionIcon
+                iconProp={faXmark}
+                promptText="Close the contents"
+                position="left"
+                showPrompt={false}
+                onAction={() => onContentListOpen(false)}
+              />
+            </p>
             <div className={styles.contents}>
               {toc &&
                 toc.map((toc: IndexItemProp) => (

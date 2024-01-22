@@ -9,6 +9,12 @@
   transition: width 0.3s;
 }
 
+@media (max-width: 1024px) {
+  .container {
+    width: 100%;
+  }
+}
+
 .container::-webkit-scrollbar {
   display: none;
   padding: 1.5rem;
@@ -22,6 +28,12 @@
 .title {
   padding: 1.2rem 2rem;
   color: var(--color-grey-500);
+  display: flex;
+  justify-content: space-between;
+}
+
+.title > button {
+  font-size: 2rem;
 }
 
 .highlight_list {

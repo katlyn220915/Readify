@@ -16,6 +16,7 @@ import {
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import useBook from "@/hooks/useBook/useBook";
 import ActionPrompt from "../ActionPrompt/ActionPrompt";
+import { useRWD } from "@/hooks/useRWD/useRWD";
 
 const ReadingNavigation = ({
   isContentListOpen,
@@ -33,6 +34,7 @@ const ReadingNavigation = ({
   const [isCustomizeBoxOpen, setIsCustomizeBoxOpen] = useState(false);
   const [isStoreBookMarkError, setIsStoreBookMarkError] = useState(false);
   const [isStoreBookMarkSuccess, setIsStoreBookMarkSuccess] = useState(false);
+  const { screenWidth } = useRWD();
   const { storeBookMark } = useBook();
   const router = useRouter();
   const pathname = usePathname();
@@ -74,15 +76,18 @@ const ReadingNavigation = ({
               router.push(`/${category}`);
             }}
           />
-          <ActionIcon
-            iconProp={faList}
-            promptText={
-              isContentListOpen ? "Close the sidebar" : "Open the sidebar"
-            }
-            position="bottom"
-            showPrompt={true}
-            onAction={() => onSetContentListOpen(!isContentListOpen)}
-          />
+          {screenWidth > 1024 && (
+            <ActionIcon
+              iconProp={faList}
+              promptText={
+                isContentListOpen ? "Close the sidebar" : "Open the sidebar"
+              }
+              position="bottom"
+              showPrompt={true}
+              onAction={() => onSetContentListOpen(!isContentListOpen)}
+            />
+          )}
+
           <ActionIcon
             iconProp={faFont}
             promptText="Customize styles"
@@ -102,12 +107,33 @@ const ReadingNavigation = ({
               addBookMark();
             }}
           />
+          {screenWidth < 1024 && (
+            <ActionIcon
+              iconProp={faList}
+              promptText={
+                isContentListOpen ? "Close the sidebar" : "Open the sidebar"
+              }
+              position="bottom"
+              showPrompt={true}
+              onAction={() => {
+                onSetContentListOpen(!isContentListOpen);
+                if (isNotebookOpen && !isContentListOpen) {
+                  onSetNotebookOpen(false);
+                }
+              }}
+            />
+          )}
           <ActionIcon
             iconProp={faPenToSquare}
             promptText={isNotebookOpen ? "Close Notebook" : "Open Notebook"}
             position="bottom"
             showPrompt={true}
-            onAction={() => onSetNotebookOpen(!isNotebookOpen)}
+            onAction={() => {
+              onSetNotebookOpen(!isNotebookOpen);
+              if (screenWidth < 1024 && isContentListOpen) {
+                onSetContentListOpen(false);
+              }
+            }}
           />
         </div>
       </nav>

@@ -8,7 +8,9 @@ const getSelectionData = () => {
   range = selection?.getRangeAt(0);
   const isOneLine = range.startContainer === range.endContainer;
   rec = range?.getBoundingClientRect();
-  // console.log("Range: ", range);
+
+  // console.log("selection:", selection);
+  // console.log("range:", range);
 
   return {
     rec,
@@ -22,7 +24,7 @@ const getSelectionData = () => {
     endOffset: selection.focusOffset,
     selectedText,
     isOneLine,
-    commonAncestorContainer: range.commonAncestorContainer,
+    commonAncestorContainer: range.commonAncestorContainer as HTMLElement,
   };
 };
 
