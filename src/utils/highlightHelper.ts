@@ -5,7 +5,8 @@ const highlightHelper = () => {
     startOffset: number,
     endOffset: number,
     highlightId: string,
-    markerColor: string
+    markerColor: string,
+    commonParent?: HTMLElement
   ) => {
     console.log("開始畫記");
     if (startContainer === endContainer) {
@@ -41,9 +42,8 @@ const highlightHelper = () => {
       console.log("開始節點與結束節點的文本節點父層容器不同");
       console.log("開始節點的父層元素為 ：", startContainer.parentElement);
       console.log("結束節點的父層元素為：", endContainer.parentElement);
-      let currentElement: HTMLElement | null = startContainer.parentElement;
+      let currentElement: any = startContainer.parentElement;
       let isEndNodeFound = false;
-
       while (
         currentElement !== null &&
         currentElement !== undefined &&
@@ -74,7 +74,19 @@ const highlightHelper = () => {
           currentElement.parentElement
         ) {
           console.log(currentElement, "沒有兄弟元素了");
-          if (currentElement.parentElement.nextSibling) {
+          if (currentElement.parentElement.tagName.toLowerCase() !== "div") {
+            console.log(
+              currentElement,
+              "有父層元素，並且不是章節div，指派當前元素為",
+              currentElement.parentElement
+            );
+            currentElement = currentElement.parentElement;
+          } else if (currentElement.parentElement.nextSibling) {
+            console.log(
+              currentElement,
+              "的父層元素有下一個元素，指派當前元素為：",
+              currentElement.parentElement
+            );
             currentElement = currentElement.parentElement
               .nextElementSibling as HTMLElement;
           } else if (
@@ -122,6 +134,7 @@ const highlightHelper = () => {
               "在",
               currentElement,
               "找到一個元素節點",
+              "並且此元素沒有畫記過",
               node,
               "準備呼叫此函式"
             );
@@ -134,6 +147,11 @@ const highlightHelper = () => {
               highlightId,
               markerColor
             );
+          } else if (
+            node.nodeType === 1 &&
+            node.className === "epub_highlight"
+          ) {
+            console.log("找到畫記過的元素，不處理。");
           }
         });
       }

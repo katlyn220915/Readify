@@ -53,8 +53,13 @@ const ActionMenu = () => {
   const handleHighlight = async () => {
     const selectionData = getSelectionData();
     if (selectionData) {
-      const { range, startContainer, endContainer, selectedText } =
-        selectionData;
+      const {
+        range,
+        startContainer,
+        endContainer,
+        selectedText,
+        commonAncestorContainer,
+      } = selectionData;
       const root = document.querySelector("#viewer");
       const xpath = fromRange(range, root);
       const { start, startOffset, end, endOffset } = xpath;
@@ -67,7 +72,8 @@ const ActionMenu = () => {
         startOffset,
         endOffset,
         highlightId,
-        markerColor
+        markerColor,
+        commonAncestorContainer
       );
 
       if (currentChapter) {
@@ -142,8 +148,6 @@ const ActionMenu = () => {
       console.log("Delete fail");
     }
   };
-
-  const handleBookMark = () => {};
 
   useEffect(() => {
     const { rec } = getSelectionData() || { rec: null };
