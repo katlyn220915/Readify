@@ -9,19 +9,21 @@ import BookProps from "@/types/BookProps";
 export default function useBook() {
   const { currentBook } = useAppSelector((state) => state.read);
   const [books, setBooks] = useState<BookProps[]>([]);
-  const {
-    user: { uid },
-  } = useAuth();
+  const { user } = useAuth() || undefined;
   const firestore = useFirestore();
   const firestoreCached = useCallback(useFirestore, [useFirestore]);
 
   useEffect(() => {
     const getBooks = async () => {
-      const books = await firestoreCached().getDocuments(`/users/${uid}/books`);
-      setBooks(books);
+      if (user) {
+        const books = await firestoreCached().getDocuments(
+          `/users/${user.uid}/books`
+        );
+        setBooks(books);
+      }
     };
     getBooks();
-  }, [uid, firestoreCached]);
+  }, [user, firestoreCached]);
 
   const storeBookMark = (indicator: HTMLElement) => {
     try {
@@ -29,12 +31,16 @@ export default function useBook() {
       const chapterEl = document.getElementById(chapterID);
       if (chapterEl && currentBook) {
         const targetIndex = Array.from(chapterEl.children).indexOf(indicator);
-        firestore.updateDocument(`/users/${uid}/books`, currentBook?.bookId, {
-          bookMark: {
-            chapter: chapterID,
-            index: targetIndex,
-          },
-        });
+        firestore.updateDocument(
+          `/users/${user.uid}/books`,
+          currentBook?.bookId,
+          {
+            bookMark: {
+              chapter: chapterID,
+              index: targetIndex,
+            },
+          }
+        );
       }
     } catch (e) {
       console.error(e);

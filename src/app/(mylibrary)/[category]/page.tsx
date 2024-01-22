@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import styles from "./page.module.css";
-import { useParams, usePathname, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { useParams, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 /* COMPONENTS */
@@ -11,21 +12,20 @@ import BookList from "@/components/BookList/BookList";
 import Spinner from "@/components/Spinner/Spinner";
 import StaticSidebarList from "@/components/StaticSidebarList/StaticSidebarList";
 import UploadFile from "@/components/UploadFile/UploadFile";
+import { SearchField } from "@/components/SearchField/SearchField";
 
 /* CUSTOM HOOKS */
 import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { bookListInitialize } from "@/lib/redux/features/bookSlice";
-import Link from "next/link";
-import ActionIcon from "@/components/ActionIcon/ActionIcon";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
-import { SearchField } from "@/components/SearchField/SearchField";
 import useBook from "@/hooks/useBook/useBook";
+import { useRWD } from "@/hooks/useRWD/useRWD";
 
 export default function Category() {
   const [isLoading, setIsLoading] = useState(false);
   const { books } = useBook();
+  const { screenWidth } = useRWD();
   const path = useParams<{ category: string }>();
   const params = useSearchParams();
   const tag = params.get("tag");
@@ -130,7 +130,7 @@ export default function Category() {
           )}
         </section>
       </div>
-      <UploadFile />
+      {screenWidth > 600 && <UploadFile />}
     </>
   );
 }
