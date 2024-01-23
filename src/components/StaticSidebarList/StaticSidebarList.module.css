@@ -28,7 +28,6 @@
 
 .nav .action_btn a {
   display: inline-block;
-  line-height: 4rem;
 }
 
 .nav .action_btn:hover {
@@ -40,8 +39,20 @@
   background-color: rgba(14, 165, 233, 0.6);
 }
 
+.tablet_text {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .nav .action_btn {
     width: 10rem;
+  }
+
+  .tablet_text {
+    display: inline-block;
+  }
+
+  .desktop_icon {
+    display: none;
   }
 }

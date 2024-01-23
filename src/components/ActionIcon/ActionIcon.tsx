@@ -42,12 +42,12 @@ export default function ActionIcon({
           className="icon"
           style={{ color: `var(--color-${color})` }}
         />
+        {showPrompt && (
+          <Prompt isMouseEnter={isMouseEnter} position={position}>
+            {promptText}
+          </Prompt>
+        )}
       </button>
-      {showPrompt && (
-        <Prompt isMouseEnter={isMouseEnter} position={position}>
-          {promptText}
-        </Prompt>
-      )}
     </>
   );
 }

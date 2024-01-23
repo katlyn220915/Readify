@@ -7,7 +7,6 @@ import ActionIcon from "../ActionIcon/ActionIcon";
 import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch } from "@/hooks/redux/hooks";
-import { useRWD } from "@/hooks/useRWD/useRWD";
 import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
 
 export const CategorizeItem = ({
@@ -18,7 +17,6 @@ export const CategorizeItem = ({
   book: BookProps;
 }) => {
   const { user } = useAuth();
-  const { screenWidth } = useRWD();
   const firestore = useFirestore();
   const dispatch = useAppDispatch();
   const isCurrentCategory = book.category === item.path;
@@ -36,26 +34,27 @@ export const CategorizeItem = ({
   };
   return (
     <>
-      {screenWidth > 1024 && (
-        <li
-          className={`${styles.li} ${
-            isCurrentCategory ? styles.current_path : ""
-          }`}
-          onClick={(e) => handleCategorizeBook(e)}
-        >
-          <ActionIcon
-            iconProp={item.iconProp}
-            promptText={item.title}
-            position="top"
-            showPrompt={!isCurrentCategory}
-            onAction={() => {}}
-            color={`${isCurrentCategory ? "grey-600" : "grey-300"}`}
-          />
-        </li>
-      )}
-      {screenWidth <= 1024 && (
-        <button onClick={(e) => handleCategorizeBook(e)}>{item.title}</button>
-      )}
+      <li
+        className={`${styles.li} ${
+          isCurrentCategory ? styles.current_path : ""
+        }`}
+        onClick={(e) => handleCategorizeBook(e)}
+      >
+        <ActionIcon
+          iconProp={item.iconProp}
+          promptText={item.title}
+          position="top"
+          showPrompt={!isCurrentCategory}
+          onAction={() => {}}
+          color={`${isCurrentCategory ? "grey-600" : "grey-300"}`}
+        />
+      </li>
+      <button
+        onClick={(e) => handleCategorizeBook(e)}
+        className={styles.mobile_categorize_btn}
+      >
+        {item.title}
+      </button>
     </>
   );
 };

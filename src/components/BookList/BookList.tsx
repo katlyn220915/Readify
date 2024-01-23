@@ -108,26 +108,24 @@ function Book({ book }: { book: BookProps }) {
         router.push(`${category}/read/${book.bookId}`);
       }}
     >
-      {screenWidth <= 1024 && (
-        <span
-          className={styles.mobile_moreAction_btn}
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsMobileMoreActionListOpen(!isMobileMoreActionListOpen);
-          }}
-        >
-          <ActionIcon
-            iconProp={faEllipsis}
-            promptText="More Actions"
-            showPrompt={false}
-            position="right"
-          />
+      <span
+        className={styles.mobile_moreAction_btn}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsMobileMoreActionListOpen(!isMobileMoreActionListOpen);
+        }}
+      >
+        <ActionIcon
+          iconProp={faEllipsis}
+          promptText="More Actions"
+          showPrompt={false}
+          position="right"
+        />
 
-          {isMobileMoreActionListOpen && (
-            <MoreActionList book={book} tags={tags} onAddTag={setTags} />
-          )}
-        </span>
-      )}
+        {isMobileMoreActionListOpen && (
+          <MoreActionList book={book} tags={tags} onAddTag={setTags} />
+        )}
+      </span>
       <div className={styles.img_container}>
         {book.coverURL && (
           <Image

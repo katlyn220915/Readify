@@ -2,3 +2,20 @@
   cursor: default;
   color: var(--color-grey-600);
 }
+
+.mobile_categorize_btn {
+  display: none;
+}
+
+.li {
+  position: relative;
+}
+
+@media (max-width: 1024px) {
+  .li {
+    display: none;
+  }
+  .mobile_categorize_btn {
+    display: inline-block;
+  }
+}

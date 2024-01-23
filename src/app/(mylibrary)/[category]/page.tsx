@@ -20,12 +20,10 @@ import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { bookListInitialize } from "@/lib/redux/features/bookSlice";
 import useBook from "@/hooks/useBook/useBook";
-import { useRWD } from "@/hooks/useRWD/useRWD";
 
 export default function Category() {
   const [isLoading, setIsLoading] = useState(false);
   const { books } = useBook();
-  const { screenWidth } = useRWD();
   const path = useParams<{ category: string }>();
   const params = useSearchParams();
   const tag = params.get("tag");
@@ -120,7 +118,7 @@ export default function Category() {
                 Ooops...! There is no book in this category!
               </p>
             )}
-          {path.category === "search" && (
+          {path.category === "search" && !tag && (
             <div className={styles.search_field}>
               <SearchField onSearchBook={handleSearchBook} />
             </div>
@@ -130,7 +128,7 @@ export default function Category() {
           )}
         </section>
       </div>
-      {screenWidth > 600 && <UploadFile />}
+      <UploadFile />
     </>
   );
 }

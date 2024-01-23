@@ -102,6 +102,10 @@
   gap: 1rem;
 }
 
+.mobile_moreAction_btn {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .book {
     flex-direction: column;
@@ -123,6 +127,7 @@
   }
 
   .mobile_moreAction_btn {
+    display: block;
     position: absolute;
     right: 2rem;
     padding: 1rem;
