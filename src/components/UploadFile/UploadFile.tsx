@@ -31,12 +31,12 @@ export default function UploadFile() {
   const firestore = useFirestore();
   const epubJS = useEpubJs();
   const dispatch = useAppDispatch();
-  const { isUploading, isError, errorMes, fileName, isSuccessful } =
-    useAppSelector((state) => state.upload);
+  const { isUploading, isError, errorMes, isUploadSuccessful } = useAppSelector(
+    (state) => state.upload
+  );
   const parser = parseEpub();
   const store = storeFiles();
 
-  //修改firebase儲存路徑
   const storeEpubAllImages = async (
     url: string,
     bookId: string,
@@ -139,15 +139,19 @@ export default function UploadFile() {
       });
       if (!res.ok) dispatch(error("Upload fail"));
       const result = await res.json();
-      console.log("Upload successfully, server response:", result);
+      // console.log("Upload successfully, server response:", result);
       storeBookInfos(result.data.downloadURL, result.data.id, user.uid);
       dispatch(success());
 
       setTimeout(() => {
         dispatch(reset());
-      }, 5000);
+      }, 3000);
     } catch (e: any) {
       console.error(e);
+      dispatch(error("Upload fail"));
+      setTimeout(() => {
+        dispatch(reset());
+      }, 3000);
     }
   };
 
@@ -180,11 +184,11 @@ export default function UploadFile() {
       </div>
       {isUploading && <UploadingField />}
       {isError ||
-        (isSuccessful && (
+        (isUploadSuccessful && (
           <ActionPrompt
             isError={isError}
             errorMes={errorMes}
-            isSuccessful={isSuccessful}
+            isSuccessful={isUploadSuccessful}
             successfulMes="Upload successfully !"
           />
         ))}
