@@ -52,3 +52,17 @@
 .tool_active {
   background-color: var(--color-grey-700);
 }
+
+.tablet_menu {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .tablet_menu {
+    display: inline-block;
+  }
+
+  .desktop_text {
+    display: none;
+  }
+}

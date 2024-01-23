@@ -39,6 +39,7 @@ export const moreAction = createSlice({
 
     setAllUserTags: (state, action) => {
       state.allUserTags = action.payload;
+      if (state.allUserTags.length < 0) return;
       state.allUserTags = state.allUserTags.sort((a, b) => b.id - a.id);
     },
 

@@ -41,9 +41,9 @@ const storeFiles = () => {
                 break;
             }
           },
-          async () => {
+          () => {
             try {
-              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+              const downloadURL = getDownloadURL(uploadTask.snapshot.ref);
               console.log("Got the url !" + downloadURL);
               resolve(downloadURL);
             } catch (error) {

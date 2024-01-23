@@ -17,8 +17,9 @@
 
 .prompt__position_top {
   /* transform: translateY(-4rem); */
-  top: -3rem;
-  left: -3rem;
+  top: -4rem;
+  /* left: -3rem; */
+  right: -4rem;
 }
 
 .prompt__position_right {
@@ -26,8 +27,8 @@
 }
 
 .prompt__position_bottom {
-  bottom: -3.5rem;
-  left: 0rem;
+  bottom: -5rem;
+  left: -4rem;
 }
 
 .prompt__position_left {

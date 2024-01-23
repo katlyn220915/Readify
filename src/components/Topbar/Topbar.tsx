@@ -17,13 +17,11 @@ import {
   faTags,
 } from "@fortawesome/free-solid-svg-icons";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
-import { useRWD } from "@/hooks/useRWD/useRWD";
 import StaticSidebarList from "../StaticSidebarList/StaticSidebarList";
 
 export default function Topbar() {
   const [isManageTagsOpen, setIsManageTagsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { screenWidth } = useRWD(); 
   const pathname = usePathname();
   const params = useSearchParams();
   const tag = params.get("tag");
@@ -73,19 +71,17 @@ export default function Topbar() {
           }}
         >
           <FontAwesomeIcon icon={faTags} className="icon" />
-          {screenWidth > 1024 && "Manage tags"}
+          <span className={styles.desktop_text}>Manage tags</span>
         </span>
-        {screenWidth < 1024 && (
-          <span
-            className={styles.tool}
-            onClick={() => {
-              setIsMenuOpen(!isMenuOpen);
-              if (isManageTagsOpen) setIsManageTagsOpen(false);
-            }}
-          >
-            <FontAwesomeIcon icon={faBars} className="icon" />
-          </span>
-        )}
+        <span
+          className={`${styles.tool} ${styles.tablet_menu}`}
+          onClick={() => {
+            setIsMenuOpen(!isMenuOpen);
+            if (isManageTagsOpen) setIsManageTagsOpen(false);
+          }}
+        >
+          <FontAwesomeIcon icon={faBars} className="icon" />
+        </span>
         {isManageTagsOpen && (
           <Menu>
             <ManageTags />

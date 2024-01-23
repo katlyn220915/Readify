@@ -5,7 +5,6 @@ import styles from "./StaticSidebarList.module.css";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-import Icon from "../Icon/Icon";
 import Prompt from "../Prompt/Prompt";
 
 import {
@@ -15,7 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 
-import { useRWD } from "@/hooks/useRWD/useRWD";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type ListItemProps = {
   item: { title: string; path: string; iconProp: any };
@@ -46,7 +45,6 @@ const staticList = [
 
 function ListItem({ item }: ListItemProps) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
-  const { screenWidth } = useRWD();
   const pathName = usePathname();
   const arrPathname = pathName.split("/");
   const category = arrPathname[arrPathname.length - 1];
@@ -62,15 +60,15 @@ function ListItem({ item }: ListItemProps) {
       }}
       data-iscurrentpath={category === item.path}
     >
-      {screenWidth < 1024 && <Link href={`/${item.path}`}>{item.title}</Link>}
-      {screenWidth > 1024 && (
-        <>
-          <Icon path={item.path} iconProp={item.iconProp} />
+      <Link href={item.path}>
+        <span className={styles.tablet_text}>{item.title}</span>
+        <span className={styles.desktop_icon}>
+          <FontAwesomeIcon icon={item.iconProp} />
           <Prompt isMouseEnter={isMouseEnter} position="right">
             {item.title}
           </Prompt>
-        </>
-      )}
+        </span>
+      </Link>
     </button>
   );
 }

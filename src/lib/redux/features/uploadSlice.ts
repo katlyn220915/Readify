@@ -9,7 +9,7 @@ type uploadState = {
   isUploading: boolean;
   isError: boolean;
   errorMes: string;
-  isSuccessful: boolean;
+  isUploadSuccessful: boolean;
   fileName: string;
 };
 
@@ -17,7 +17,7 @@ const initialState = {
   isUploading: false,
   isError: false,
   errorMes: "",
-  isSuccessful: false,
+  isUploadSuccessful: false,
   fileName: "原子習慣",
 } as uploadState;
 
@@ -36,7 +36,7 @@ export const upload = createSlice({
     },
     success: (state) => {
       state.isUploading = false;
-      state.isSuccessful = true;
+      state.isUploadSuccessful = true;
     },
     reset: () => {
       return initialState;
