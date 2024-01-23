@@ -1,18 +1,22 @@
 import React from "react";
 import Image from "next/image";
+import styles from "./logo.module.css";
 
 import Link from "next/link";
 
 export default function Logo() {
   return (
-    <Link href="/">
-      <Image
-        src="/image/Readify-new.png"
-        alt="readify"
-        width={100}
-        height={100}
-        priority={false}
-      />
-    </Link>
+    <h1 className={styles.logo}>
+      <Link href="/">
+        <Image
+          src="/image/logo.png"
+          alt="logo-readify"
+          width={60}
+          height={60}
+          priority={false}
+        />
+        <span>Readify</span>
+      </Link>
+    </h1>
   );
 }

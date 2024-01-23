@@ -23,7 +23,7 @@ export default function Navbar() {
     }
   };
   return (
-    <nav className={style.navigation}>
+    <nav className={`container ${style.navigation}`}>
       <Logo />
       {!isLogin && (
         <ButtonCta color="blue">

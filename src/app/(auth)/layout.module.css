@@ -5,3 +5,13 @@
 
   position: relative;
 }
+
+.section_signup {
+  margin-top: 10rem;
+}
+
+@media (max-width: 600px) {
+  .section_signup {
+    margin-top: 3rem;
+  }
+}

@@ -17,7 +17,7 @@ import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type ListItemProps = {
-  item: { title: string; path: string; iconProp: any };
+  item: { title: string; path: string; iconProp?: any };
 };
 
 const staticList = [
@@ -76,6 +76,7 @@ function ListItem({ item }: ListItemProps) {
 export default function StaticSidebarList() {
   return (
     <nav className={styles.nav}>
+      <ListItem item={{ title: "Home page", path: "/" }} />
       {staticList.map((item) => (
         <ListItem item={item} key={item.path} />
       ))}
