@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { usePathname } from "next/navigation";
 import styles from "./Categorize.module.css";
 
 /* COMPONENT */
@@ -16,12 +15,8 @@ import { faClock } from "@fortawesome/free-regular-svg-icons";
 /* CUSTOM HOOK */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { setMoreActionBtn } from "@/lib/redux/features/moreActionSlice";
-import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
-import useFirestore from "@/hooks/firebase_db/useFirestore";
-import { useAuth } from "@/context/AuthContext";
 import BookProps from "@/types/BookProps";
 import ActionIcon from "../ActionIcon/ActionIcon";
-import BookId from "@/app/(mylibrary)/[category]/read/[bookId]/page";
 import TagProps from "@/types/TagProps";
 import { CategorizeItem } from "../CategorizeItem/CategorizeItem";
 
