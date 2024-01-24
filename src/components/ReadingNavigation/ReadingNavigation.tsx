@@ -16,8 +16,6 @@ import {
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import useBook from "@/hooks/useBook/useBook";
 import ActionPrompt from "../ActionPrompt/ActionPrompt";
-import { useRWD } from "@/hooks/useRWD/useRWD";
-
 const ReadingNavigation = ({
   isContentListOpen,
   onSetContentListOpen,
@@ -29,11 +27,10 @@ const ReadingNavigation = ({
   isNotebookOpen: boolean;
   onSetNotebookOpen<SetStateAction>(boolean: any): any;
 }) => {
-  const [isClick, setIsClick] = useState(false);
+  const [isClick, setIsClick] = useState(true);
   const [isCustomizeBoxOpen, setIsCustomizeBoxOpen] = useState(false);
   const [isStoreBookMarkError, setIsStoreBookMarkError] = useState(false);
   const [isStoreBookMarkSuccess, setIsStoreBookMarkSuccess] = useState(false);
-  const { screenWidth } = useRWD();
   const { storeBookMark } = useBook();
   const router = useRouter();
   const pathname = usePathname();
@@ -120,11 +117,3 @@ const ReadingNavigation = ({
 };
 
 export default ReadingNavigation;
-
-// const MobileNavigation = () => {
-//   const [isClick, setIsClick] = useState(false);
-
-//   return (
-
-//   );
-// };

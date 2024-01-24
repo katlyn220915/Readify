@@ -9,8 +9,8 @@ import Notebook from "@/components/Notebook/Notebook";
 import BookIndices from "@/components/BookIndices/BookIndices";
 
 export default function BookId() {
-  const [isNotebookOpen, setIsNotebookOpen] = useState(true);
-  const [isContentListOpen, setIsContentListOpen] = useState(true);
+  const [isNotebookOpen, setIsNotebookOpen] = useState(false);
+  const [isContentListOpen, setIsContentListOpen] = useState(false);
 
   // console.log("render -", " BookId page");
 
@@ -27,7 +27,10 @@ export default function BookId() {
           isContentListOpen={isContentListOpen}
           onContentListOpen={setIsContentListOpen}
         />
-        <ReadingArea />
+        <ReadingArea
+          isContentListOpen={isContentListOpen}
+          isNotebookOpen={isNotebookOpen}
+        />
         <Notebook
           isNotebookOpen={isNotebookOpen}
           onSetIsNotebookOpen={setIsNotebookOpen}

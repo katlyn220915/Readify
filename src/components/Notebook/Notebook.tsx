@@ -1,17 +1,10 @@
 "use client";
 
-import React, {
-  useEffect,
-  useCallback,
-  useState,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import React, { useEffect, Dispatch, SetStateAction } from "react";
 import styles from "./Notebook.module.css";
 
 import { useAuth } from "@/context/AuthContext";
 import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
-import useFirestore from "@/hooks/firebase_db/useFirestore";
 import Highlight from "../Highlight/Highlight";
 import { usePathname } from "next/navigation";
 import { resetNotes } from "@/lib/redux/features/noteSlice";
@@ -30,7 +23,6 @@ export default function Notebook({
   const category = arrPath[1];
   const bookId = arrPath[arrPath.length - 1];
 
-  const firestoreMemo = useCallback(useFirestore, [useFirestore]);
   const { user } = useAuth();
   const { screenWidth } = useRWD();
   const { currentCategory, currentBook } = useAppSelector(
@@ -39,11 +31,11 @@ export default function Notebook({
   const { highlightList } = useAppSelector((state) => state.note);
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   return () => {
-  //     dispatch(resetNotes());
-  //   };
-  // }, [dispatch]);
+  useEffect(() => {
+    return () => {
+      dispatch(resetNotes());
+    };
+  }, [dispatch]);
 
   return (
     <div
@@ -53,17 +45,15 @@ export default function Notebook({
     >
       <div className={styles.title}>
         <span>highlights</span>
-        {screenWidth < 1024 && (
-          <ActionIcon
-            iconProp={faXmark}
-            promptText="Close notebooks"
-            position="left"
-            showPrompt={false}
-            onAction={() => {
-              onSetIsNotebookOpen(false);
-            }}
-          />
-        )}
+        <ActionIcon
+          iconProp={faXmark}
+          promptText="Close notebooks"
+          position="left"
+          showPrompt={false}
+          onAction={() => {
+            onSetIsNotebookOpen(false);
+          }}
+        />
       </div>
       <div className={styles.highlight_list}>
         {highlightList &&

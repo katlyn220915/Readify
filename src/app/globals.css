@@ -284,3 +284,7 @@ button {
   background-color: var(--color-marker-default);
   cursor: pointer;
 }
+
+.epub_document svg {
+  display: none;
+}

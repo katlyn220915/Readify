@@ -25,3 +25,9 @@
 .empty_block_close {
   transform: translateX(-30rem);
 }
+
+@media (max-width: 1024px) {
+  .hideReadingArea {
+    display: none;
+  }
+}

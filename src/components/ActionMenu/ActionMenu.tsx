@@ -48,6 +48,7 @@ const ActionMenu = () => {
 
   const bookId = usePathname().split("/").pop();
   const { highlightList } = useAppSelector((state) => state.note);
+  const { transform } = useAppSelector((state) => state.bookMark);
   const { user } = useAuth();
 
   const handleHighlight = async () => {
@@ -154,14 +155,17 @@ const ActionMenu = () => {
     const rootRec = document
       .getElementById("contentRoot")
       ?.getBoundingClientRect();
-    console.log("here");
-    if (!isActionMenuOpen || !rec || !rootRec) return;
-    setPositionX(rec.left - rootRec.left + rec.width / 2 - 55);
-    setPositionY(Math.abs(rootRec.top) + rec.top - 38);
+    if (isActionMenuOpen && rec && rootRec) {
+      setPositionX(rec.left - rootRec.left + rec.width / 2 - 55);
+      setPositionY(Math.abs(rootRec.top) + rec.top - 38);
+    } else if (isActionMenuOpen && !rec && rootRec) {
+      setPositionX(800 / 2 - 55);
+      setPositionY(transform - 38);
+    }
     return () => {
       setPositionX(0);
     };
-  }, [isActionMenuOpen]);
+  }, [isActionMenuOpen, transform]);
 
   return (
     <>

@@ -93,44 +93,6 @@ const parseEpub = () => {
     return images;
   };
 
-  // const handleDocuments = (
-  //   epubDocuments: {
-  //     path: string;
-  //     doc: any;
-  //   }[],
-  //   images: any
-  // ) => {
-  //   const cleanChapterDivs = epubDocuments.map(({ path, doc }, id) => {
-  //     const bodyContent = doc.body.innerHTML;
-  //     const chapterDiv = document.createElement("div");
-  //     chapterDiv.innerHTML = bodyContent;
-  //     chapterDiv.id = decodeURIComponent(path)
-  //       .replaceAll(" ", "")
-  //       .replace(/\.(xhtml|html).*/, "");
-  //     chapterDiv.classList.add("epub_document");
-  //     const imgEls = chapterDiv.querySelectorAll("img");
-  //     const invalidImageTags = chapterDiv.querySelectorAll("image");
-  //     if (invalidImageTags.length > 0) {
-  //       invalidImageTags.forEach((invalidImgTag) => {
-  //         const parent = invalidImgTag.parentNode;
-  //         parent?.removeChild(invalidImgTag);
-  //         console.log(parent);
-  //       });
-  //     }
-  //     imgEls.forEach((el) => {
-  //       el.parentElement?.classList.add("image_wrapper");
-  //       const originSrc = el.getAttribute("src");
-  //       const fileName = originSrc?.split("/").pop();
-  //       const obj = images;
-  //       if (fileName) {
-  //         el.src = obj[fileName];
-  //       }
-  //     });
-  //     return chapterDiv;
-  //   });
-  //   return cleanChapterDivs;
-  // };
-
   //Using Virtual DOM to create React Element, speed up the loading state
 
   const handleDocuments = (
@@ -143,6 +105,8 @@ const parseEpub = () => {
     const cleanChapterDivs = epubDocuments.map(({ path, doc }, id) => {
       const imgEls = doc.querySelectorAll("img");
       const invalidImgTags = doc.querySelectorAll("image");
+      const aTags = doc.querySelectorAll("a");
+      handleAnchorTags(aTags);
       //Clean up invalid image elements
       if (invalidImgTags.length > 0)
         invalidImgTags.forEach((el: any) => {
@@ -174,6 +138,14 @@ const parseEpub = () => {
       return chapterDiv;
     });
     return cleanChapterDivs;
+  };
+
+  const handleAnchorTags = (anchors: any) => {
+    anchors.forEach((el: any) => {
+      const href = el.getAttribute("href");
+      const value = href.split("#")[1];
+      el.setAttribute("href", `#${value}`);
+    });
   };
 
   return { getImages, getAllDocuments, getContents, handleDocuments };

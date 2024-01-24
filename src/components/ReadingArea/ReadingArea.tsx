@@ -1,13 +1,6 @@
 "use client";
 
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "./ReadingArea.module.css";
 
 import Spinner from "../Spinner/Spinner";
@@ -16,7 +9,7 @@ import EbookIntroductionHeader from "../EbookIntroductionHeader/EbookIntroductio
 
 /* HOOKS */
 import { usePathname } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import { useAppDispatch } from "@/hooks/redux/hooks";
 import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import parseEpub from "@/server-actions/parseEpub/parseEpub";
@@ -25,7 +18,13 @@ import { setCurrentBook } from "@/lib/redux/features/readSlice";
 import { setHighlight } from "@/lib/redux/features/noteSlice";
 import highlightHelper from "@/utils/highlightHelper";
 
-export default function ReadingArea() {
+export default function ReadingArea({
+  isContentListOpen,
+  isNotebookOpen,
+}: {
+  isContentListOpen: boolean;
+  isNotebookOpen: boolean;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [bookDocuments, setBookDocuments] = useState<any[]>([]);
   const [bookData, setBookData] = useState<any>();
@@ -120,9 +119,15 @@ export default function ReadingArea() {
     getHighlights();
   }, [bookDocuments.length, category, firestoreMemo, user, bookId, dispatch]);
 
+  console.log("re-render");
   return (
     <>
-      <div id="epub-viewer" className={`${styles.epubContainer}`}>
+      <div
+        id="epub-viewer"
+        className={`${styles.epubContainer} ${
+          isContentListOpen || isNotebookOpen ? styles.hideReadingArea : ""
+        }`}
+      >
         {isLoading && <Spinner />}
         <EbookIntroductionHeader />
         {bookDocuments && (
