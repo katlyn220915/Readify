@@ -73,10 +73,10 @@ const BookIndices = React.memo(
                   <>
                     <IndexButton contentItem={toc} key={toc.href} />
                     {toc.subitems &&
-                      toc.subitems.map((toc) => (
+                      toc.subitems.map((subToc) => (
                         <IndexButton
                           contentItem={toc}
-                          key={toc.href}
+                          key={subToc.id}
                           isSubitem={true}
                         />
                       ))}

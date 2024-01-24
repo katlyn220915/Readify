@@ -2,37 +2,46 @@ import React from "react";
 import styles from "./Highlight.module.css";
 import NoteForm from "../NoteForm/NoteForm";
 import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
-import { setIsEditNoteFieldOpen } from "@/lib/redux/features/noteSlice";
+import {
+  deleteHighlight,
+  setIsEditNoteFieldOpen,
+} from "@/lib/redux/features/noteSlice";
 
 import { findChapterElement, scrollIntoScreen } from "@/utils/helper";
 import { setCurrentChapter } from "@/lib/redux/features/readSlice";
+import ActionIcon from "../ActionIcon/ActionIcon";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import highlightHelper from "@/utils/highlightHelper";
+import useFirestore from "@/hooks/firebase_db/useFirestore";
+import { useAuth } from "@/context/AuthContext";
+import { useParams } from "next/navigation";
 
 export default function Highlight({
   id,
   markerColor,
   note,
   text,
+  chapter,
 }: {
   id: string;
   markerColor: string;
   note: string;
   text: string;
+  chapter: string;
 }) {
   const { editNoteFieldOpen } = useAppSelector((state) => state.note);
+  const params = useParams<{ category: string; bookId: string }>();
   const dispatch = useAppDispatch();
+  const { user } = useAuth();
+  const firestore = useFirestore();
 
   return (
     <div
       className={styles.highlight}
       data-note-id={id}
       onClick={(e) => {
-        let element = e.target as HTMLElement;
-        if (!element.id && element.parentElement) {
-          element = element.parentElement;
-        }
-
         const target = document.querySelector(
-          `[data-highlight-id="${element.dataset.noteId}"]`
+          `[data-highlight-id="${id}"]`
         ) as HTMLElement;
 
         dispatch(setIsEditNoteFieldOpen(id));
@@ -40,11 +49,31 @@ export default function Highlight({
           const { chapterID } = findChapterElement(target);
           scrollIntoScreen(target, "center");
           dispatch(setCurrentChapter(chapterID));
-        } else {
-          console.log("該章節還不存在");
         }
       }}
     >
+      <div className={`${styles.btn_delete_wrapper}`}>
+        <ActionIcon
+          iconProp={faXmark}
+          promptText="Delete this highlight"
+          position="top"
+          showPrompt={false}
+          onAction={() => {
+            try {
+              dispatch(deleteHighlight(id));
+              const highlight = highlightHelper();
+              highlight.deleteHighlight(id);
+              firestore.deleteColumn(
+                `users/${user.uid}/books/${params.bookId}/highlights`,
+                chapter,
+                id
+              );
+            } catch (e) {
+              console.error(e);
+            }
+          }}
+        />
+      </div>
       <span
         style={{ backgroundColor: `var(--color-${markerColor})` }}
         className={styles.highlight_text}

@@ -22,7 +22,7 @@ export default function ActionIcon({
   position,
   showPrompt = true,
   onAction = () => {},
-  color = "grey-300",
+  color,
 }: ActionIconProps) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
   return (
