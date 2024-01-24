@@ -22,13 +22,11 @@ const ReadingNavigation = ({
   onSetContentListOpen,
   isNotebookOpen,
   onSetNotebookOpen,
-  isNavigationVisible,
 }: {
   isContentListOpen: boolean;
   onSetContentListOpen<SetStateAction>(boolean: any): any;
   isNotebookOpen: boolean;
   onSetNotebookOpen<SetStateAction>(boolean: any): any;
-  isNavigationVisible: boolean;
 }) => {
   const [isClick, setIsClick] = useState(false);
   const [isCustomizeBoxOpen, setIsCustomizeBoxOpen] = useState(false);
@@ -51,67 +49,8 @@ const ReadingNavigation = ({
     }
   };
 
-  useEffect(() => {
-    if (!isNavigationVisible) setIsCustomizeBoxOpen(false);
-  }, [isNavigationVisible]);
-
   return (
     <>
-      {/* <nav
-        className={styles.readingArea_nav}
-        style={{
-          transform: `translate(${
-            isNavigationVisible ? "50%,0" : "50%,-100px"
-          })`,
-        }}
-      >
-        <div className={styles.list}>
-          <ActionIcon
-            iconProp={faCircleArrowLeft}
-            promptText="Go back to list"
-            position="bottom"
-            onAction={() => {
-              const category = pathname.split("/")[1];
-              router.push(`/${category}`);
-            }}
-          />
-          <ActionIcon
-            iconProp={faList}
-            promptText={
-              isContentListOpen ? "Close the sidebar" : "Open the sidebar"
-            }
-            position="bottom"
-            showPrompt={true}
-            onAction={() => onSetContentListOpen(!isContentListOpen)}
-          />
-          <ActionIcon
-            iconProp={faFont}
-            promptText="Customize styles"
-            position="bottom"
-            showPrompt={true}
-            onAction={() => setIsCustomizeBoxOpen(!isCustomizeBoxOpen)}
-          />
-          {isCustomizeBoxOpen && <CustomStylePlatte />}
-        </div>
-        <div className={styles.right_btn_wrapper}>
-          <ActionIcon
-            iconProp={faBookmark}
-            promptText="Add book mark"
-            position="bottom"
-            showPrompt={true}
-            onAction={() => {
-              addBookMark();
-            }}
-          />
-          <ActionIcon
-            iconProp={faPenToSquare}
-            promptText={isNotebookOpen ? "Close Notebook" : "Open Notebook"}
-            position="bottom"
-            showPrompt={true}
-            onAction={() => onSetNotebookOpen(!isNotebookOpen)}
-          />
-        </div>
-      </nav> */}
       <div className={styles.navigation}>
         <div
           className={`${styles.menuToggle} ${isClick ? styles.active : ""}`}
