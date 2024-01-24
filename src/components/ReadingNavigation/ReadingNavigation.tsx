@@ -59,13 +59,13 @@ const ReadingNavigation = ({
         <div className={styles.menu}>
           <div className={styles.actionList}>
             <ActionIcon
-              iconProp={faCircleArrowLeft}
-              promptText="Go back to list"
+              iconProp={faList}
+              promptText={
+                isContentListOpen ? "Close the sidebar" : "Open the sidebar"
+              }
               position="top"
-              onAction={() => {
-                const category = pathname.split("/")[1];
-                router.push(`/${category}`);
-              }}
+              showPrompt={true}
+              onAction={() => onSetContentListOpen(!isContentListOpen)}
             />
             <ActionIcon
               iconProp={faFont}
@@ -74,14 +74,15 @@ const ReadingNavigation = ({
               showPrompt={true}
               onAction={() => setIsCustomizeBoxOpen(!isCustomizeBoxOpen)}
             />
+
             <ActionIcon
-              iconProp={faList}
-              promptText={
-                isContentListOpen ? "Close the sidebar" : "Open the sidebar"
-              }
+              iconProp={faCircleArrowLeft}
+              promptText="Go back to list"
               position="top"
-              showPrompt={true}
-              onAction={() => onSetContentListOpen(!isContentListOpen)}
+              onAction={() => {
+                const category = pathname.split("/")[1];
+                router.push(`/${category}`);
+              }}
             />
             <ActionIcon
               iconProp={faBookmark}

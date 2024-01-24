@@ -1,41 +1,6 @@
-.readingArea_nav {
-  width: 45rem;
-  margin: 2rem auto;
-  padding: 1.5rem 3rem;
-  border: 1px solid var(--color-grey-700);
-  border-radius: 1rem;
-  position: fixed;
-  right: 50%;
-  z-index: 100000;
-  transform: translateX(50%);
-  background: linear-gradient(
-    321deg,
-    rgba(2, 0, 36, 1) 3%,
-    rgba(25, 33, 62, 0.9920561974789917) 43%,
-    rgba(19, 154, 181, 0.8884147408963585) 100%
-  );
-
-  display: flex;
-  justify-content: space-between;
-  font-size: 2rem;
-  transition: all 0.3s;
-}
-
-.list {
-  display: flex;
-  gap: 1.5rem;
-  position: relative;
-}
-
-.right_btn_wrapper {
-  position: relative;
-
-  display: flex;
-  gap: 1.5rem;
-}
-
 .navigation {
   position: absolute;
+  z-index: 100;
   width: 100%;
   height: 10rem;
   bottom: 0;

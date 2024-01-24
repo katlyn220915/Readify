@@ -14,7 +14,7 @@ const ContentsRoot = ({
 }) => {
   return (
     <>
-      <div className={styles.root}>
+      <div className={styles.root} id="contentRoot">
         <ActionMenu />
         <BookMark bookMark={bookMark} />
         <BookContents bookDocuments={bookDocuments} />
