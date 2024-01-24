@@ -57,13 +57,14 @@ export default function Notebook({
       </div>
       <div className={styles.highlight_list}>
         {highlightList &&
-          highlightList.map(({ id, markerColor, text, note }) => (
+          highlightList.map(({ id, markerColor, text, note, chapter }) => (
             <Highlight
               key={id}
               id={id}
               markerColor={markerColor}
               text={text}
               note={note}
+              chapter={chapter}
             ></Highlight>
           ))}
       </div>

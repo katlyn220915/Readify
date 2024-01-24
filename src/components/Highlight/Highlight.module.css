@@ -2,11 +2,12 @@
   width: 36rem;
   border: 0.1rem solid var(--color-grey-500);
   border-radius: 1rem;
-  padding: 1.5rem;
+  padding: 2rem;
   color: var(--color-text-highlight);
 
   cursor: pointer;
   transition: all 0.3s;
+  position: relative;
 }
 
 .highlight:hover {
@@ -23,6 +24,13 @@
 
 .note_form {
   margin-top: 1rem;
+}
+
+.btn_delete_wrapper {
+  text-align: right;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }
 
 @media (max-width: 1024px) {

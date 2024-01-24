@@ -89,6 +89,7 @@ const ActionMenu = () => {
               text: selectedText,
               range: xpath,
               note: "",
+              chapter: currentChapter,
             },
           }
         );

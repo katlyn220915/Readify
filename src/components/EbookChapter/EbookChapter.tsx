@@ -1,23 +1,9 @@
-import React, { useEffect, useCallback } from "react";
+import React from "react";
 
 import { useAppSelector } from "@/hooks/redux/hooks";
-import useFirestore from "@/hooks/firebase_db/useFirestore";
-
-import { useAuth } from "@/context/AuthContext";
-import { scrollIntoScreen } from "@/utils/helper";
-
 const EbookChapter = React.memo(
   ({ divElement }: { divElement: React.JSX.Element }) => {
-    const {
-      fontSize,
-      lineSpacing,
-      currentCategory,
-      currentBook,
-      currentChapter,
-      typeface,
-    } = useAppSelector((state) => state.read);
-    const firestoreMemo = useCallback(useFirestore, [useFirestore]);
-    const { user } = useAuth();
+    const { fontSize, lineSpacing } = useAppSelector((state) => state.read);
 
     // useEffect(() => {
     //   if (currentChapter !== undefined) {
