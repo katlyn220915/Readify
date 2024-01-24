@@ -1,13 +1,6 @@
 "use client";
 
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "./ReadingArea.module.css";
 
 import Spinner from "../Spinner/Spinner";
@@ -16,7 +9,7 @@ import EbookIntroductionHeader from "../EbookIntroductionHeader/EbookIntroductio
 
 /* HOOKS */
 import { usePathname } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import { useAppDispatch } from "@/hooks/redux/hooks";
 import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import parseEpub from "@/server-actions/parseEpub/parseEpub";
@@ -120,6 +113,7 @@ export default function ReadingArea() {
     getHighlights();
   }, [bookDocuments.length, category, firestoreMemo, user, bookId, dispatch]);
 
+  console.log("re-render");
   return (
     <>
       <div id="epub-viewer" className={`${styles.epubContainer}`}>
