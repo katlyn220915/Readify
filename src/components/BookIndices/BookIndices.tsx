@@ -26,7 +26,7 @@ const BookIndices = React.memo(
     onContentListOpen: Dispatch<SetStateAction<boolean>>;
   }) => {
     const { currentBook } = useAppSelector((state) => state.read);
-    const [toc, setToc] = useState<null | IndexItemProp[]>();
+    const [tocs, setTocs] = useState<null | IndexItemProp[]>();
 
     const currentBookMemo = useMemo(() => {
       return currentBook;
@@ -40,12 +40,12 @@ const BookIndices = React.memo(
           const tocList = await parser.getContents(
             currentBookMemo?.bookDownloadURL
           );
-          setToc(tocList);
+          setTocs(tocList);
         }
       };
       getBookContents();
       return () => {
-        setToc(null);
+        setTocs(null);
       };
     }, [currentBookMemo, parserMemo]);
 
@@ -68,14 +68,14 @@ const BookIndices = React.memo(
               />
             </p>
             <div className={styles.contents}>
-              {toc &&
-                toc.map((toc: IndexItemProp) => (
+              {tocs &&
+                tocs.map((toc: IndexItemProp) => (
                   <>
                     <IndexButton contentItem={toc} key={toc.href} />
                     {toc.subitems &&
                       toc.subitems.map((subToc) => (
                         <IndexButton
-                          contentItem={toc}
+                          contentItem={subToc}
                           key={subToc.id}
                           isSubitem={true}
                         />
