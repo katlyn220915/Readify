@@ -15,6 +15,7 @@ import {
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRWD } from "@/hooks/useRWD/useRWD";
 
 type ListItemProps = {
   item: { title: string; path: string; iconProp?: any };
@@ -74,9 +75,12 @@ function ListItem({ item }: ListItemProps) {
 }
 
 export default function StaticSidebarList() {
+  const { screenWidth } = useRWD();
   return (
     <nav className={styles.nav}>
-      <ListItem item={{ title: "Home page", path: "/" }} />
+      {screenWidth < 1024 && (
+        <ListItem item={{ title: "Home page", path: "/" }} />
+      )}
       {staticList.map((item) => (
         <ListItem item={item} key={item.path} />
       ))}
