@@ -29,7 +29,8 @@ import { fromRange } from "xpath-range";
 import highlightHelper from "@/utils/highlightHelper";
 
 const ActionMenu = () => {
-  const [positionX, setPositionX] = useState(800 / 2 - 55);
+  const [positionX, setPositionX] = useState(0);
+  const [positionY, setPositionY] = useState(0);
   const [isColorPlatteOpen, setIsColorPlatteOpen] = useState(false);
   const [isAddNoteBlockOpen, setIsAddNoteBlockOpen] = useState(false);
   const [currentHighlightId, setCurrentHighlightId] = useState("");
@@ -48,7 +49,6 @@ const ActionMenu = () => {
   const bookId = usePathname().split("/").pop();
   const { highlightList } = useAppSelector((state) => state.note);
   const { user } = useAuth();
-  const { transform } = useAppSelector((state) => state.bookMark);
 
   const handleHighlight = async () => {
     const selectionData = getSelectionData();
@@ -150,11 +150,16 @@ const ActionMenu = () => {
   };
 
   useEffect(() => {
-    const { rec } = getSelectionData() || { rec: null };
-    if (!isActionMenuOpen || !rec) return;
-    setPositionX(rec.width / 2 - 20 - 30);
+    const { rec, range } = getSelectionData() || { rec: null };
+    const rootRec = document
+      .getElementById("contentRoot")
+      ?.getBoundingClientRect();
+    console.log("here");
+    if (!isActionMenuOpen || !rec || !rootRec) return;
+    setPositionX(rec.left - rootRec.left + rec.width / 2 - 55);
+    setPositionY(Math.abs(rootRec.top) + rec.top - 38);
     return () => {
-      setPositionX(800 / 2 - 55);
+      setPositionX(0);
     };
   }, [isActionMenuOpen]);
 
@@ -164,7 +169,7 @@ const ActionMenu = () => {
         <div
           className={styles.action_menu}
           style={{
-            transform: `translate(${positionX}px, ${transform - 38}px)`,
+            transform: `translate(${positionX}px, ${positionY}px)`,
           }}
         >
           {isAddNoteBlockOpen && (

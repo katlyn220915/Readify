@@ -16,13 +16,9 @@ const ContentsRoot = ({
   const { screenWidth } = useRWD();
   return (
     <>
-      <div className={styles.root}>
-        {screenWidth > 700 && (
-          <>
-            <ActionMenu />
-            <BookMark bookMark={bookMark} />
-          </>
-        )}
+      <div className={styles.root} id="contentRoot">
+        <ActionMenu />
+        <BookMark bookMark={bookMark} />
         <BookContents bookDocuments={bookDocuments} />
       </div>
     </>

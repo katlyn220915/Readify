@@ -6,7 +6,6 @@ const getSelectionData = () => {
   let rec;
   const parent = selection?.anchorNode?.parentElement;
   range = selection?.getRangeAt(0);
-  const isOneLine = range.startContainer === range.endContainer;
   rec = range?.getBoundingClientRect();
 
   // console.log("selection:", selection);
@@ -23,7 +22,6 @@ const getSelectionData = () => {
     startOffset: selection.anchorOffset,
     endOffset: selection.focusOffset,
     selectedText,
-    isOneLine,
     commonAncestorContainer: range.commonAncestorContainer as HTMLElement,
   };
 };

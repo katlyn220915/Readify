@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Readify
 
-## Getting Started
+#### Readify is a App that you can read E-book and take notes while your reading.
+#### Link: [https://readify-rosy.vercel.app/](https://readify-rosy.vercel.app/)
 
-First, run the development server:
+# Feature
+* Uplaod and parse your epub file
+* Categorize your book with three main categories - my library, later and archive
+* Add and manage tags to your book
+* Customize reading font size, typeface or line height to meet your preferences
+* Highlight words, phrases or add note to them
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# Demo
+Test account is already pre-written on the Demo page.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* Email: test@test.com
+* Password: 123456
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Tech stack
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Front-end
 
-## Learn More
+| Technique | Description |
+| :-- | :-- |
+| Next.js  | Use next.js to handle routes, Api end points  |
+| React | Created mutiple custom hooks, used useMemo, useCallback to prevent infinite re-render |
+| Redux | Managing global UI state |
+| React Hook Form | Handling inputs and error messages  |
+| Yup | Validating user's input |
+| Epub.js | Helper to parse epub file |
+| Font-awsome | Icon provider |
 
-To learn more about Next.js, take a look at the following resources:
+### Back-end
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Technique | Description |
+| :-- | :-- |
+| Firebase  | Authentication, Firestore database and storage   |
+| Vercel | Deployment |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Next todo
+- [ ] Find solutions for throuble of displaying sans-serif typeface of Chinese
+- [ ] Redesign Home page
+- [ ] Intergrate google translate api for translate words while user is reading
+- [ ] Add Components design graph to project's Readme

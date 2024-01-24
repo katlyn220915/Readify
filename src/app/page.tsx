@@ -19,7 +19,7 @@ export default function Home() {
       ) : (
         <main className={styles.main}>
           <Navbar />
-          <div className={styles.banner}>
+          <div className={`container ${styles.banner} `}>
             <h2 className={styles.slogan}>
               Where Books Come to Life at Your Fingertips
             </h2>
@@ -33,7 +33,7 @@ export default function Home() {
             </div>
             {isLogin && (
               <ButtonCta color="green">
-                <Link href="/mylibrary">Go to the App</Link>
+                <Link href="/mylibrary">Start to Read</Link>
               </ButtonCta>
             )}
           </div>

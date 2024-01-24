@@ -1,7 +1,17 @@
 .main {
   height: 100%;
   background-color: var(--color-blue-bg);
-  padding: 2.5rem 5rem;
+  padding: 2.5rem 2rem;
 
   position: relative;
+}
+
+.section_signup {
+  margin-top: 10rem;
+}
+
+@media (max-width: 600px) {
+  .section_signup {
+    margin-top: 3rem;
+  }
 }
