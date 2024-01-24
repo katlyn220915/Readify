@@ -27,10 +27,8 @@ export default function Highlight({
       data-note-id={id}
       onClick={(e) => {
         let element = e.target as HTMLElement;
-        console.log(element);
         if (!element.id && element.parentElement) {
           element = element.parentElement;
-          console.log(element);
         }
 
         const target = document.querySelector(
