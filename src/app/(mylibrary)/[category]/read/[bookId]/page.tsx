@@ -7,7 +7,6 @@ import ReadingArea from "@/components/ReadingArea/ReadingArea";
 import ReadingNavigation from "@/components/ReadingNavigation/ReadingNavigation";
 import Notebook from "@/components/Notebook/Notebook";
 import BookIndices from "@/components/BookIndices/BookIndices";
-import { useRWD } from "@/hooks/useRWD/useRWD";
 
 export default function BookId() {
   const [isNotebookOpen, setIsNotebookOpen] = useState(true);
@@ -24,9 +23,15 @@ export default function BookId() {
         onSetNotebookOpen={setIsNotebookOpen}
       />
       <div className={`${styles.container}`}>
-        <BookIndices isContentListOpen={isContentListOpen} />
+        <BookIndices
+          isContentListOpen={isContentListOpen}
+          onContentListOpen={setIsContentListOpen}
+        />
         <ReadingArea />
-        <Notebook isNotebookOpen={isNotebookOpen} />
+        <Notebook
+          isNotebookOpen={isNotebookOpen}
+          onSetIsNotebookOpen={setIsNotebookOpen}
+        />
       </div>
     </>
   );
