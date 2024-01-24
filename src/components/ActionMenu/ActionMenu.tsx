@@ -31,6 +31,7 @@ import highlightHelper from "@/utils/highlightHelper";
 const ActionMenu = () => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isColorPlatteOpen, setIsColorPlatteOpen] = useState(false);
   const [isAddNoteBlockOpen, setIsAddNoteBlockOpen] = useState(false);
   const [currentHighlightId, setCurrentHighlightId] = useState("");
@@ -158,18 +159,22 @@ const ActionMenu = () => {
     if (isActionMenuOpen && rec && rootRec) {
       setPositionX(rec.left - rootRec.left + rec.width / 2 - 55);
       setPositionY(Math.abs(rootRec.top) + rec.top - 38);
+      setIsMenuOpen(true);
     } else if (isActionMenuOpen && !rec && rootRec) {
-      setPositionX(800 / 2 - 55);
+      const targetElRec = document
+        .querySelector(`[data-highlight-id="${deleteHighlightID}"]`)
+        ?.parentElement?.getBoundingClientRect();
+      if (targetElRec) setPositionX(targetElRec.width / 2 - 55);
       setPositionY(transform - 38);
+      setIsMenuOpen(true);
+    } else if (!isActionMenuOpen) {
+      setIsMenuOpen(false);
     }
-    return () => {
-      setPositionX(0);
-    };
   }, [isActionMenuOpen, transform]);
 
   return (
     <>
-      {isActionMenuOpen && (
+      {isMenuOpen && (
         <div
           className={styles.action_menu}
           style={{
