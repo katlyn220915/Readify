@@ -25,11 +25,7 @@ import { setCurrentBook } from "@/lib/redux/features/readSlice";
 import { setHighlight } from "@/lib/redux/features/noteSlice";
 import highlightHelper from "@/utils/highlightHelper";
 
-export default function ReadingArea({
-  setIsNavigationVisible,
-}: {
-  setIsNavigationVisible: Dispatch<SetStateAction<boolean>>;
-}) {
+export default function ReadingArea() {
   const [isLoading, setIsLoading] = useState(false);
   const [bookDocuments, setBookDocuments] = useState<any[]>([]);
   const [bookData, setBookData] = useState<any>();
@@ -126,18 +122,7 @@ export default function ReadingArea({
 
   return (
     <>
-      <div
-        id="epub-viewer"
-        className={`${styles.epubContainer}`}
-        onWheel={(e) => {
-          const delta = Math.round(e.deltaY);
-          if (delta < 0) {
-            setIsNavigationVisible(true);
-          } else {
-            setIsNavigationVisible(false);
-          }
-        }}
-      >
+      <div id="epub-viewer" className={`${styles.epubContainer}`}>
         {isLoading && <Spinner />}
         <EbookIntroductionHeader />
         {bookDocuments && (

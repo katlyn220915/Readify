@@ -9,3 +9,9 @@
   gap: 3rem;
   align-items: center;
 }
+
+@media (max-width: 600px) {
+  .navigation .nav_list {
+    gap: 1rem;
+  }
+}

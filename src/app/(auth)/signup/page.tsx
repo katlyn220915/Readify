@@ -13,8 +13,8 @@ export default function Signup() {
           <Image
             src="/image/Readify.png"
             alt="logo"
-            width={80}
-            height={80}
+            width={50}
+            height={50}
             priority={true}
           />
           <div>

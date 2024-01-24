@@ -12,6 +12,7 @@
   width: fit-content;
   display: flex;
   background-color: var(--color-blue-bg-tine);
+  box-shadow: 0 0.5rem 0.5rem 0.2rem rgba(0, 0, 0, 0.4);
   padding: 0.5rem 0.5rem;
   border-radius: 1rem;
   gap: 0.5rem;

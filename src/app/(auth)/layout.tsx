@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <main className={styles.main}>
       <Navbar />
-      {children}
+      <section className={styles.section_signup}>{children}</section>
     </main>
   );
 }

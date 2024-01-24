@@ -1,6 +1,6 @@
 .btn {
   position: relative;
-  width: 15.5rem;
+  width: 15rem;
   height: 5rem;
   margin: 2rem;
   color: #fff;
@@ -27,6 +27,12 @@
   transition: 0.5s;
 
   backdrop-filter: blur(15px);
+}
+
+.btn > button > a {
+  width: 100%;
+  height: 100%;
+  line-height: 4.8rem;
 }
 
 .btn:hover button {
