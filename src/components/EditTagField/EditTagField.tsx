@@ -113,7 +113,7 @@ const EditTagField = ({
           <div className={styles.select_tags_field_input_wrapper}>
             <input
               className={styles.select_tags_field_input}
-              placeholder={tags?.length === 0 ? "Search or create a tag" : ""}
+              placeholder={"Search or create a tag"}
               onChange={(e) => {
                 if (e.target.value === newTagText) {
                   setSearchTagList([]);
@@ -136,35 +136,37 @@ const EditTagField = ({
           </div>
         )}
       </div>
-      <div className={styles.tag_options}>
-        {tags.length === 5 && <p>A book can have a maximum of five tags.</p>}
-        {searchTagList &&
-          searchTagList.map((tag: TagProps) => (
-            <TagAction
-              onAction={handleAddTag}
-              key={tag.id}
-              tag={tag}
-              mode="add"
-            />
-          ))}
-        {tags.length < 5 &&
-          searchTagList.length > 0 &&
-          searchTagList[0].name !== newTagText &&
-          newTagText && (
-            <CreateTagBtn
-              onCreateTag={handleCreateTag}
-              newTagText={newTagText}
-            />
-          )}
-        {searchTagList.length === 0 &&
-          newTagText &&
-          !tagNameRef.current.includes(newTagText) && (
-            <CreateTagBtn
-              onCreateTag={handleCreateTag}
-              newTagText={newTagText}
-            />
-          )}
-      </div>
+      {newTagText && (
+        <div className={styles.tag_options}>
+          {tags.length === 5 && <p>A book can have a maximum of five tags.</p>}
+          {searchTagList &&
+            searchTagList.map((tag: TagProps) => (
+              <TagAction
+                onAction={handleAddTag}
+                key={tag.id}
+                tag={tag}
+                mode="add"
+              />
+            ))}
+          {tags.length < 5 &&
+            searchTagList.length > 0 &&
+            searchTagList[0].name !== newTagText &&
+            newTagText && (
+              <CreateTagBtn
+                onCreateTag={handleCreateTag}
+                newTagText={newTagText}
+              />
+            )}
+          {searchTagList.length === 0 &&
+            newTagText &&
+            !tagNameRef.current.includes(newTagText) && (
+              <CreateTagBtn
+                onCreateTag={handleCreateTag}
+                newTagText={newTagText}
+              />
+            )}
+        </div>
+      )}
     </>
   );
 };
