@@ -13,7 +13,6 @@ const ContentsRoot = ({
   bookDocuments: any[];
   bookMark: any;
 }) => {
-  const { screenWidth } = useRWD();
   return (
     <>
       <div className={styles.root} id="contentRoot">

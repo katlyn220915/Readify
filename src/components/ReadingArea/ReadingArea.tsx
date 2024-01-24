@@ -18,7 +18,13 @@ import { setCurrentBook } from "@/lib/redux/features/readSlice";
 import { setHighlight } from "@/lib/redux/features/noteSlice";
 import highlightHelper from "@/utils/highlightHelper";
 
-export default function ReadingArea() {
+export default function ReadingArea({
+  isContentListOpen,
+  isNotebookOpen,
+}: {
+  isContentListOpen: boolean;
+  isNotebookOpen: boolean;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [bookDocuments, setBookDocuments] = useState<any[]>([]);
   const [bookData, setBookData] = useState<any>();
@@ -116,7 +122,12 @@ export default function ReadingArea() {
   console.log("re-render");
   return (
     <>
-      <div id="epub-viewer" className={`${styles.epubContainer}`}>
+      <div
+        id="epub-viewer"
+        className={`${styles.epubContainer} ${
+          isContentListOpen || isNotebookOpen ? styles.hideReadingArea : ""
+        }`}
+      >
         {isLoading && <Spinner />}
         <EbookIntroductionHeader />
         {bookDocuments && (

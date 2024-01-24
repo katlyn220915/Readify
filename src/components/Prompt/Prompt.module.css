@@ -15,6 +15,15 @@
   display: inline-block;
 }
 
+@media (max-width: 1024px) {
+  .prompt {
+    display: none;
+  }
+  .show_prompt {
+    display: none;
+  }
+}
+
 .prompt__position_top {
   /* transform: translateY(-4rem); */
   top: -4rem;
