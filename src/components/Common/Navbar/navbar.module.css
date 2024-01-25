@@ -1,0 +1,29 @@
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navigation .nav_list {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}
+
+.btn {
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  background-color: var(--color-blue-500);
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  background-color: var(--color-blue-600);
+}
+
+@media (max-width: 600px) {
+  .navigation .nav_list {
+    gap: 1rem;
+  }
+}

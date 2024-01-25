@@ -7,12 +7,12 @@ import { useParams, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 /* COMPONENTS */
-import Topbar from "@/components/Topbar/Topbar";
-import BookList from "@/components/BookList/BookList";
-import Spinner from "@/components/Spinner/Spinner";
-import StaticSidebarList from "@/components/StaticSidebarList/StaticSidebarList";
-import UploadFile from "@/components/UploadFile/UploadFile";
-import { SearchField } from "@/components/SearchField/SearchField";
+import Topbar from "@/components/Category/Topbar/Topbar";
+import BookList from "@/components/Category/BookList/BookList";
+import StaticSidebarList from "@/components/Category/StaticSidebarList/StaticSidebarList";
+import UploadFile from "@/components/Category/UploadFile/UploadFile";
+import { SearchField } from "@/components/Category/SearchField/SearchField";
+import Spinner from "@/components/Common/Spinner/Spinner";
 
 /* CUSTOM HOOKS */
 import { useAuth } from "@/context/AuthContext";
