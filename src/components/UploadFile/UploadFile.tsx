@@ -65,9 +65,6 @@ export default function UploadFile() {
   const storeBookInfos = async (url: string, bookId: string, uuid: string) => {
     const bookInfos = await epubJS.getBookInfos(url);
     let imgUrl = null;
-    console.log(
-      "Successfully got the book informations from epubJS：" + bookInfos
-    );
     if (bookInfos === undefined) {
       console.error("cannot parse the book: " + bookId);
       return;
@@ -170,11 +167,13 @@ export default function UploadFile() {
               name="epub"
               type="file"
               onChange={(e) => {
-                console.log(e.target.value);
                 if (e.target.files && e.target.files.length > 0) {
                   upload(e.target.files);
                 } else {
-                  console.log("上傳資料錯誤");
+                  dispatch(error("Upload failed, try again later"));
+                  setTimeout(() => {
+                    dispatch(reset());
+                  }, 4000);
                   return;
                 }
               }}

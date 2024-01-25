@@ -72,7 +72,7 @@ export default function ReadingArea({
           }
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
       } finally {
         setIsLoading(false);
       }
@@ -94,7 +94,6 @@ export default function ReadingArea({
         if (highlightsData.length > 0) {
           highlightsData.forEach((chapter: any) => {
             for (const key in chapter) {
-              console.log(key, "=>", chapter[key]);
               highlights.push(chapter[key]);
               const { startNode, endNode } = highlight.findCertainNodes(
                 chapter[key].range.start,
@@ -113,7 +112,7 @@ export default function ReadingArea({
           dispatch(setHighlight(highlights.reverse()));
         }
       } catch (e) {
-        console.log("ReadingArea component error: ", e);
+        console.error("ReadingArea component error: ", e);
       }
     };
     getHighlights();

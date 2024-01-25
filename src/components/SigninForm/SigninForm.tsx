@@ -61,7 +61,6 @@ export default function SigninForm() {
         setIsLogin(true);
         router.push("/");
       }
-      console.log(loginResult);
       if (loginResult === "auth/invalid-login-credentials")
         setErrorMessage("Wrong Email or Password");
     } catch {

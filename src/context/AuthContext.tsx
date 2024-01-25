@@ -44,12 +44,10 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
           setIsLogin(true);
           setUser(user);
           setCurrentUserName(user.displayName);
-          console.log(user);
         } else {
           setIsLogin(false);
           setUser(null);
           setCurrentUserName(null);
-          console.log("context is processing: " + "no user");
         }
       });
     } catch (e) {

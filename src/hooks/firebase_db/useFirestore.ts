@@ -83,10 +83,6 @@ const useFirestore = () => {
     try {
       const ref = doc(db, collectionName, documentName);
       await updateDoc(ref, data);
-      console.log(
-        "Firestore: sucessfully update document!, Document name :",
-        documentName
-      );
     } catch (e) {
       console.error(e);
     }
@@ -102,9 +98,8 @@ const useFirestore = () => {
       await updateDoc(ref, {
         [deleteColumnId]: deleteField(),
       });
-      console.log("Firebase delete column sucessfully");
     } catch (e) {
-      console.log("Firebase Error: ", e);
+      console.error("Firebase Error: ", e);
     }
   };
 
@@ -130,8 +125,6 @@ const useFirestore = () => {
       const querySnapshot = await getDocs(q);
       const data: any = [];
       querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        // console.log(doc.id, " => ", doc.data());
         data.push(doc.data());
       });
       return data;
