@@ -35,9 +35,11 @@ const storeFiles = () => {
             switch (error.code) {
               case "storage/unauthorized":
                 console.log("User has no right to access to the object");
+                reject(error.code);
                 break;
               case "storage/canceled":
                 console.log("User has cancel the upload");
+                reject(error.code);
                 break;
             }
           },

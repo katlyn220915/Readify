@@ -19,16 +19,25 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes);
 
     const store = storeFiles();
-    const downloadURL = await store.storeEpub(
+    const storePromise = store.storeEpub(
       buffer,
       `/${uuid}/books/${timestemp}/${timestemp}.epub`
     );
+    const downloadURL = await Promise.race([
+      storePromise,
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Timeout")), 5000)
+      ),
+    ]);
 
     return NextResponse.json(
       { success: true, data: { downloadURL, id: timestemp } },
       { status: 200 }
     );
   } catch (e) {
-    console.error(e);
+    return NextResponse.json(
+      { error: true, message: "Upload time out" },
+      { status: 403 }
+    );
   }
 }

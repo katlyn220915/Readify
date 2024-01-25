@@ -25,15 +25,17 @@ export default function BookList({ bookList }: { bookList: BookProps[] }) {
         ))}
         {isUploadSuccessful && <Spinner />}
       </ul>
-      {isError ||
-        (isSuccessful && (
-          <ActionPrompt
-            isError={isError}
-            errorMes={isError ? "Delete file fail" : ""}
-            isSuccessful={isSuccessful}
-            successfulMes={isSuccessful ? "Delete successfully" : ""}
-          />
-        ))}
+      <ActionPrompt
+        isError={isError}
+        isSuccessful={isSuccessful}
+        isPending={false}
+      >
+        {isError
+          ? "Delete file fail"
+          : isSuccessful
+          ? "Delete successfully"
+          : ""}
+      </ActionPrompt>
     </>
   );
 }

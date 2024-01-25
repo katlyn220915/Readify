@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styles from "./ActionPrompt.module.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,30 +10,43 @@ import {
 
 type ActionPromptPropsType = {
   isError: boolean;
-  errorMes: string | undefined;
   isSuccessful: boolean;
-  successfulMes: string;
+  isPending: boolean;
+  fileName?: string;
+  children: string;
 };
 
 export default function ActionPrompt({
   isError,
-  errorMes,
   isSuccessful,
-  successfulMes,
+  isPending,
+  children,
 }: ActionPromptPropsType) {
+  useEffect(() => {
+    if (!isPending) return;
+    const progressbar = 100;
+  }, [isPending]);
+
   return (
     <>
-      <div
-        className={`${styles.container} ${isError ? styles.error : ""} ${
-          isSuccessful ? styles.successful : ""
-        }`}
-      >
-        <span>
-          <FontAwesomeIcon
-            icon={isSuccessful ? faCircleCheck : faCircleXmark}
-          />
-        </span>
-        <p>{isError ? errorMes : successfulMes}</p>
+      <div className={`${styles.container}`}>
+        <div
+          className={` ${styles.prompt_box} ${isError ? styles.error : ""} ${
+            isSuccessful ? styles.successful : ""
+          }`}
+        >
+          <span>
+            <FontAwesomeIcon icon={isError ? faCircleXmark : faCircleCheck} />
+          </span>
+          {<p>{children}</p>}
+        </div>
+        <div
+          className={`${styles.prompt_box} ${
+            isPending ? styles.isPending : ""
+          }`}
+        >
+          {<p>{children}</p>}
+        </div>
       </div>
     </>
   );

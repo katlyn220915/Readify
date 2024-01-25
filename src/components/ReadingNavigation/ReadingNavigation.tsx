@@ -103,15 +103,17 @@ const ReadingNavigation = ({
         </div>
         {isCustomizeBoxOpen && <CustomStylePlatte />}
       </div>
-      {isStoreBookMarkError ||
-        (isStoreBookMarkSuccess && (
-          <ActionPrompt
-            isError={isStoreBookMarkError}
-            errorMes="Click a paragraph to add book mark"
-            isSuccessful={isStoreBookMarkSuccess}
-            successfulMes="Book mark added"
-          />
-        ))}
+      <ActionPrompt
+        isError={isStoreBookMarkError}
+        isSuccessful={isStoreBookMarkSuccess}
+        isPending={false}
+      >
+        {isStoreBookMarkError
+          ? "Click a paragraph to add book mark"
+          : isStoreBookMarkSuccess
+          ? "Book mark added!"
+          : ""}
+      </ActionPrompt>
     </>
   );
 };
