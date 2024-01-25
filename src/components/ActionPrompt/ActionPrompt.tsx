@@ -7,7 +7,6 @@ import {
   faCircleCheck,
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
-import { isReadable } from "stream";
 
 type ActionPromptPropsType = {
   isError: boolean;
