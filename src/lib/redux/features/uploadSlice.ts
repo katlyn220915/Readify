@@ -7,18 +7,18 @@ type initialState = {
 
 type uploadState = {
   isUploading: boolean;
-  isError: boolean;
-  errorMes: string;
+  isUploadError: boolean;
+  uploadErrorMes: string;
   isUploadSuccessful: boolean;
   fileName: string;
 };
 
 const initialState = {
   isUploading: false,
-  isError: false,
-  errorMes: "",
+  isUploadError: false,
+  uploadErrorMes: "",
   isUploadSuccessful: false,
-  fileName: "原子習慣",
+  fileName: "",
 } as uploadState;
 
 export const upload = createSlice({
@@ -26,13 +26,18 @@ export const upload = createSlice({
   initialState,
   reducers: {
     uploading: (state, action: PayloadAction<string>) => {
-      state.fileName = action.payload;
+      if (action.payload.length >= 15) {
+        const cuttedName = action.payload.slice(0, 14).concat("...");
+        state.fileName = cuttedName;
+      } else {
+        state.fileName = action.payload;
+      }
       state.isUploading = true;
     },
     error: (state, action: PayloadAction<string>) => {
-      state.isError = true;
+      state.isUploadError = true;
       state.isUploading = false;
-      state.errorMes = action.payload;
+      state.uploadErrorMes = action.payload;
     },
     success: (state) => {
       state.isUploading = false;

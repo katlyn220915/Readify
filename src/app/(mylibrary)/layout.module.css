@@ -4,4 +4,9 @@
   height: 100vh;
 
   position: relative;
+  overflow-x: hidden;
+}
+
+.main::-webkit-scrollbar {
+  display: none;
 }

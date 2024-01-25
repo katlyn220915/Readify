@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import styles from "./Upload.module.css";
 
 /* COMPONENT */
-import UploadingField from "../UploadingField/UploadingField";
 import ActionPrompt from "../ActionPrompt/ActionPrompt";
 
 /* CUSTOM_HOOK */
@@ -31,9 +30,13 @@ export default function UploadFile() {
   const firestore = useFirestore();
   const epubJS = useEpubJs();
   const dispatch = useAppDispatch();
-  const { isUploading, isError, errorMes, isUploadSuccessful } = useAppSelector(
-    (state) => state.upload
-  );
+  const {
+    isUploading,
+    isUploadError,
+    uploadErrorMes,
+    isUploadSuccessful,
+    fileName,
+  } = useAppSelector((state) => state.upload);
   const parser = parseEpub();
   const store = storeFiles();
 
@@ -119,7 +122,7 @@ export default function UploadFile() {
   const upload = async (fileList: FileList) => {
     dispatch(reset());
     if (fileList[0].type !== "application/epub+zip") {
-      dispatch(error("Incorrect data type"));
+      dispatch(error("The file type nees to be Epub"));
       setTimeout(() => {
         dispatch(reset());
       }, 3000);
@@ -130,28 +133,30 @@ export default function UploadFile() {
       dispatch(uploading(fileList[0].name));
       const data = new FormData();
       data.set("file", fileList[0]);
-      const res = await fetch("/api/upload_epub", {
+      const response = await fetch("/api/upload_epub", {
         method: "POST",
         body: data,
         headers: {
           "X-user-UUID": user.uid,
         },
       });
-      if (!res.ok) dispatch(error("Upload fail"));
-      const result = await res.json();
-      // console.log("Upload successfully, server response:", result);
-      storeBookInfos(result.data.downloadURL, result.data.id, user.uid);
-      dispatch(success());
-
-      setTimeout(() => {
-        dispatch(reset());
-      }, 3000);
+      if (!response.ok) {
+        dispatch(
+          error("sorry, server got too many request today, come back tomorrow")
+        );
+      } else {
+        const result = await response.json();
+        storeBookInfos(result.data.downloadURL, result.data.id, user.uid);
+        setTimeout(() => {
+          dispatch(success());
+        }, 3000);
+      }
     } catch (e: any) {
-      console.error(e);
-      dispatch(error("Upload fail"));
+      dispatch(error("Something wrong on the server, just try again later!"));
+    } finally {
       setTimeout(() => {
         dispatch(reset());
-      }, 3000);
+      }, 4000);
     }
   };
 
@@ -182,16 +187,20 @@ export default function UploadFile() {
           </label>
         </form>
       </div>
-      {isUploading && <UploadingField />}
-      {isError ||
-        (isUploadSuccessful && (
-          <ActionPrompt
-            isError={isError}
-            errorMes={errorMes}
-            isSuccessful={isUploadSuccessful}
-            successfulMes="Upload successfully !"
-          />
-        ))}
+      <ActionPrompt
+        isError={isUploadError}
+        isSuccessful={isUploadSuccessful}
+        isPending={isUploading}
+        fileName={fileName}
+      >
+        {isUploadError
+          ? `Oh-oh...,${uploadErrorMes}!`
+          : isUploadSuccessful
+          ? "Upload successfully!"
+          : isUploading
+          ? `Uploading the book - ${fileName}`
+          : ""}
+      </ActionPrompt>
     </>
   );
 }

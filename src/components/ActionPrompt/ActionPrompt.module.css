@@ -1,31 +1,83 @@
-.container {
+/* .container {
   width: fit-content;
-  height: 8rem;
-  padding: 0 2rem;
+  padding: 2rem;
 
   background-color: var(--color-grey-300);
   color: var(--color-red-700);
   border-radius: 1rem;
 
   text-align: center;
-  line-height: 8rem;
 
   position: absolute;
   bottom: 18rem;
   right: -30rem;
   z-index: 200;
-  transition: all 0.3s;
+  transition: right 0.3s;
 
   display: flex;
   justify-content: center;
   gap: 1rem;
+} */
+
+/* .container {
+  position: absolute;
+  width: 100%;
+  height: 20rem;
+  bottom: 0;
+} */
+
+.prompt_box {
+  position: absolute;
+  right: -100rem;
+  bottom: 6rem;
+
+  background-color: var(--color-grey-300);
+  width: fit-content;
+  padding: 2rem;
+  border-radius: 0.7rem;
+  z-index: 100;
+
+  display: flex;
+  gap: 1rem;
+
+  transition: right 0.3s;
 }
 
 .error {
-  right: 3rem;
+  right: 1rem;
+  bottom: 6rem;
+  color: var(--color-red-700);
 }
 
 .successful {
-  right: 3rem;
+  right: 1rem;
+  bottom: 6rem;
   color: var(--color-green-700);
+}
+
+.isPending {
+  right: 1rem;
+  bottom: 4rem;
+  color: var(--color-grey-700);
+  overflow: hidden;
+}
+
+.isPending::after {
+  position: absolute;
+  content: "";
+  bottom: 0;
+  left: 0;
+  height: 0.3rem;
+  width: 100%;
+  background-color: var(--color-cta);
+  animation: progressBar 3s;
+}
+
+@keyframes progressBar {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
 }
