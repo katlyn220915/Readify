@@ -60,7 +60,7 @@ const useFirebaseAuth = () => {
           console.info("Firebase/Auth: user signed out");
         })
         .catch((e) => {
-          console.log(e.code);
+          console.error(e.code);
         });
     } catch (e) {
       console.error(e);
@@ -88,7 +88,6 @@ const useFirebaseAuth = () => {
         displayName: firstName,
       })
         .then(() => {
-          console.log(user);
           console.info("Firebase: User firstName updated !");
         })
         .catch((e) => {

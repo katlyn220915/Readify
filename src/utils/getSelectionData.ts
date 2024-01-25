@@ -8,9 +8,6 @@ const getSelectionData = () => {
   range = selection?.getRangeAt(0);
   rec = range?.getBoundingClientRect();
 
-  // console.log("selection:", selection);
-  // console.log("range:", range);
-
   return {
     rec,
     parent,

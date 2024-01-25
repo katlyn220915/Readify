@@ -21,24 +21,24 @@ const storeFiles = () => {
           (snapshot) => {
             const progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
+            // console.log("Upload is " + progress + "% done");
             switch (snapshot.state) {
               case "paused":
-                console.log("Upload is paused");
+                // console.log("Upload is paused");
                 break;
               case "running":
-                console.log("Upload is running");
+                // console.log("Upload is running");
                 break;
             }
           },
           (error) => {
             switch (error.code) {
               case "storage/unauthorized":
-                console.log("User has no right to access to the object");
+                // console.log("User has no right to access to the object");
                 reject(error.code);
                 break;
               case "storage/canceled":
-                console.log("User has cancel the upload");
+                // console.log("User has cancel the upload");
                 reject(error.code);
                 break;
             }
@@ -46,7 +46,7 @@ const storeFiles = () => {
           () => {
             try {
               const downloadURL = getDownloadURL(uploadTask.snapshot.ref);
-              console.log("Got the url !" + downloadURL);
+              // console.log("Got the url !" + downloadURL);
               resolve(downloadURL);
             } catch (error) {
               reject(error);
@@ -60,7 +60,7 @@ const storeFiles = () => {
           return downloadURL;
         })
         .catch((error) => {
-          console.log("Error getting download URL: " + error);
+          console.error("Error getting download URL: " + error);
         });
       return downloadURL;
     } catch (e) {

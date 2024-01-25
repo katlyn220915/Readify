@@ -17,7 +17,6 @@ const useCloudStorage = () => {
 
       const isImgDeleted = await deleteObject(desertRefImg)
         .then(() => {
-          console.log("deleted IMG");
           return true;
         })
         .catch((error) => {
@@ -30,7 +29,6 @@ const useCloudStorage = () => {
 
       const isEpubDeleted = await deleteObject(desertRefEpub)
         .then(() => {
-          console.log("deleted Epub");
           return true;
         })
         .catch((error) => {

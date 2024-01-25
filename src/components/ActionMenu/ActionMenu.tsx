@@ -11,10 +11,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { setDeleteHighlightMode } from "@/lib/redux/features/readSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
-import {
-  setActionMenuToggle,
-  setIsAddNoteBlockOpen,
-} from "@/lib/redux/features/readSlice";
+import { setActionMenuToggle } from "@/lib/redux/features/readSlice";
 import { addHighlight, deleteHighlight } from "@/lib/redux/features/noteSlice";
 
 import getSelectionData from "@/utils/getSelectionData";
@@ -116,7 +113,6 @@ const ActionMenu = () => {
         setCurrentHighlightId(highlightId);
         setIsNew(true);
       }
-      console.log("目前點擊的highlightId :", highlightId);
     } else {
       setCurrentHighlightId(deleteHighlightID);
       setIsNew(false);
@@ -124,14 +120,11 @@ const ActionMenu = () => {
         (cur) => cur.id === deleteHighlightID
       );
       setNote(highlightList[index].note);
-
-      console.log("目前點擊的highlightId :", deleteHighlightID);
     }
   };
 
   const handleDeleteHighlight = async () => {
     try {
-      console.log("目前要刪除的highlight id :", currentHighlightId);
       let id = deleteHighlightID;
       if (!id) {
         id = currentHighlightId;
@@ -148,12 +141,12 @@ const ActionMenu = () => {
         dispatch(setActionMenuToggle(false));
       }
     } catch (e) {
-      console.log("Delete fail");
+      console.error(e);
     }
   };
 
   useEffect(() => {
-    const { rec, range } = getSelectionData() || { rec: null };
+    const { rec } = getSelectionData() || { rec: null };
     const rootRec = document
       .getElementById("contentRoot")
       ?.getBoundingClientRect();
