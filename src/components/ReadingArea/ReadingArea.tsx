@@ -119,7 +119,6 @@ export default function ReadingArea({
     getHighlights();
   }, [bookDocuments.length, category, firestoreMemo, user, bookId, dispatch]);
 
-  console.log("re-render");
   return (
     <>
       <div

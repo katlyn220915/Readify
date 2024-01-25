@@ -111,7 +111,6 @@ export const read = createSlice({
 
     setTypeface: (state, action) => {
       state.typeface = action.payload;
-      console.log(state.typeface);
     },
   },
 });

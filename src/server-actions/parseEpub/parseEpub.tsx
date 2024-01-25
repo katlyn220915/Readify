@@ -143,8 +143,10 @@ const parseEpub = () => {
   const handleAnchorTags = (anchors: any) => {
     anchors.forEach((el: any) => {
       const href = el.getAttribute("href");
-      const value = href.split("#")[1];
-      el.setAttribute("href", `#${value}`);
+      if (href) {
+        const value = href.split("#")[1];
+        el.setAttribute("href", `#${value}`);
+      }
     });
   };
 
