@@ -2,13 +2,13 @@
 
 import React from "react";
 import styles from "./page.module.css";
+import { useParams, useSearchParams } from "next/navigation";
 
 /* COMPONENTS */
 import Topbar from "@/components/Category/Topbar/Topbar";
 import BookList from "@/components/Category/BookList/BookList";
-import StaticSidebarList from "@/components/Category/StaticSidebarList/StaticSidebarList";
+import Sidebar from "@/components/Category/Sidebar/Sidebar";
 import UploadFile from "@/components/Category/UploadFile/UploadFile";
-import { useParams, useSearchParams } from "next/navigation";
 import { SearchField } from "@/components/Category/SearchField/SearchField";
 import Logo from "@/components/Common/Logo/Logo";
 
@@ -23,7 +23,7 @@ export default function Category() {
         <aside className={styles.sidebar}>
           <Logo showText={false} />
           <div className={styles.sidebar_user_actions}>
-            <StaticSidebarList />
+            <Sidebar />
           </div>
         </aside>
         <section className={styles.middle_container}>

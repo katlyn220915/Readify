@@ -7,7 +7,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import Icon from "@/components/Common/Icon/Icon";
 import Menu from "../Menu/Menu";
 import { ManageTags } from "../ManageTags/ManageTags";
-import StaticSidebarList from "../StaticSidebarList/StaticSidebarList";
+import StaticSidebarList from "../Sidebar/Sidebar";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
