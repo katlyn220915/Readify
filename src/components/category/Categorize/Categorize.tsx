@@ -15,10 +15,9 @@ import {
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 
 /* CUSTOM HOOK */
-import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import { setMoreActionBtn } from "@/lib/redux/features/moreActionSlice";
 import BookProps from "@/types/BookProps";
 import TagProps from "@/types/TagProps";
+import { useRWD } from "@/hooks/useRWD/useRWD";
 
 const staticItems = [
   {
@@ -42,13 +41,15 @@ export default function Categorize({
   book,
   tags,
   onAddTag,
+  activeListId,
+  onActiveListId,
 }: {
   book: BookProps;
   tags: TagProps[];
   onAddTag: Dispatch<SetStateAction<TagProps[]>>;
+  activeListId: string | null;
+  onActiveListId: (id: string | null) => void;
 }) {
-  const { isMoreActionBtnOpen } = useAppSelector((state) => state.moreAction);
-  const dispatch = useAppDispatch();
   return (
     <>
       <div className={styles.categorize_container}>
@@ -56,7 +57,8 @@ export default function Categorize({
           className={styles.more_act_box}
           onClick={(e) => {
             e.stopPropagation();
-            dispatch(setMoreActionBtn());
+            if (activeListId !== null) onActiveListId(null);
+            else onActiveListId(book.bookId);
           }}
         >
           <ActionIcon
@@ -71,7 +73,7 @@ export default function Categorize({
             <CategorizeItem item={item} key={item.path} book={book} />
           ))}
         </ul>
-        {isMoreActionBtnOpen && (
+        {activeListId === book.bookId && (
           <MoreActionList book={book} tags={tags} onAddTag={onAddTag} />
         )}
       </div>

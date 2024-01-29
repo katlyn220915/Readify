@@ -22,6 +22,7 @@ import { bookListInitialize } from "@/lib/redux/features/bookSlice";
 export default function BookList() {
   const [isLoading, setIsLoading] = useState(false);
   const [activeBookId, setActiveBookId] = useState<string | null>(null);
+  const [activeListId, setActiveListId] = useState<string | null>(null);
 
   const url = useParams<{ category: string }>();
   const params = useSearchParams();
@@ -95,6 +96,8 @@ export default function BookList() {
               key={book.bookId}
               activeBookId={activeBookId}
               onActiveBook={setActiveBookId}
+              activeListId={activeListId}
+              onActiveListId={setActiveListId}
             />
           ))}
           {isUploadSuccessful && <Spinner />}

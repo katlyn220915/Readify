@@ -34,7 +34,7 @@ export const CategorizeItem = ({
   };
   return (
     <>
-      <li
+      <button
         className={`${styles.li} ${
           isCurrentCategory ? styles.current_path : ""
         }`}
@@ -48,7 +48,7 @@ export const CategorizeItem = ({
           onAction={() => {}}
           color={`${isCurrentCategory ? "grey-600" : "grey-300"}`}
         />
-      </li>
+      </button>
       <button
         onClick={(e) => handleCategorizeBook(e)}
         className={styles.mobile_categorize_btn}

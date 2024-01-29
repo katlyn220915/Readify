@@ -1,20 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./Book.module.css";
-import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 /* TYPE */
 import BookProps from "@/types/BookProps";
 
 /* COMPONENT */
 import Categorize from "../Categorize/Categorize";
-import MoreActionList from "../MoreActionList/MoreActionList";
-import ActionIcon from "@/components/Common/ActionIcon/ActionIcon";
 import TagAction from "@/components/Common/TagAction/TagAction";
 
 /* THIRD-LIB */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis, faFeather } from "@fortawesome/free-solid-svg-icons";
+import { faFeather } from "@fortawesome/free-solid-svg-icons";
 
 /* CUSTOM-HOOKS */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
@@ -26,15 +23,20 @@ import TagProps from "@/types/TagProps";
 import useTag from "@/hooks/createTag/useTag";
 import { useRWD } from "@/hooks/useRWD/useRWD";
 import { BookCover } from "../BookCover/BookCover";
+import { MobileMoreActionList } from "../MobileMoreActionList/MobileMoreActionList";
 
 const Book = ({
   book,
   activeBookId,
   onActiveBook,
+  activeListId,
+  onActiveListId,
 }: {
   book: BookProps;
   activeBookId: string | null;
   onActiveBook: (id: string) => void;
+  activeListId: string | null;
+  onActiveListId: (id: string | null) => void;
 }) => {
   const [isMobileMoreActionListOpen, setIsMobileMoreActionListOpen] =
     useState(false);
@@ -96,31 +98,23 @@ const Book = ({
         activeBookId === book.bookId ? styles.book_active : ""
       }`}
       onMouseEnter={() => {
-        if (screenWidth > 1024) onActiveBook(book.bookId);
+        if (screenWidth > 1024 && activeListId === null)
+          onActiveBook(book.bookId);
       }}
       onClick={() => {
         dispatch(setMoreActionBtnClose());
         router.push(`${url.category}/read/${book.bookId}`);
       }}
     >
-      <span
-        className={styles.mobile_moreAction_btn}
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsMobileMoreActionListOpen(!isMobileMoreActionListOpen);
-        }}
-      >
-        <ActionIcon
-          iconProp={faEllipsis}
-          promptText="More Actions"
-          showPrompt={false}
-          position="right"
+      {screenWidth <= 1024 && (
+        <MobileMoreActionList
+          book={book}
+          tags={tags}
+          onSetTags={setTags}
+          activeListId={activeListId}
+          onActiveListId={onActiveListId}
         />
-
-        {isMobileMoreActionListOpen && (
-          <MoreActionList book={book} tags={tags} onAddTag={setTags} />
-        )}
-      </span>
+      )}
       <BookCover coverUrl={book.coverURL} title={book.title} />
       <div className={styles.book_intro}>
         <h3>{book.title}</h3>
@@ -144,8 +138,14 @@ const Book = ({
           </div>
         </div>
       </div>
-      {activeBookId === book.bookId && (
-        <Categorize book={book} tags={tags} onAddTag={setTags} />
+      {activeBookId === book.bookId && screenWidth > 1024 && (
+        <Categorize
+          book={book}
+          tags={tags}
+          onAddTag={setTags}
+          activeListId={activeListId}
+          onActiveListId={onActiveListId}
+        />
       )}
     </li>
   );
