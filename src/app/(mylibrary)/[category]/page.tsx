@@ -2,8 +2,6 @@
 
 import React from "react";
 import styles from "./page.module.css";
-import Link from "next/link";
-import Image from "next/image";
 
 /* COMPONENTS */
 import Topbar from "@/components/Category/Topbar/Topbar";
@@ -12,6 +10,7 @@ import StaticSidebarList from "@/components/Category/StaticSidebarList/StaticSid
 import UploadFile from "@/components/Category/UploadFile/UploadFile";
 import { useParams, useSearchParams } from "next/navigation";
 import { SearchField } from "@/components/Category/SearchField/SearchField";
+import Logo from "@/components/Common/Logo/Logo";
 
 export default function Category() {
   const url = useParams<{ category: string }>();
@@ -22,14 +21,7 @@ export default function Category() {
     <>
       <div className={styles.container}>
         <aside className={styles.sidebar}>
-          <Link href="/">
-            <Image
-              src="/image/Readify.png"
-              alt="readify logo"
-              width={70}
-              height={70}
-            />
-          </Link>
+          <Logo showText={false} />
           <div className={styles.sidebar_user_actions}>
             <StaticSidebarList />
           </div>

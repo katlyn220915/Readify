@@ -6,7 +6,7 @@
 }
 
 .sidebar {
-  padding: 1rem;
+  padding: 1rem 1.5rem;
 
   border-right: 0.05rem solid var(--color-grey-600);
   background-color: #10161d;
