@@ -12,7 +12,7 @@ import TagProps from "@/types/TagProps";
 /* Custom_hook */
 import { useAppDispatch } from "@/hooks/redux/hooks";
 import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
-import { setMoreActionBtnClose } from "@/lib/redux/features/moreActionSlice";
+import { setMoreActionBtnClose } from "@/lib/redux/features/tagSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import useCloudStorage from "@/hooks/firebase_db/useCloudStorage";
 import { useRWD } from "@/hooks/useRWD/useRWD";

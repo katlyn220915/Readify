@@ -15,10 +15,7 @@ import { faFeather } from "@fortawesome/free-solid-svg-icons";
 
 /* CUSTOM-HOOKS */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import {
-  reset,
-  setMoreActionBtnClose,
-} from "@/lib/redux/features/moreActionSlice";
+import { reset } from "@/lib/redux/features/tagSlice";
 import TagProps from "@/types/TagProps";
 import useTag from "@/hooks/createTag/useTag";
 import { useRWD } from "@/hooks/useRWD/useRWD";
@@ -38,8 +35,6 @@ const Book = ({
   activeListId: string | null;
   onActiveListId: (id: string | null) => void;
 }) => {
-  const [isMobileMoreActionListOpen, setIsMobileMoreActionListOpen] =
-    useState(false);
   const [tags, setTags] = useState<TagProps[]>(book.tags);
 
   const { screenWidth } = useRWD();
@@ -49,7 +44,7 @@ const Book = ({
 
   const dispatch = useAppDispatch();
   const { deleteId, updateId, updateName } = useAppSelector(
-    (state) => state.moreAction
+    (state) => state.tag
   );
 
   useEffect(() => {
@@ -102,7 +97,6 @@ const Book = ({
           onActiveBook(book.bookId);
       }}
       onClick={() => {
-        dispatch(setMoreActionBtnClose());
         router.push(`${url.category}/read/${book.bookId}`);
       }}
     >
