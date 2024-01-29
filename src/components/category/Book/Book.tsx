@@ -25,6 +25,7 @@ import {
 import TagProps from "@/types/TagProps";
 import useTag from "@/hooks/createTag/useTag";
 import { useRWD } from "@/hooks/useRWD/useRWD";
+import { BookCover } from "../BookCover/BookCover";
 
 const Book = ({
   book,
@@ -120,24 +121,7 @@ const Book = ({
           <MoreActionList book={book} tags={tags} onAddTag={setTags} />
         )}
       </span>
-      <div className={styles.img_container}>
-        {book.coverURL && (
-          <Image
-            src={book.coverURL}
-            alt={`Book-${book.title}`}
-            width={80}
-            height={80}
-          />
-        )}
-        {book.coverURL === null && (
-          <Image
-            src="/image/image-not-found.png"
-            alt={`Book-${book.title}`}
-            width={80}
-            height={80}
-          />
-        )}
-      </div>
+      <BookCover coverUrl={book.coverURL} title={book.title} />
       <div className={styles.book_intro}>
         <h3>{book.title}</h3>
         <div className={styles.book_row}>
