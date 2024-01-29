@@ -21,6 +21,7 @@ import { bookListInitialize } from "@/lib/redux/features/bookSlice";
 
 export default function BookList() {
   const [isLoading, setIsLoading] = useState(false);
+  const [activeBookId, setActiveBookId] = useState<string | null>(null);
 
   const url = useParams<{ category: string }>();
   const params = useSearchParams();
@@ -89,7 +90,12 @@ export default function BookList() {
       {!isLoading && bookList.length > 0 && (
         <ul className={styles.books}>
           {bookList.map((book: BookProps) => (
-            <Book book={book} key={book.bookId} />
+            <Book
+              book={book}
+              key={book.bookId}
+              activeBookId={activeBookId}
+              onActiveBook={setActiveBookId}
+            />
           ))}
           {isUploadSuccessful && <Spinner />}
         </ul>

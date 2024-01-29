@@ -7,9 +7,10 @@ import { usePathname, useSearchParams } from "next/navigation";
 import Icon from "@/components/Common/Icon/Icon";
 import Menu from "../Menu/Menu";
 import { ManageTags } from "../ManageTags/ManageTags";
-import StaticSidebarList from "../Sidebar/Sidebar";
+import Sidebar from "../Sidebar/Sidebar";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock } from "@fortawesome/free-regular-svg-icons";
 import {
   faBars,
   faBookOpen,
@@ -17,17 +18,16 @@ import {
   faMagnifyingGlass,
   faTags,
 } from "@fortawesome/free-solid-svg-icons";
-import { faClock } from "@fortawesome/free-regular-svg-icons";
 
 export default function Topbar() {
   const [isManageTagsOpen, setIsManageTagsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [icon, setIcon] = useState(faBookOpen);
+
   const pathname = usePathname();
   const params = useSearchParams();
   const tag = params.get("tag");
-
-  const [title, setTitle] = useState("");
-  const [icon, setIcon] = useState(faBookOpen);
 
   useEffect(() => {
     setTitle("");
@@ -89,7 +89,7 @@ export default function Topbar() {
         )}
         {isMenuOpen && (
           <Menu>
-            <StaticSidebarList />
+            <Sidebar />
           </Menu>
         )}
       </div>

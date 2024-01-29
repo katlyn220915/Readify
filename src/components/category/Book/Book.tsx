@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Book.module.css";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 /* TYPE */
 import BookProps from "@/types/BookProps";
 
@@ -26,19 +26,23 @@ import TagProps from "@/types/TagProps";
 import useTag from "@/hooks/createTag/useTag";
 import { useRWD } from "@/hooks/useRWD/useRWD";
 
-const Book = ({ book }: { book: BookProps }) => {
-  const [isMouseEnter, setIsMouseEnter] = useState(false);
+const Book = ({
+  book,
+  activeBookId,
+  onActiveBook,
+}: {
+  book: BookProps;
+  activeBookId: string | null;
+  onActiveBook: (id: string) => void;
+}) => {
   const [isMobileMoreActionListOpen, setIsMobileMoreActionListOpen] =
     useState(false);
-  const { screenWidth } = useRWD();
   const [tags, setTags] = useState<TagProps[]>(book.tags);
-  const { isMoreActionBtnOpen, isOtherMoreActionBtnOpen } = useAppSelector(
-    (state) => state.moreAction
-  );
-  const { deleteTagFromBookCached, updateTagNameFromBookCached } = useTag();
+
+  const { screenWidth } = useRWD();
+  const url = useParams<{ category: string }>();
   const router = useRouter();
-  const pathname = usePathname();
-  const category = pathname.split("/").pop();
+  const { deleteTagFromBookCached, updateTagNameFromBookCached } = useTag();
 
   const dispatch = useAppDispatch();
   const { deleteId, updateId, updateName } = useAppSelector(
@@ -87,21 +91,15 @@ const Book = ({ book }: { book: BookProps }) => {
 
   return (
     <li
-      className={`${styles.book} ${isMouseEnter ? styles.book_active : ""}`}
+      className={`${styles.book} ${
+        activeBookId === book.bookId ? styles.book_active : ""
+      }`}
       onMouseEnter={() => {
-        if (
-          !isMoreActionBtnOpen &&
-          !isOtherMoreActionBtnOpen &&
-          screenWidth > 1024
-        )
-          setIsMouseEnter(true);
-      }}
-      onMouseLeave={() => {
-        if (!isMoreActionBtnOpen && screenWidth > 1024) setIsMouseEnter(false);
+        if (screenWidth > 1024) onActiveBook(book.bookId);
       }}
       onClick={() => {
         dispatch(setMoreActionBtnClose());
-        router.push(`${category}/read/${book.bookId}`);
+        router.push(`${url.category}/read/${book.bookId}`);
       }}
     >
       <span
@@ -162,12 +160,9 @@ const Book = ({ book }: { book: BookProps }) => {
           </div>
         </div>
       </div>
-      <Categorize
-        isMouseEnter={isMouseEnter}
-        book={book}
-        tags={tags}
-        onAddTag={setTags}
-      />
+      {activeBookId === book.bookId && (
+        <Categorize book={book} tags={tags} onAddTag={setTags} />
+      )}
     </li>
   );
 };

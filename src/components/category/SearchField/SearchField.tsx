@@ -3,9 +3,10 @@
 import React, { useState } from "react";
 import styles from "./SearchField.module.css";
 
-import { bookListInitialize } from "@/lib/redux/features/bookSlice";
 import { useAppDispatch } from "@/hooks/redux/hooks";
 import useBook from "@/hooks/useBook/useBook";
+
+import { bookListInitialize } from "@/lib/redux/features/bookSlice";
 
 export const SearchField = () => {
   const [text, setText] = useState("");
