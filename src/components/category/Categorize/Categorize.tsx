@@ -38,27 +38,6 @@ const staticItems = [
   },
 ];
 
-function MoreActionBtn() {
-  const dispatch = useAppDispatch();
-
-  return (
-    <div
-      className={styles.more_act_box}
-      onClick={(e) => {
-        e.stopPropagation();
-        dispatch(setMoreActionBtn());
-      }}
-    >
-      <ActionIcon
-        iconProp={faEllipsis}
-        promptText="More actions"
-        position="top"
-        onAction={() => {}}
-      />
-    </div>
-  );
-}
-
 export default function Categorize({
   isMouseEnter,
   book,
@@ -71,11 +50,25 @@ export default function Categorize({
   onAddTag: Dispatch<SetStateAction<TagProps[]>>;
 }) {
   const { isMoreActionBtnOpen } = useAppSelector((state) => state.moreAction);
+  const dispatch = useAppDispatch();
   return (
     <>
       {isMouseEnter && (
         <div className={styles.categorize_container}>
-          <MoreActionBtn />
+          <div
+            className={styles.more_act_box}
+            onClick={(e) => {
+              e.stopPropagation();
+              dispatch(setMoreActionBtn());
+            }}
+          >
+            <ActionIcon
+              iconProp={faEllipsis}
+              promptText="More actions"
+              position="top"
+              onAction={() => {}}
+            />
+          </div>
           <ul className={styles.categorize_box}>
             {staticItems.map((item) => (
               <CategorizeItem item={item} key={item.path} book={book} />

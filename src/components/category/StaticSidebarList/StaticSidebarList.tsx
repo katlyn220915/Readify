@@ -78,9 +78,9 @@ export default function StaticSidebarList() {
   const { screenWidth } = useRWD();
   return (
     <nav className={styles.nav}>
-      {screenWidth < 1024 && (
+      {/* {screenWidth < 1024 && (
         <ListItem item={{ title: "Home page", path: "/" }} />
-      )}
+      )} */}
       {staticList.map((item) => (
         <ListItem item={item} key={item.path} />
       ))}

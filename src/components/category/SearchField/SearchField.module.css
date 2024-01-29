@@ -1,7 +1,12 @@
+.search_field {
+  display: block;
+  margin: 2rem;
+}
+
 .search_field_wrapper {
   border: 0.1rem solid var(--color-grey-600);
   border-radius: 1rem;
-  padding: 0.2rem 1rem;
+  padding: 0.5rem 1rem;
 
   display: flex;
   justify-content: space-between;
