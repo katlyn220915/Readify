@@ -50,5 +50,5 @@ export const {
   updateNote,
   resetNotes,
 } = note.actions;
-export const selectMoreAction = (state: RootState) => state.moreAction;
+export const selectNote = (state: RootState) => state.note;
 export default note.reducer;
