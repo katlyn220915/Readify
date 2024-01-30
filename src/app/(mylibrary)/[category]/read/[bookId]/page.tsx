@@ -1,19 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import styles from "./page.module.css";
+import { redirect } from "next/navigation";
 
 import ReadingArea from "@/components/readingPage/ReadingArea/ReadingArea";
 import ReadingNavigation from "@/components/readingPage/ReadingNavigation/ReadingNavigation";
 import Notebook from "@/components/readingPage/Notebook/Notebook";
 import BookIndices from "@/components/readingPage/BookIndices/BookIndices";
+import { useAuth } from "@/context/AuthContext";
+import Spinner from "@/components/common/Spinner/Spinner";
 
 export default function BookId() {
+  const { user } = useAuth();
   const [isNotebookOpen, setIsNotebookOpen] = useState(false);
   const [isContentListOpen, setIsContentListOpen] = useState(false);
 
+  useEffect(() => {
+    if (user === undefined) return;
+    if (user === null) redirect("/signin");
+  }, [user]);
+
   return (
-    <>
+    <Suspense fallback={<Spinner />}>
       <ReadingNavigation
         isContentListOpen={isContentListOpen}
         onSetContentListOpen={setIsContentListOpen}
@@ -34,6 +43,6 @@ export default function BookId() {
           onSetIsNotebookOpen={setIsNotebookOpen}
         />
       </div>
-    </>
+    </Suspense>
   );
 }
