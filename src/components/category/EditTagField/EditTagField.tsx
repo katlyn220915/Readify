@@ -20,7 +20,7 @@ const EditTagField = ({
   onAddTag: Dispatch<SetStateAction<TagProps[]>>;
   bookId: string;
 }) => {
-  const { allUserTags } = useAppSelector((state) => state.moreAction);
+  const { allUserTags } = useAppSelector((state) => state.tag);
   const [newTagText, setNewTagText] = useState("");
   const [searchTagList, setSearchTagList] = useState<any>([]);
 
