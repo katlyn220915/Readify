@@ -28,7 +28,7 @@ const ReadingNavigation = ({
   isNotebookOpen: boolean;
   onSetNotebookOpen<SetStateAction>(boolean: any): any;
 }) => {
-  const [isClick, setIsClick] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
   const [isCustomizeBoxOpen, setIsCustomizeBoxOpen] = useState(false);
   const [isStoreBookMarkError, setIsStoreBookMarkError] = useState(false);
   const [isStoreBookMarkSuccess, setIsStoreBookMarkSuccess] = useState(false);
@@ -53,8 +53,8 @@ const ReadingNavigation = ({
     <>
       <div className={styles.navigation}>
         <div
-          className={`${styles.menuToggle} ${isClick ? styles.active : ""}`}
-          onClick={() => setIsClick(!isClick)}
+          className={`${styles.menuToggle} ${isMenuOpen ? styles.active : ""}`}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
         ></div>
         <div className={styles.menu}>
           <div className={styles.actionList}>
