@@ -1,0 +1,46 @@
+.prompt {
+  display: inline-block;
+  position: absolute;
+  z-index: 1000;
+
+  color: var(--color-blue-bg);
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 0.5rem 1.2rem;
+
+  text-wrap: nowrap;
+}
+
+.show_prompt {
+  display: inline-block;
+}
+
+@media (max-width: 1024px) {
+  .prompt {
+    display: none;
+  }
+  .show_prompt {
+    display: none;
+  }
+}
+
+.prompt__position_top {
+  /* transform: translateY(-4rem); */
+  top: -4rem;
+  /* left: -3rem; */
+  right: -4rem;
+}
+
+.prompt__position_right {
+  transform: translateX(4rem);
+}
+
+.prompt__position_bottom {
+  bottom: -5rem;
+  left: -4rem;
+}
+
+.prompt__position_left {
+  left: -13rem;
+  top: 0.5rem;
+}
