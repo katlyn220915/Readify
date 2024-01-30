@@ -3,9 +3,9 @@
 import React from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
-import Navbar from "@/components/Common/Navbar/Navbar";
-import ButtonCta from "@/components/Common/ButtonCta/ButtonCta";
-import Spinner from "@/components/Common/Spinner/Spinner";
+import Navbar from "@/components/common/Navbar/Navbar";
+import ButtonCta from "@/components/common/ButtonCta/ButtonCta";
+import Spinner from "@/components/common/Spinner/Spinner";
 
 import { useAuth } from "@/context/AuthContext";
 

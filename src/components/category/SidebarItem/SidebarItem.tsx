@@ -5,7 +5,7 @@ import styles from "./SidebarItem.module.css";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 
-import Prompt from "@/components/Common/Prompt/Prompt";
+import Prompt from "@/components/common/Prompt/Prompt";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRWD } from "@/hooks/useRWD/useRWD";

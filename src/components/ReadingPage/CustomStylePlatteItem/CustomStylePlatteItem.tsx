@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useAppDispatch } from "@/hooks/redux/hooks";
 import { setFontSize, setLineSpacing } from "@/lib/redux/features/readSlice";
-import ActionIcon from "@/components/Common/ActionIcon/ActionIcon";
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { Dispatch, SetStateAction } from "react";
 

@@ -5,7 +5,7 @@ import styles from "./Notebook.module.css";
 import { usePathname } from "next/navigation";
 
 import Highlight from "../Highlight/Highlight";
-import ActionIcon from "@/components/Common/ActionIcon/ActionIcon";
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
 
 import { useAuth } from "@/context/AuthContext";
 import { useRWD } from "@/hooks/useRWD/useRWD";

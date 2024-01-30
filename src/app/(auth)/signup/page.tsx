@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 
-import SignupForm from "@/components/Auth/SignupForm/SignupForm";
-import { Header } from "@/components/Auth/Header/Header";
+import SignupForm from "@/components/auth/SignupForm/SignupForm";
+import { Header } from "@/components/auth/Header/Header";
 
 import Loading from "../loading";
 

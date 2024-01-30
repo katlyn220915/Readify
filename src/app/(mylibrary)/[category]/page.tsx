@@ -5,12 +5,12 @@ import styles from "./page.module.css";
 import { useParams, useSearchParams } from "next/navigation";
 
 /* COMPONENTS */
-import Topbar from "@/components/Category/Topbar/Topbar";
-import BookList from "@/components/Category/BookList/BookList";
-import Sidebar from "@/components/Category/Sidebar/Sidebar";
-import UploadFile from "@/components/Category/UploadFile/UploadFile";
-import { SearchField } from "@/components/Category/SearchField/SearchField";
-import Logo from "@/components/Common/Logo/Logo";
+import Topbar from "@/components/category/Topbar/Topbar";
+import BookList from "@/components/category/BookList/BookList";
+import Sidebar from "@/components/category/Sidebar/Sidebar";
+import UploadFile from "@/components/category/UploadFile/UploadFile";
+import { SearchField } from "@/components/category/SearchField/SearchField";
+import Logo from "@/components/common/Logo/Logo";
 
 export default function Category() {
   const url = useParams<{ category: string }>();

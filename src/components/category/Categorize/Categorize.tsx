@@ -4,7 +4,7 @@ import styles from "./Categorize.module.css";
 /* COMPONENT */
 import MoreActionList from "../MoreActionList/MoreActionList";
 import { CategorizeItem } from "../CategorizeItem/CategorizeItem";
-import ActionIcon from "@/components/Common/ActionIcon/ActionIcon";
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
 
 /* THIRD_LIB */
 import {

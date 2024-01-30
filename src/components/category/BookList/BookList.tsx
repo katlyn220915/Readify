@@ -7,8 +7,8 @@ import BookProps from "@/types/BookProps";
 
 /* COMPONENT */
 import Book from "../Book/Book";
-import Spinner from "@/components/Common/Spinner/Spinner";
-import ActionPrompt from "@/components/Common/ActionPrompt/ActionPrompt";
+import Spinner from "@/components/common/Spinner/Spinner";
+import ActionPrompt from "@/components/common/ActionPrompt/ActionPrompt";
 
 /* CUSTOM-HOOKS */
 import useFirestore from "@/hooks/firebase_db/useFirestore";

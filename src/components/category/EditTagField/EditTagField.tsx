@@ -3,7 +3,7 @@
 import React, { useState, Dispatch, SetStateAction, useRef } from "react";
 import styles from "./EditTagField.module.css";
 
-import TagAction from "@/components/Common/TagAction/TagAction";
+import TagAction from "@/components/common/TagAction/TagAction";
 import CreateTagBtn from "../CreateTagBtn/CreateTagBtn";
 
 import TagProps from "@/types/TagProps";

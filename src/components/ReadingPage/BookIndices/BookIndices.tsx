@@ -11,7 +11,7 @@ import styles from "./BookIndices.module.css";
 
 import IndexItemProp from "@/types/IndexItemProp";
 import IndexButton from "../IndexButton/IndexButton";
-import ActionIcon from "@/components/Common/ActionIcon/ActionIcon";
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
 
 import { useAppSelector } from "@/hooks/redux/hooks";
 import parseEpub from "@/server-actions/parseEpub/parseEpub";

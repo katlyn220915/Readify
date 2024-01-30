@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import styles from "./ActionMenu.module.css";
 
-import ActionIcon from "@/components/Common/ActionIcon/ActionIcon";
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
 import MarkerColorPlatte from "../MarkerColorPlatte/MarkerColorPlatte";
 import NoteForm from "../NoteForm/NoteForm";
 

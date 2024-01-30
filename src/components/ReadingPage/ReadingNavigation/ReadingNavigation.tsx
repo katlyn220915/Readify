@@ -5,8 +5,8 @@ import { usePathname, useRouter } from "next/navigation";
 import styles from "./ReadingNavigation.module.css";
 
 import CustomStylePlatte from "../CustomStylePlatte/CustomStylePlatte";
-import ActionIcon from "@/components/Common/ActionIcon/ActionIcon";
-import ActionPrompt from "@/components/Common/ActionPrompt/ActionPrompt";
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
+import ActionPrompt from "@/components/common/ActionPrompt/ActionPrompt";
 
 import useBook from "@/hooks/useBook/useBook";
 import {

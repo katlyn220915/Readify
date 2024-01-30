@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Topbar.module.css";
 import { usePathname, useSearchParams } from "next/navigation";
 
-import Icon from "@/components/Common/Icon/Icon";
+import Icon from "@/components/common/Icon/Icon";
 import Menu from "../Menu/Menu";
 import { ManageTags } from "../ManageTags/ManageTags";
 import Sidebar from "../Sidebar/Sidebar";

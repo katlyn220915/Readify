@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import styles from "./MobileMoreActionList.module.css";
 
-import ActionIcon from "@/components/Common/ActionIcon/ActionIcon";
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
 import MoreActionList from "../MoreActionList/MoreActionList";
 
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";

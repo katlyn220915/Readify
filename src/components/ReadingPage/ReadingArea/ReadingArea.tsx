@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import styles from "./ReadingArea.module.css";
 
-import Spinner from "@/components/Common/Spinner/Spinner";
+import Spinner from "@/components/common/Spinner/Spinner";
 import ContentsRoot from "../ContentsRoot/ContentsRoot";
 import EbookIntroductionHeader from "../EbookIntroductionHeader/EbookIntroductionHeader";
 

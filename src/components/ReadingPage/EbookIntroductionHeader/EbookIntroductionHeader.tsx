@@ -1,5 +1,5 @@
 import styles from "./EbookIntroductionHeader.module.css";
-import TagAction from "@/components/Common/TagAction/TagAction";
+import TagAction from "@/components/common/TagAction/TagAction";
 import { useAppSelector } from "@/hooks/redux/hooks";
 
 const EbookIntroductionHeader = () => {

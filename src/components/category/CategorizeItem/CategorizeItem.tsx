@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./CategorizeItem.module.css";
 import BookProps from "@/types/BookProps";
 
-import ActionIcon from "@/components/Common/ActionIcon/ActionIcon";
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
 
 import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";

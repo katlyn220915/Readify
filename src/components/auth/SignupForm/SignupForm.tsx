@@ -8,8 +8,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import styles from "./SignupForm.module.css";
-import ButtonCta from "@/components/Common/ButtonCta/ButtonCta";
-import Spinner from "@/components/Common/Spinner/Spinner";
+import ButtonCta from "@/components/common/ButtonCta/ButtonCta";
+import Spinner from "@/components/common/Spinner/Spinner";
 
 import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 import useFireStore from "@/hooks/firebase_db/useFirestore";

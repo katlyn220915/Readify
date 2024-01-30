@@ -1,6 +1,6 @@
 import styles from "./ManageTags.module.css";
 
-import TagAction from "@/components/Common/TagAction/TagAction";
+import TagAction from "@/components/common/TagAction/TagAction";
 import useTag from "@/hooks/createTag/useTag";
 
 export const ManageTags = () => {

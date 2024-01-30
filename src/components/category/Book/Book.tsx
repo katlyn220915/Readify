@@ -7,7 +7,7 @@ import BookProps from "@/types/BookProps";
 
 /* COMPONENT */
 import Categorize from "../Categorize/Categorize";
-import TagAction from "@/components/Common/TagAction/TagAction";
+import TagAction from "@/components/common/TagAction/TagAction";
 
 /* THIRD-LIB */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

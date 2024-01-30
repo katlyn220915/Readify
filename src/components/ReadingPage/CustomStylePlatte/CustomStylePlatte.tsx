@@ -5,7 +5,7 @@ import styles from "./CustomStylePlatte.module.css";
 import { literata, roboto, inter, notoSerif } from "@/app/fonts/fonts";
 
 import CustomStylePlatteItem from "../CustomStylePlatteItem/CustomStylePlatteItem";
-import ActionIcon from "@/components/Common/ActionIcon/ActionIcon";
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
 
 import {
   faFont,

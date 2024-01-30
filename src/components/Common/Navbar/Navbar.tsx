@@ -6,8 +6,8 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 
-import Logo from "@/components/Common/Logo/Logo";
-import ButtonCta from "@/components/Common/ButtonCta/ButtonCta";
+import Logo from "@/components/common/Logo/Logo";
+import ButtonCta from "@/components/common/ButtonCta/ButtonCta";
 
 export default function Navbar() {
   const firebaseAuth = useFirebaseAuth();

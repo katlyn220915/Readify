@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styles from "./Upload.module.css";
 
 /* COMPONENT */
-import ActionPrompt from "@/components/Common/ActionPrompt/ActionPrompt";
+import ActionPrompt from "@/components/common/ActionPrompt/ActionPrompt";
 
 /* CUSTOM_HOOK */
 import useFirestore from "@/hooks/firebase_db/useFirestore";

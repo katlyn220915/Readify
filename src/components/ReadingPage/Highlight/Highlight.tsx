@@ -3,7 +3,7 @@ import styles from "./Highlight.module.css";
 import { useParams } from "next/navigation";
 
 import NoteForm from "../NoteForm/NoteForm";
-import ActionIcon from "@/components/Common/ActionIcon/ActionIcon";
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
 
 import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
