@@ -16,12 +16,6 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@hookform/resolvers": "^3.3.2",
     "@reduxjs/toolkit": "^1.9.7",
-    "@tiptap/extension-color": "^2.1.13",
-    "@tiptap/extension-text-align": "^2.1.13",
-    "@tiptap/extension-underline": "^2.1.13",
-    "@tiptap/pm": "^2.1.13",
-    "@tiptap/react": "^2.1.13",
-    "@tiptap/starter-kit": "^2.1.13",
     "epubjs": "^0.3.93",
     "firebase": "^10.6.0",
     "next": "14.0.3",
@@ -41,5 +35,20 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
     "typescript": "^5"
-  }
+  },
+  "description": "#### Readify is a App that you can read E-book and take notes while your reading. #### Link: [https://readify-rosy.vercel.app/](https://readify-rosy.vercel.app/)",
+  "main": "next.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Katlyn880815/Readify.git"
+  },
+  "keywords": [
+    "front-end"
+  ],
+  "author": "Katlyn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Katlyn880815/Readify/issues"
+  },
+  "homepage": "https://github.com/Katlyn880815/Readify#readme"
 }
