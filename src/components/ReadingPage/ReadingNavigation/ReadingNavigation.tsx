@@ -28,7 +28,7 @@ const ReadingNavigation = ({
   isNotebookOpen: boolean;
   onSetNotebookOpen<SetStateAction>(boolean: any): any;
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCustomizeBoxOpen, setIsCustomizeBoxOpen] = useState(false);
   const [isStoreBookMarkError, setIsStoreBookMarkError] = useState(false);
   const [isStoreBookMarkSuccess, setIsStoreBookMarkSuccess] = useState(false);

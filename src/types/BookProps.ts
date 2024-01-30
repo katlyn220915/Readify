@@ -12,6 +12,7 @@ type BookProps = {
     index: string | number;
   };
   category: string;
+  record: string;
 };
 
 export default BookProps;

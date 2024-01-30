@@ -39,7 +39,6 @@ export default function ReadingArea({
   const parserMemo = useCallback(parseEpub, [parseEpub]);
   const firestoreMemo = useCallback(useFirestore, [useFirestore]);
 
-  //初始useEffect
   useEffect(() => {
     const bookRender = async () => {
       const parser = parserMemo();

@@ -31,6 +31,7 @@ const BookContents = ({ bookDocuments }: { bookDocuments: any[] }) => {
   const currentBookMemo = useMemo(() => {
     return currentBook;
   }, [currentBook]);
+
   const changeTargetCb = useCallback(
     function changeTargetElement(
       lastTarget: HTMLElement | null,
