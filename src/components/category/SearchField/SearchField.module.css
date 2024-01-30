@@ -1,0 +1,33 @@
+.search_field {
+  display: block;
+  margin: 2rem;
+}
+
+.search_field_wrapper {
+  border: 0.1rem solid var(--color-grey-600);
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.search_input {
+  width: 100%;
+  border: none;
+  background-color: inherit;
+  color: var(--color-grey-300);
+}
+
+.search_input:focus {
+  outline: none;
+}
+
+.search_icon {
+  width: 3rem;
+  height: 3rem;
+  text-align: center;
+  line-height: 3rem;
+}

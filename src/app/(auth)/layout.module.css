@@ -2,12 +2,22 @@
   height: 100%;
   background-color: var(--color-blue-bg);
   padding: 2.5rem 2rem;
+  overflow-y: scroll;
 
   position: relative;
 }
 
 .section_signup {
   margin-top: 10rem;
+}
+
+.container {
+  max-width: 40rem;
+  background-color: #42484d;
+  border-radius: 1rem;
+
+  padding: 2.5rem;
+  margin: 0 auto;
 }
 
 @media (max-width: 600px) {

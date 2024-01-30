@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import uploadReducer from "./features/uploadSlice";
 import bookReducer from "./features/bookSlice";
-import moreActionReducer from "./features/moreActionSlice";
+import tagReducer from "./features/tagSlice";
 import readReducer from "./features/readSlice";
 import noteReducer from "./features/noteSlice";
 import bookMarkReducer from "./features/bookMarkSlice";
@@ -11,7 +11,7 @@ export const makeStore = () => {
     reducer: {
       upload: uploadReducer,
       book: bookReducer,
-      moreAction: moreActionReducer,
+      tag: tagReducer,
       read: readReducer,
       note: noteReducer,
       bookMark: bookMarkReducer,

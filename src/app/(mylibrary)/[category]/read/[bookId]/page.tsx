@@ -3,10 +3,10 @@
 import React, { useState } from "react";
 import styles from "./page.module.css";
 
-import ReadingArea from "@/components/ReadingArea/ReadingArea";
-import ReadingNavigation from "@/components/ReadingNavigation/ReadingNavigation";
-import Notebook from "@/components/Notebook/Notebook";
-import BookIndices from "@/components/BookIndices/BookIndices";
+import ReadingArea from "@/components/readingPage/ReadingArea/ReadingArea";
+import ReadingNavigation from "@/components/readingPage/ReadingNavigation/ReadingNavigation";
+import Notebook from "@/components/readingPage/Notebook/Notebook";
+import BookIndices from "@/components/readingPage/BookIndices/BookIndices";
 
 export default function BookId() {
   const [isNotebookOpen, setIsNotebookOpen] = useState(false);

@@ -1,0 +1,28 @@
+.books {
+  min-height: calc(100vh - 8.5rem);
+  max-height: calc(100vh - 8.5rem);
+  margin: 1.5rem 0;
+  padding: 1rem;
+
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  -ms-overflow-style: none;
+}
+
+.books::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.books:hover.books::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.books:hover.books::-webkit-scrollbar-thumb {
+  background: var(--color-blue-400);
+}
+
+.prompt {
+  text-align: center;
+  font-size: var(--font-size-medium);
+  margin-top: 10rem;
+}

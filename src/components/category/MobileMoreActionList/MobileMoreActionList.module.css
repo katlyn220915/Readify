@@ -1,0 +1,13 @@
+.mobile_moreAction_btn {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .mobile_moreAction_btn {
+    display: block;
+    position: absolute;
+    right: 2rem;
+    padding: 1rem;
+    border-radius: 50%;
+  }
+}

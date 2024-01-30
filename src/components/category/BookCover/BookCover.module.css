@@ -1,0 +1,8 @@
+.img_container {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.img_container img {
+  vertical-align: middle;
+}
