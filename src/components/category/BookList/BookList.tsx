@@ -20,7 +20,7 @@ import { bookListInitialize } from "@/lib/redux/features/bookSlice";
 /////////////////////////////////////////////////////////
 
 export default function BookList() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [activeBookId, setActiveBookId] = useState<string | null>(null);
   const [activeListId, setActiveListId] = useState<string | null>(null);
 

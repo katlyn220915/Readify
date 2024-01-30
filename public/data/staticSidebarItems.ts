@@ -8,10 +8,6 @@ import { ListItemProps } from "@/types/CategoryPage";
 
 const staticSidebarItems: ListItemProps[] = [
   {
-    title: "Home",
-    path: "/",
-  },
-  {
     title: "My Library",
     path: "mylibrary",
     iconProp: faBookOpen,
