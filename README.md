@@ -54,6 +54,9 @@ Test account is already pre-written on the Demo page.
 * Read page
 ![](https://github.com/Katlyn880815/Readify/blob/develop/public/image/read%20Components.png)
 
+* Reusable components
+![](https://github.com/Katlyn880815/Readify/blob/develop/public/image/reusable%20components.png)
+
 
 
 ## Next todo
