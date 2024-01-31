@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  height: 100%;
+
+  position: relative;
+}
+
+.sidebar {
+  padding: 1rem 1.5rem;
+
+  border-right: 0.05rem solid var(--color-grey-600);
+  background-color: #10161d;
+}
+
+.middle_container {
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    display: none;
+  }
+}
