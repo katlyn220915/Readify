@@ -37,6 +37,24 @@ Test account is already pre-written on the Demo page.
 | Firebase  | Authentication, Firestore database and storage   |
 | Vercel | Deployment |
 
+### React components design
+
+* Root
+![](https://github.com/Katlyn880815/Readify/blob/develop/public/image/App.png)
+
+* Auth
+![](https://github.com/Katlyn880815/Readify/blob/develop/public/image/auth%20components.png)
+
+* Homepage
+![](https://github.com/Katlyn880815/Readify/blob/develop/public/image/homepage.png)
+
+* Category page
+![](https://github.com/Katlyn880815/Readify/blob/develop/public/image/category%20components.png)
+
+* Read page
+![](https://github.com/Katlyn880815/Readify/blob/develop/public/image/read%20Components.png)
+
+
 
 ## Next todo
 - [ ] Find solutions for throuble of displaying sans-serif typeface of Chinese
