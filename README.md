@@ -9,6 +9,14 @@
 * Add and manage tags to your book
 * Customize reading font size, typeface or line height to meet your preferences
 * Highlight words, phrases or add note to them
+  
+![image](https://github.com/Katlyn880815/Readify/blob/develop/public/image/demo-add-tag.gif)
+
+![image](https://github.com/Katlyn880815/Readify/blob/develop/public/image/demo-highlight.gif)
+
+![image](https://github.com/Katlyn880815/Readify/blob/develop/public/image/demo-custom-font.gif)
+
+![image](https://github.com/Katlyn880815/Readify/blob/develop/public/image/demo-typeface.gif)
 
 # Demo
 Test account is already pre-written on the Demo page.
@@ -40,22 +48,23 @@ Test account is already pre-written on the Demo page.
 ### React components design
 
 * Root
-![](https://github.com/Katlyn880815/Readify/blob/develop/public/image/App.png)
+![image](https://github.com/Katlyn880815/Readify/blob/develop/public/image/App.png)
 
 * Auth
-![](https://github.com/Katlyn880815/Readify/blob/develop/public/image/auth%20components.png)
+![image](https://github.com/Katlyn880815/Readify/blob/develop/public/image/auth%20components.png)
 
 * Homepage
-![](https://github.com/Katlyn880815/Readify/blob/develop/public/image/homepage.png)
+![image](https://github.com/Katlyn880815/Readify/blob/develop/public/image/homepage.png)
 
 * Category page
-![](https://github.com/Katlyn880815/Readify/blob/develop/public/image/category%20components.png)
+![image](https://github.com/Katlyn880815/Readify/blob/develop/public/image/category%20components.png)
 
 * Read page
-![](https://github.com/Katlyn880815/Readify/blob/develop/public/image/read%20Components.png)
+![image](https://github.com/Katlyn880815/Readify/blob/develop/public/image/read%20Components.png)
 
 * Reusable components
-![](https://github.com/Katlyn880815/Readify/blob/develop/public/image/reusable%20components.png)
+
+![image](https://github.com/Katlyn880815/Readify/blob/develop/public/image/reusable%20components.png)
 
 
 
