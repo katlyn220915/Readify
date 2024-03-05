@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ActionPrompt.module.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,27 +21,49 @@ export default function ActionPrompt({
   isPending,
   children,
 }: ActionPromptPropsType) {
+  const [isShow, setIsShow] = useState(false);
+
+  useEffect(() => {
+    if (isSuccessful || isError || isPending) {
+      const timeId = setTimeout(() => {
+        setIsShow(true);
+      }, 10);
+
+      const timeIdClose = setTimeout(() => {
+        setIsShow(false);
+      }, 3000);
+
+      return () => {
+        clearTimeout(timeId);
+        clearTimeout(timeIdClose);
+      };
+    }
+  }, [isSuccessful, isError, isPending]);
+
   return (
     <>
-      <div className={`${styles.container}`}>
-        <div
-          className={` ${styles.prompt_box} ${isError ? styles.error : ""} ${
-            isSuccessful ? styles.successful : ""
-          }`}
-        >
-          <span>
-            <FontAwesomeIcon icon={isError ? faCircleXmark : faCircleCheck} />
-          </span>
-          {<p>{children}</p>}
-        </div>
-        <div
-          className={`${styles.prompt_box} ${
-            isPending ? styles.isPending : ""
-          }`}
-        >
-          {<p>{children}</p>}
-        </div>
+      <div
+        className={` ${styles.prompt_box} ${
+          isShow ? styles.prompt_box_show : styles.prompt_box_hidden
+        } ${isError ? styles.error : ""} ${
+          isSuccessful ? styles.successful : ""
+        }`}
+      >
+        <span>
+          <FontAwesomeIcon icon={isError ? faCircleXmark : faCircleCheck} />
+        </span>
+        {<p>{children}</p>}
       </div>
+
+      {isPending && (
+        <div
+          className={`${
+            isShow ? styles.prompt_box_show : styles.prompt_box_hidden
+          } ${isPending ? styles.isPending : ""}`}
+        >
+          {<p>{children}</p>}
+        </div>
+      )}
     </>
   );
 }

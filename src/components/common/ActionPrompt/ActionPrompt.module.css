@@ -1,6 +1,5 @@
 .prompt_box {
   position: absolute;
-  right: -100rem;
   bottom: 6rem;
 
   background-color: var(--color-grey-300);
@@ -15,20 +14,28 @@
   transition: right 0.3s;
 }
 
-.error {
+.prompt_box_hidden {
+  right: -100rem;
+}
+
+.prompt_box_show {
   right: 1rem;
-  bottom: 6rem;
+}
+
+.error {
+  /* right: 1rem; */
+  /* bottom: 6rem; */
   color: var(--color-red-700);
 }
 
 .successful {
-  right: 1rem;
-  bottom: 6rem;
+  /* right: 1rem; */
+  /* bottom: 6rem; */
   color: var(--color-green-700);
 }
 
 .isPending {
-  right: 1rem;
+  /* right: 1rem; */
   bottom: 4rem;
   color: var(--color-grey-700);
   overflow: hidden;
