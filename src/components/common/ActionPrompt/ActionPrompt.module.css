@@ -1,34 +1,5 @@
-/* .container {
-  width: fit-content;
-  padding: 2rem;
-
-  background-color: var(--color-grey-300);
-  color: var(--color-red-700);
-  border-radius: 1rem;
-
-  text-align: center;
-
-  position: absolute;
-  bottom: 18rem;
-  right: -30rem;
-  z-index: 200;
-  transition: right 0.3s;
-
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-} */
-
-/* .container {
-  position: absolute;
-  width: 100%;
-  height: 20rem;
-  bottom: 0;
-} */
-
 .prompt_box {
   position: absolute;
-  right: -100rem;
   bottom: 6rem;
 
   background-color: var(--color-grey-300);
@@ -43,20 +14,28 @@
   transition: right 0.3s;
 }
 
-.error {
+.prompt_box_hidden {
+  right: -100rem;
+}
+
+.prompt_box_show {
   right: 1rem;
-  bottom: 6rem;
+}
+
+.error {
+  /* right: 1rem; */
+  /* bottom: 6rem; */
   color: var(--color-red-700);
 }
 
 .successful {
-  right: 1rem;
-  bottom: 6rem;
+  /* right: 1rem; */
+  /* bottom: 6rem; */
   color: var(--color-green-700);
 }
 
 .isPending {
-  right: 1rem;
+  /* right: 1rem; */
   bottom: 4rem;
   color: var(--color-grey-700);
   overflow: hidden;

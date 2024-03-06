@@ -155,16 +155,14 @@ const ActionMenu = () => {
       setPositionY(Math.abs(rootRec.top) + rec.top - 38);
       setIsMenuOpen(true);
     } else if (isActionMenuOpen && !rec && rootRec) {
-      const targetElRec = document
-        .querySelector(`[data-highlight-id="${deleteHighlightID}"]`)
-        ?.parentElement?.getBoundingClientRect();
-      if (targetElRec) setPositionX(targetElRec.width / 2 - 55);
+      const contentElement = document.querySelector(".epub_document");
+      if (contentElement) setPositionX(contentElement.clientWidth / 2 - 55);
       setPositionY(transform - 38);
       setIsMenuOpen(true);
     } else if (!isActionMenuOpen) {
       setIsMenuOpen(false);
     }
-  }, [isActionMenuOpen, transform]);
+  }, [isActionMenuOpen, transform, deleteHighlightID]);
 
   return (
     <>
