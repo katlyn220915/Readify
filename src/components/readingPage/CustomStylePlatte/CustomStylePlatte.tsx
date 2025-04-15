@@ -1,21 +1,22 @@
 "use client";
 
 import React, { useState } from "react";
-import styles from "./CustomStylePlatte.module.css";
-import { literata, roboto, inter, notoSerif } from "@/app/fonts/fonts";
-
-import CustomStylePlatteItem from "../CustomStylePlatteItem/CustomStylePlatteItem";
-import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
 
 import {
+  faArrowsLeftRight,
+  faArrowsUpDown,
+  faChevronLeft,
   faFont,
   faTextHeight,
-  faArrowsUpDown,
-  faArrowsLeftRight,
-  faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
+
+import { inter, literata, notoSerif, roboto } from "@/app/fonts/fonts";
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { setTypeface } from "@/lib/redux/features/readSlice";
+
+import CustomStylePlatteItem from "../CustomStylePlatteItem/CustomStylePlatteItem";
+import styles from "./CustomStylePlatte.module.css";
 
 const options = {
   serif: [

@@ -1,4 +1,5 @@
 import React from "react";
+
 import styles from "./Prompt.module.css";
 
 export default function Prompt({
@@ -18,10 +19,10 @@ export default function Prompt({
             position === "right"
               ? styles.prompt__position_right
               : position === "bottom"
-              ? styles.prompt__position_bottom
-              : position === "left"
-              ? styles.prompt__position_left
-              : styles.prompt__position_top
+                ? styles.prompt__position_bottom
+                : position === "left"
+                  ? styles.prompt__position_left
+                  : styles.prompt__position_top
           }`}
         >
           {children}

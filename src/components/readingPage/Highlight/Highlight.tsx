@@ -1,23 +1,22 @@
 import React from "react";
-import styles from "./Highlight.module.css";
+
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "next/navigation";
 
-import NoteForm from "../NoteForm/NoteForm";
 import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
-
-import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
-import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAuth } from "@/context/AuthContext";
-
+import useFirestore from "@/hooks/firebase_db/useFirestore";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import {
   deleteHighlight,
   setIsEditNoteFieldOpen,
 } from "@/lib/redux/features/noteSlice";
 import { setCurrentChapter } from "@/lib/redux/features/readSlice";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-
 import { findChapterElement, scrollIntoScreen } from "@/utils/helper";
 import highlightHelper from "@/utils/highlightHelper";
+
+import NoteForm from "../NoteForm/NoteForm";
+import styles from "./Highlight.module.css";
 
 export default function Highlight({
   id,

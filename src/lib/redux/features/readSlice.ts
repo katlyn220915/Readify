@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+
+import { inter, literata, roboto } from "@/app/fonts/fonts";
 import type { RootState } from "@/lib/redux/store";
 import BookProps from "@/types/BookProps";
-import { literata, roboto, inter } from "@/app/fonts/fonts";
 
 type initialState = {
   state: readState;

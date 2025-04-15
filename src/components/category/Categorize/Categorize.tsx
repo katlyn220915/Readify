@@ -1,23 +1,23 @@
 import React, { Dispatch, SetStateAction } from "react";
-import styles from "./Categorize.module.css";
 
-/* COMPONENT */
-import MoreActionList from "../MoreActionList/MoreActionList";
-import { CategorizeItem } from "../CategorizeItem/CategorizeItem";
-import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
-
+import { faClock } from "@fortawesome/free-regular-svg-icons";
 /* THIRD_LIB */
 import {
-  faBookOpen,
   faArchive,
+  faBookOpen,
   faEllipsis,
 } from "@fortawesome/free-solid-svg-icons";
-import { faClock } from "@fortawesome/free-regular-svg-icons";
 
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
+import { useRWD } from "@/hooks/useRWD/useRWD";
 /* CUSTOM HOOK */
 import BookProps from "@/types/BookProps";
 import TagProps from "@/types/TagProps";
-import { useRWD } from "@/hooks/useRWD/useRWD";
+
+import { CategorizeItem } from "../CategorizeItem/CategorizeItem";
+/* COMPONENT */
+import MoreActionList from "../MoreActionList/MoreActionList";
+import styles from "./Categorize.module.css";
 
 const staticItems = [
   {

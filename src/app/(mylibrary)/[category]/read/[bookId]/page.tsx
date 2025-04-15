@@ -1,5 +1,7 @@
 import React from "react";
+
 import type { Metadata } from "next";
+
 import Read from "@/components/readingPage/Read/Read";
 
 type Props = {

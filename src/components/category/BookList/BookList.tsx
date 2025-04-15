@@ -1,21 +1,22 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
-import styles from "./BookList.module.css";
 
+import React, { useCallback, useEffect, useState } from "react";
+
+import { useParams, useSearchParams } from "next/navigation";
+
+import ActionPrompt from "@/components/common/ActionPrompt/ActionPrompt";
+import Spinner from "@/components/common/Spinner/Spinner";
+import { useAuth } from "@/context/AuthContext";
+/* CUSTOM-HOOKS */
+import useFirestore from "@/hooks/firebase_db/useFirestore";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import { bookListInitialize } from "@/lib/redux/features/bookSlice";
 /* TYPE */
 import BookProps from "@/types/BookProps";
 
 /* COMPONENT */
 import Book from "../Book/Book";
-import Spinner from "@/components/common/Spinner/Spinner";
-import ActionPrompt from "@/components/common/ActionPrompt/ActionPrompt";
-
-/* CUSTOM-HOOKS */
-import useFirestore from "@/hooks/firebase_db/useFirestore";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import { useAuth } from "@/context/AuthContext";
-import { useParams, useSearchParams } from "next/navigation";
-import { bookListInitialize } from "@/lib/redux/features/bookSlice";
+import styles from "./BookList.module.css";
 
 /////////////////////////////////////////////////////////
 
@@ -111,8 +112,8 @@ export default function BookList() {
         {isError
           ? "Delete file fail"
           : isSuccessful
-          ? "Delete successfully"
-          : ""}
+            ? "Delete successfully"
+            : ""}
       </ActionPrompt>
     </>
   );

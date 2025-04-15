@@ -1,13 +1,13 @@
 import React from "react";
-import styles from "./CategorizeItem.module.css";
-import BookProps from "@/types/BookProps";
 
 import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
-
 import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch } from "@/hooks/redux/hooks";
 import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
+import BookProps from "@/types/BookProps";
+
+import styles from "./CategorizeItem.module.css";
 
 export const CategorizeItem = ({
   item,

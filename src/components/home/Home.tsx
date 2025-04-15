@@ -1,13 +1,15 @@
 "use client";
+
 import React from "react";
-import styles from "./home.module.css";
 
 import Link from "next/link";
-import Navbar from "@/components/common/Navbar/Navbar";
-import ButtonCta from "@/components/common/ButtonCta/ButtonCta";
-import Spinner from "@/components/common/Spinner/Spinner";
 
+import ButtonCta from "@/components/common/ButtonCta/ButtonCta";
+import Navbar from "@/components/common/Navbar/Navbar";
+import Spinner from "@/components/common/Spinner/Spinner";
 import { useAuth } from "@/context/AuthContext";
+
+import styles from "./home.module.css";
 
 const Home = () => {
   const { isLogin, pending } = useAuth();

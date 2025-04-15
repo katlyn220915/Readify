@@ -1,22 +1,22 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
-import styles from "./ReadingArea.module.css";
-
-import Spinner from "@/components/common/Spinner/Spinner";
-import ContentsRoot from "../ContentsRoot/ContentsRoot";
-import EbookIntroductionHeader from "../EbookIntroductionHeader/EbookIntroductionHeader";
+import React, { useCallback, useEffect, useState } from "react";
 
 /* HOOKS */
 import { usePathname } from "next/navigation";
-import { useAppDispatch } from "@/hooks/redux/hooks";
+
+import Spinner from "@/components/common/Spinner/Spinner";
 import { useAuth } from "@/context/AuthContext";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
-import parseEpub from "@/server-actions/parseEpub/parseEpub";
-
-import { setCurrentBook } from "@/lib/redux/features/readSlice";
+import { useAppDispatch } from "@/hooks/redux/hooks";
 import { setHighlight } from "@/lib/redux/features/noteSlice";
+import { setCurrentBook } from "@/lib/redux/features/readSlice";
+import parseEpub from "@/server-actions/parseEpub/parseEpub";
 import highlightHelper from "@/utils/highlightHelper";
+
+import ContentsRoot from "../ContentsRoot/ContentsRoot";
+import EbookIntroductionHeader from "../EbookIntroductionHeader/EbookIntroductionHeader";
+import styles from "./ReadingArea.module.css";
 
 export default function ReadingArea({
   isContentListOpen,

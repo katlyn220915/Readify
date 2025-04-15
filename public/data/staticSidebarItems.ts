@@ -1,9 +1,10 @@
+import { faClock } from "@fortawesome/free-regular-svg-icons";
 import {
   faBookOpen,
   faBoxArchive,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
-import { faClock } from "@fortawesome/free-regular-svg-icons";
+
 import { ListItemProps } from "@/types/CategoryPage";
 
 const staticSidebarItems: ListItemProps[] = [

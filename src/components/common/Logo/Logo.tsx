@@ -1,8 +1,9 @@
 import React from "react";
-import styles from "./logo.module.css";
 
 import Image from "next/image";
 import Link from "next/link";
+
+import styles from "./logo.module.css";
 
 export default function Logo({ showText }: { showText: boolean }) {
   return (

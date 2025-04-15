@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import uploadReducer from "./features/uploadSlice";
-import bookReducer from "./features/bookSlice";
-import tagReducer from "./features/tagSlice";
-import readReducer from "./features/readSlice";
-import noteReducer from "./features/noteSlice";
+
 import bookMarkReducer from "./features/bookMarkSlice";
+import bookReducer from "./features/bookSlice";
+import noteReducer from "./features/noteSlice";
+import readReducer from "./features/readSlice";
+import tagReducer from "./features/tagSlice";
+import uploadReducer from "./features/uploadSlice";
 
 export const makeStore = () => {
   return configureStore({

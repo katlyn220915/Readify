@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import styles from "./ActionPrompt.module.css";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleCheck,
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import styles from "./ActionPrompt.module.css";
 
 type ActionPromptPropsType = {
   isError: boolean;

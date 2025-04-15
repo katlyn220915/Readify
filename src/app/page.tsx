@@ -1,13 +1,15 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
-import styles from "./page.module.css";
-import Navbar from "@/components/common/Navbar/Navbar";
-import ButtonCta from "@/components/common/ButtonCta/ButtonCta";
-import Spinner from "@/components/common/Spinner/Spinner";
 
+import Link from "next/link";
+
+import ButtonCta from "@/components/common/ButtonCta/ButtonCta";
+import Navbar from "@/components/common/Navbar/Navbar";
+import Spinner from "@/components/common/Spinner/Spinner";
 import { useAuth } from "@/context/AuthContext";
+
+import styles from "./page.module.css";
 
 export default function Home() {
   const { pending, isLogin } = useAuth();

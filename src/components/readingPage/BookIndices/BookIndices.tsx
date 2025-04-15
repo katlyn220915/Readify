@@ -1,4 +1,5 @@
 "use client";
+
 import React, {
   Dispatch,
   SetStateAction,
@@ -7,15 +8,16 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import styles from "./BookIndices.module.css";
 
-import IndexItemProp from "@/types/IndexItemProp";
-import IndexButton from "../IndexButton/IndexButton";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+
 import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
-
 import { useAppSelector } from "@/hooks/redux/hooks";
 import parseEpub from "@/server-actions/parseEpub/parseEpub";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import IndexItemProp from "@/types/IndexItemProp";
+
+import IndexButton from "../IndexButton/IndexButton";
+import styles from "./BookIndices.module.css";
 
 const BookIndices = React.memo(
   ({

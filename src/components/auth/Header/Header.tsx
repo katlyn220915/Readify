@@ -1,7 +1,8 @@
 import React from "react";
-import styles from "./Header.module.css";
 
 import Image from "next/image";
+
+import styles from "./Header.module.css";
 
 export const Header = ({ mode }: { mode: "signIn" | "signUp" }) => {
   return (

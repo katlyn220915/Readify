@@ -1,26 +1,27 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
-import styles from "./Book.module.css";
-import { useParams, useRouter } from "next/navigation";
-/* TYPE */
-import BookProps from "@/types/BookProps";
 
-/* COMPONENT */
-import Categorize from "../Categorize/Categorize";
-import TagAction from "@/components/common/TagAction/TagAction";
-
+import { faFeather } from "@fortawesome/free-solid-svg-icons";
 /* THIRD-LIB */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFeather } from "@fortawesome/free-solid-svg-icons";
+import { useParams, useRouter } from "next/navigation";
 
+import TagAction from "@/components/common/TagAction/TagAction";
+import useTag from "@/hooks/createTag/useTag";
 /* CUSTOM-HOOKS */
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import { reset } from "@/lib/redux/features/tagSlice";
-import TagProps from "@/types/TagProps";
-import useTag from "@/hooks/createTag/useTag";
 import { useRWD } from "@/hooks/useRWD/useRWD";
+import { reset } from "@/lib/redux/features/tagSlice";
+/* TYPE */
+import BookProps from "@/types/BookProps";
+import TagProps from "@/types/TagProps";
+
 import { BookCover } from "../BookCover/BookCover";
+/* COMPONENT */
+import Categorize from "../Categorize/Categorize";
 import { MobileMoreActionList } from "../MobileMoreActionList/MobileMoreActionList";
+import styles from "./Book.module.css";
 
 const Book = ({
   book,

@@ -1,19 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+
 import { yupResolver } from "@hookform/resolvers/yup";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import * as yup from "yup";
 
-import styles from "./SignupForm.module.css";
 import ButtonCta from "@/components/common/ButtonCta/ButtonCta";
 import Spinner from "@/components/common/Spinner/Spinner";
-
+import { useAuth } from "@/context/AuthContext";
 import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 import useFireStore from "@/hooks/firebase_db/useFirestore";
-import { useAuth } from "@/context/AuthContext";
+
+import styles from "./SignupForm.module.css";
 
 type dataType = {
   firstName: string;

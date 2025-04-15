@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import styles from "./MarkerColorPlatte.module.css";
 
 import { useAppDispatch } from "@/hooks/redux/hooks";
-
 import { setMarkerColor } from "@/lib/redux/features/readSlice";
+
+import styles from "./MarkerColorPlatte.module.css";
 
 export default function MarkerColorPlatte() {
   const dispatch = useAppDispatch();

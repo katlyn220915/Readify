@@ -1,13 +1,15 @@
 "use client";
 
-import styles from "./CustomStylePlatteItem.module.css";
+import { Dispatch, SetStateAction } from "react";
+
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
 import { useAppDispatch } from "@/hooks/redux/hooks";
 import { setFontSize, setLineSpacing } from "@/lib/redux/features/readSlice";
-import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { Dispatch, SetStateAction } from "react";
+
+import styles from "./CustomStylePlatteItem.module.css";
 
 const CustomStylePlatteItem = ({
   iconProp,

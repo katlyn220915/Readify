@@ -1,6 +1,7 @@
+import React from "react";
+
 import type { Metadata } from "next";
 
-import React from "react";
 import Category from "@/components/category/Category/Category";
 
 type Props = {

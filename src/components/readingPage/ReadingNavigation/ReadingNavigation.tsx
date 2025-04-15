@@ -1,21 +1,22 @@
 "use client";
 
 import React, { useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import styles from "./ReadingNavigation.module.css";
 
-import CustomStylePlatte from "../CustomStylePlatte/CustomStylePlatte";
-import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
-import ActionPrompt from "@/components/common/ActionPrompt/ActionPrompt";
-
-import useBook from "@/hooks/useBook/useBook";
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import {
-  faList,
-  faFont,
   faCircleArrowLeft,
+  faFont,
+  faList,
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
-import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+import { usePathname, useRouter } from "next/navigation";
+
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
+import ActionPrompt from "@/components/common/ActionPrompt/ActionPrompt";
+import useBook from "@/hooks/useBook/useBook";
+
+import CustomStylePlatte from "../CustomStylePlatte/CustomStylePlatte";
+import styles from "./ReadingNavigation.module.css";
 
 const ReadingNavigation = ({
   isContentListOpen,
@@ -114,8 +115,8 @@ const ReadingNavigation = ({
             {isStoreBookMarkError
               ? "Click a paragraph to add book mark"
               : isStoreBookMarkSuccess
-              ? "Book mark added!"
-              : ""}
+                ? "Book mark added!"
+                : ""}
           </ActionPrompt>
         ))}
     </>

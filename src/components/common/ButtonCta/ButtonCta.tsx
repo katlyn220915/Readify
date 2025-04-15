@@ -1,6 +1,8 @@
 import React from "react";
-import styles from "./ButtonCta.module.css";
+
 import ButtonCtaProps from "@/types/ButtonCtaProps";
+
+import styles from "./ButtonCta.module.css";
 
 export default function ButtonCta({ children, color }: ButtonCtaProps) {
   return (

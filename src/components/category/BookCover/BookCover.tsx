@@ -1,7 +1,8 @@
 import React from "react";
-import styles from "./BookCover.module.css";
 
 import Image from "next/image";
+
+import styles from "./BookCover.module.css";
 
 export const BookCover = ({
   coverUrl,

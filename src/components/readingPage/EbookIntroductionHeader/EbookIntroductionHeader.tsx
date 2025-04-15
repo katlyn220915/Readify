@@ -1,6 +1,7 @@
-import styles from "./EbookIntroductionHeader.module.css";
 import TagAction from "@/components/common/TagAction/TagAction";
 import { useAppSelector } from "@/hooks/redux/hooks";
+
+import styles from "./EbookIntroductionHeader.module.css";
 
 const EbookIntroductionHeader = () => {
   const { currentBook } = useAppSelector((state) => state.read);

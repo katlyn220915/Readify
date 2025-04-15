@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { findChapterElement, getElementPositionY } from "@/utils/helper";
+
 import { useAuth } from "@/context/AuthContext";
-import useFirestore from "../firebase_db/useFirestore";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setPosition } from "@/lib/redux/features/bookMarkSlice";
 import BookProps from "@/types/BookProps";
+import { findChapterElement, getElementPositionY } from "@/utils/helper";
+
+import useFirestore from "../firebase_db/useFirestore";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 export default function useBook() {
   const { currentBook } = useAppSelector((state) => state.read);

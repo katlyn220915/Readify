@@ -1,18 +1,18 @@
-import app from "../../lib/firebase/initialize";
-
 import {
   collection,
-  setDoc,
-  doc,
-  getDocs,
-  getDoc,
   deleteDoc,
   deleteField,
-  query,
-  where,
-  updateDoc,
+  doc,
+  getDoc,
+  getDocs,
   getFirestore,
+  query,
+  setDoc,
+  updateDoc,
+  where,
 } from "firebase/firestore";
+
+import app from "../../lib/firebase/initialize";
 
 const useFirestore = () => {
   const db = getFirestore(app);

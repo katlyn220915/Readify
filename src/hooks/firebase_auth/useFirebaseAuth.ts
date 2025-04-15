@@ -1,11 +1,12 @@
-import app from "../../lib/firebase/initialize";
 import {
-  getAuth,
   createUserWithEmailAndPassword,
+  getAuth,
   signInWithEmailAndPassword,
-  updateProfile,
   signOut,
+  updateProfile,
 } from "firebase/auth";
+
+import app from "../../lib/firebase/initialize";
 
 const useFirebaseAuth = () => {
   const auth = getAuth(app);

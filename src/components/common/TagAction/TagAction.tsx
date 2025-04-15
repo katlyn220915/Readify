@@ -1,14 +1,14 @@
 import { useState } from "react";
-import styles from "./TagAction.module.css";
+
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { faCheck, faPen } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
-import ActionIcon from "../ActionIcon/ActionIcon";
-
-import TagProps from "@/types/TagProps";
 import useTag from "@/hooks/createTag/useTag";
+import TagProps from "@/types/TagProps";
 
-import { faCheck, faPen } from "@fortawesome/free-solid-svg-icons";
-import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import ActionIcon from "../ActionIcon/ActionIcon";
+import styles from "./TagAction.module.css";
 
 const TagAction = ({
   onAction,
@@ -31,8 +31,8 @@ const TagAction = ({
         mode === "search"
           ? styles.book_tag
           : mode === "edit"
-          ? styles.user_tag
-          : ""
+            ? styles.user_tag
+            : ""
       }`}
     >
       {mode === "add" && tag.name}

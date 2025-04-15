@@ -1,11 +1,12 @@
-import app from "../../lib/firebase/initialize";
 import {
-  getStorage,
-  ref,
   deleteObject,
   getDownloadURL,
+  getStorage,
+  ref,
   uploadBytes,
 } from "firebase/storage";
+
+import app from "../../lib/firebase/initialize";
 
 const storage = getStorage(app);
 

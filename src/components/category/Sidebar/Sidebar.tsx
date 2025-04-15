@@ -1,7 +1,8 @@
 import React from "react";
-import styles from "./Sidebar.module.css";
-import SidebarItem from "../SidebarItem/SidebarItem";
+
 import staticSidebarItems from "../../../../public/data/staticSidebarItems";
+import SidebarItem from "../SidebarItem/SidebarItem";
+import styles from "./Sidebar.module.css";
 
 export default function Sidebar() {
   return (

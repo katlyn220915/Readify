@@ -1,12 +1,13 @@
 import React, { Dispatch, SetStateAction } from "react";
-import styles from "./MobileMoreActionList.module.css";
-
-import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
-import MoreActionList from "../MoreActionList/MoreActionList";
 
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
 import BookProps from "@/types/BookProps";
 import TagProps from "@/types/TagProps";
+
+import MoreActionList from "../MoreActionList/MoreActionList";
+import styles from "./MobileMoreActionList.module.css";
 
 export const MobileMoreActionList = ({
   book,

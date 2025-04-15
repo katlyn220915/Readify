@@ -1,6 +1,7 @@
-import storeFiles from "@/server-actions/store/storeFiles";
 import { Book } from "epubjs";
 import Section from "epubjs/types/section";
+
+import storeFiles from "@/server-actions/store/storeFiles";
 
 const useEpubParser = () => {
   const store = storeFiles();
