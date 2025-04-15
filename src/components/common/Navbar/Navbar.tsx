@@ -1,13 +1,15 @@
 "use client";
 
 import React from "react";
-import styles from "./navbar.module.css";
+
 import Link from "next/link";
+
+import ButtonCta from "@/components/common/ButtonCta/ButtonCta";
+import Logo from "@/components/common/Logo/Logo";
 import { useAuth } from "@/context/AuthContext";
 import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 
-import Logo from "@/components/common/Logo/Logo";
-import ButtonCta from "@/components/common/ButtonCta/ButtonCta";
+import styles from "./navbar.module.css";
 
 export default function Navbar() {
   const firebaseAuth = useFirebaseAuth();

@@ -1,10 +1,11 @@
 import {
+  getDownloadURL,
   getStorage,
   ref,
-  uploadBytesResumable,
-  getDownloadURL,
   uploadBytes,
+  uploadBytesResumable,
 } from "firebase/storage";
+
 import app from "@/lib/firebase/initialize";
 
 const storage = getStorage(app);

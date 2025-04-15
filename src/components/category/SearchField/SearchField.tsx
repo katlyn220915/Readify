@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import styles from "./SearchField.module.css";
 
 import { useAppDispatch } from "@/hooks/redux/hooks";
 import useBook from "@/hooks/useBook/useBook";
-
 import { bookListInitialize } from "@/lib/redux/features/bookSlice";
+
+import styles from "./SearchField.module.css";
 
 export const SearchField = () => {
   const [text, setText] = useState("");

@@ -1,29 +1,29 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import styles from "./ActionMenu.module.css";
+
+import {
+  faEllipsis,
+  faHighlighter,
+  faNoteSticky,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
+import { usePathname } from "next/navigation";
+import { fromRange } from "xpath-range";
 
 import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
-import MarkerColorPlatte from "../MarkerColorPlatte/MarkerColorPlatte";
-import NoteForm from "../NoteForm/NoteForm";
-
-import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import { setDeleteHighlightMode } from "@/lib/redux/features/readSlice";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
-import { setActionMenuToggle } from "@/lib/redux/features/readSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { addHighlight, deleteHighlight } from "@/lib/redux/features/noteSlice";
-
+import { setDeleteHighlightMode } from "@/lib/redux/features/readSlice";
+import { setActionMenuToggle } from "@/lib/redux/features/readSlice";
 import getSelectionData from "@/utils/getSelectionData";
 import highlightHelper from "@/utils/highlightHelper";
 
-import {
-  faHighlighter,
-  faNoteSticky,
-  faEllipsis,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
-import { fromRange } from "xpath-range";
+import MarkerColorPlatte from "../MarkerColorPlatte/MarkerColorPlatte";
+import NoteForm from "../NoteForm/NoteForm";
+import styles from "./ActionMenu.module.css";
 
 const ActionMenu = () => {
   const [positionX, setPositionX] = useState(0);

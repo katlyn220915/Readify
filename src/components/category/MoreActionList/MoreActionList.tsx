@@ -1,21 +1,22 @@
 "use client";
+
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import styles from "./MoreActionList.module.css";
+
 import { useParams } from "next/navigation";
 
-import EditTagField from "../EditTagField/EditTagField";
-import { CategorizeItem } from "../CategorizeItem/CategorizeItem";
-
+import { useAuth } from "@/context/AuthContext";
+import useCloudStorage from "@/hooks/firebase_db/useCloudStorage";
+import useFirestore from "@/hooks/firebase_db/useFirestore";
+/* Custom_hook */
+import { useAppDispatch } from "@/hooks/redux/hooks";
+import { useRWD } from "@/hooks/useRWD/useRWD";
+import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
 import BookProps from "@/types/BookProps";
 import TagProps from "@/types/TagProps";
 
-/* Custom_hook */
-import { useAppDispatch } from "@/hooks/redux/hooks";
-import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
-import useFirestore from "@/hooks/firebase_db/useFirestore";
-import useCloudStorage from "@/hooks/firebase_db/useCloudStorage";
-import { useRWD } from "@/hooks/useRWD/useRWD";
-import { useAuth } from "@/context/AuthContext";
+import { CategorizeItem } from "../CategorizeItem/CategorizeItem";
+import EditTagField from "../EditTagField/EditTagField";
+import styles from "./MoreActionList.module.css";
 
 const staticItems = [
   {

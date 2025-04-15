@@ -101,25 +101,37 @@
 
 .btn_blue::after {
   background: var(--color-blue-400);
-  box-shadow: 0 0 5px var(--color-blue-400), 0 0 15px var(--color-blue-400),
-    0 0 30px var(--color-blue-400), 0 0 60px var(--color-blue-400);
+  box-shadow:
+    0 0 5px var(--color-blue-400),
+    0 0 15px var(--color-blue-400),
+    0 0 30px var(--color-blue-400),
+    0 0 60px var(--color-blue-400);
 }
 
 .btn_blue::before {
   background: var(--color-blue-400);
-  box-shadow: 0 0 5px var(--color-blue-400), 0 0 15px var(--color-blue-400),
-    0 0 30px var(--color-blue-400), 0 0 60px var(--color-blue-400);
+  box-shadow:
+    0 0 5px var(--color-blue-400),
+    0 0 15px var(--color-blue-400),
+    0 0 30px var(--color-blue-400),
+    0 0 60px var(--color-blue-400);
 }
 
 /* Green */
 .btn_green::after {
   background: var(--color-green-400);
-  box-shadow: 0 0 5px var(--color-green-400), 0 0 15px var(--color-green-400),
-    0 0 30px var(--color-green-400), 0 0 60px var(--color-green-400);
+  box-shadow:
+    0 0 5px var(--color-green-400),
+    0 0 15px var(--color-green-400),
+    0 0 30px var(--color-green-400),
+    0 0 60px var(--color-green-400);
 }
 
 .btn_green::before {
   background: var(--color-green-400);
-  box-shadow: 0 0 5px var(--color-green-400), 0 0 15px var(--color-green-400),
-    0 0 30px var(--color-green-400), 0 0 60px var(--color-green-400);
+  box-shadow:
+    0 0 5px var(--color-green-400),
+    0 0 15px var(--color-green-400),
+    0 0 30px var(--color-green-400),
+    0 0 60px var(--color-green-400);
 }

@@ -1,15 +1,16 @@
 "use client";
 
 import {
+  Dispatch,
+  SetStateAction,
   createContext,
   useContext,
   useEffect,
   useState,
-  Dispatch,
-  SetStateAction,
 } from "react";
 
-import { onAuthStateChanged, getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 import app from "@/lib/firebase/initialize";
 
 interface defultValue {

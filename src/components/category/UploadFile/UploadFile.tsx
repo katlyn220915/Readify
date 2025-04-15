@@ -1,29 +1,28 @@
 //Fix bugs
 import React, { useState } from "react";
-import styles from "./Upload.module.css";
+
+import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 /* COMPONENT */
 import ActionPrompt from "@/components/common/ActionPrompt/ActionPrompt";
-
+import { useAuth } from "@/context/AuthContext";
+import useEpubJs from "@/hooks/epubjs/useEpubJs";
 /* CUSTOM_HOOK */
 import useFirestore from "@/hooks/firebase_db/useFirestore";
-import useEpubJs from "@/hooks/epubjs/useEpubJs";
-import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { addNewBook } from "@/lib/redux/features/bookSlice";
 import {
-  uploading,
   error,
-  success,
   reset,
+  success,
+  uploading,
 } from "@/lib/redux/features/uploadSlice";
 import parseEpub from "@/server-actions/parseEpub/parseEpub";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { useAuth } from "@/context/AuthContext";
-
 /*TYPE */
 import storeFiles from "@/server-actions/store/storeFiles";
+
+import styles from "./Upload.module.css";
 
 export default function UploadFile() {
   const { user } = useAuth();
@@ -195,10 +194,10 @@ export default function UploadFile() {
         {isUploadError
           ? `Oh-oh...,${uploadErrorMes}!`
           : isUploadSuccessful
-          ? "Upload successfully!"
-          : isUploading
-          ? `Uploading the book - ${fileName}`
-          : ""}
+            ? "Upload successfully!"
+            : isUploading
+              ? `Uploading the book - ${fileName}`
+              : ""}
       </ActionPrompt>
     </>
   );

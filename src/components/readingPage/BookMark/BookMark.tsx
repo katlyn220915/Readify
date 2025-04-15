@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import styles from "./BookMark.module.css";
+
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { setIndicatorIntersecting } from "@/lib/redux/features/bookMarkSlice";
+
+import styles from "./BookMark.module.css";
 
 export default function BookMark() {
   const { height, transform } = useAppSelector((state) => state.bookMark);

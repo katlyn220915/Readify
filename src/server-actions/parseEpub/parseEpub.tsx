@@ -1,7 +1,9 @@
+import React from "react";
+
 import Epub, { NavItem } from "epubjs";
 import ePub, { Book } from "epubjs";
 import Section from "epubjs/types/section";
-import React from "react";
+
 import { decode } from "@/utils/helper";
 
 const parseEpub = () => {

@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import styles from "./SidebarItem.module.css";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-
-import Prompt from "@/components/common/Prompt/Prompt";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRWD } from "@/hooks/useRWD/useRWD";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
+import Prompt from "@/components/common/Prompt/Prompt";
+import { useRWD } from "@/hooks/useRWD/useRWD";
 import { ListItemProps } from "@/types/CategoryPage";
+
+import styles from "./SidebarItem.module.css";
 
 function SidebarItem({ item }: { item: ListItemProps }) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);

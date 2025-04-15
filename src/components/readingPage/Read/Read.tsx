@@ -1,15 +1,17 @@
 "use client";
 
 import React, { Suspense, useEffect, useState } from "react";
-import styles from "./Read.module.css";
+
 import { redirect } from "next/navigation";
 
+import Spinner from "@/components/common/Spinner/Spinner";
+import BookIndices from "@/components/readingPage/BookIndices/BookIndices";
+import Notebook from "@/components/readingPage/Notebook/Notebook";
 import ReadingArea from "@/components/readingPage/ReadingArea/ReadingArea";
 import ReadingNavigation from "@/components/readingPage/ReadingNavigation/ReadingNavigation";
-import Notebook from "@/components/readingPage/Notebook/Notebook";
-import BookIndices from "@/components/readingPage/BookIndices/BookIndices";
 import { useAuth } from "@/context/AuthContext";
-import Spinner from "@/components/common/Spinner/Spinner";
+
+import styles from "./Read.module.css";
 
 const Read = () => {
   const { user } = useAuth();

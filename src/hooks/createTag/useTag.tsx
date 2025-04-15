@@ -1,16 +1,19 @@
 "use client";
 
 import { useCallback, useEffect } from "react";
-import useFirestore from "../firebase_db/useFirestore";
-import { useAuth } from "@/context/AuthContext";
+
 import { arrayRemove, arrayUnion } from "firebase/firestore";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+
+import { useAuth } from "@/context/AuthContext";
 import {
   onCreateTag,
   onDeleteTag,
   onUpdateTag,
   setAllUserTags,
 } from "@/lib/redux/features/tagSlice";
+
+import useFirestore from "../firebase_db/useFirestore";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 const useTag = () => {
   const firestore = useFirestore();

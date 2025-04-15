@@ -1,18 +1,18 @@
 "use client";
 
-import React, { useEffect, Dispatch, SetStateAction } from "react";
-import styles from "./Notebook.module.css";
-import { usePathname } from "next/navigation";
-
-import Highlight from "../Highlight/Highlight";
-import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
-
-import { useAuth } from "@/context/AuthContext";
-import { useRWD } from "@/hooks/useRWD/useRWD";
-import { useAppSelector, useAppDispatch } from "@/hooks/redux/hooks";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { usePathname } from "next/navigation";
+
+import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
+import { useAuth } from "@/context/AuthContext";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import { useRWD } from "@/hooks/useRWD/useRWD";
 import { resetNotes } from "@/lib/redux/features/noteSlice";
+
+import Highlight from "../Highlight/Highlight";
+import styles from "./Notebook.module.css";
 
 export default function Notebook({
   isNotebookOpen,

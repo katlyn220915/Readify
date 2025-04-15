@@ -1,21 +1,22 @@
 "use client";
-import React, { Dispatch } from "react";
-import styles from "./NoteForm.module.css";
-import { usePathname } from "next/navigation";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import { useAuth } from "@/context/AuthContext";
-import { useForm, SubmitHandler } from "react-hook-form";
-import useFirestore from "@/hooks/firebase_db/useFirestore";
+import React, { Dispatch } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
+import { usePathname } from "next/navigation";
 import * as yup from "yup";
 
-import { setActionMenuToggle } from "@/lib/redux/features/readSlice";
+import { useAuth } from "@/context/AuthContext";
+import useFirestore from "@/hooks/firebase_db/useFirestore";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import {
   setIsEditNoteFieldOpen,
   updateNote,
 } from "@/lib/redux/features/noteSlice";
+import { setActionMenuToggle } from "@/lib/redux/features/readSlice";
+
+import styles from "./NoteForm.module.css";
 
 type dataType = {
   note: string;

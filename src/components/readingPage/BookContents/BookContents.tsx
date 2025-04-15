@@ -1,20 +1,20 @@
 "use client";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import styles from "./BookContents.module.css";
 
-import EbookChapter from "../EbookChapter/EbookChapter";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
+import { setPosition } from "@/lib/redux/features/bookMarkSlice";
 import {
   setActionMenuToggle,
-  setDeleteHighlightMode,
   setCurrentChapter,
+  setDeleteHighlightMode,
 } from "@/lib/redux/features/readSlice";
-import { setPosition } from "@/lib/redux/features/bookMarkSlice";
-
 import getSelectionData from "@/utils/getSelectionData";
 import { findChapterElement, scrollIntoScreen } from "@/utils/helper";
 import { getElementPositionY } from "@/utils/helper";
+
+import EbookChapter from "../EbookChapter/EbookChapter";
+import styles from "./BookContents.module.css";
 
 const BookContents = ({ bookDocuments }: { bookDocuments: any[] }) => {
   const currentParagraph = useRef<null | HTMLElement>(null);

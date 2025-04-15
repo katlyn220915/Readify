@@ -1,6 +1,7 @@
 import React from "react";
 
 import { useAppSelector } from "@/hooks/redux/hooks";
+
 const EbookChapter = React.memo(
   ({ divElement }: { divElement: React.JSX.Element }) => {
     const { fontSize, lineSpacing } = useAppSelector((state) => state.read);

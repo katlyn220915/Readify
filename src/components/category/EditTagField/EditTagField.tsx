@@ -1,15 +1,14 @@
 "use client";
 
-import React, { useState, Dispatch, SetStateAction, useRef } from "react";
-import styles from "./EditTagField.module.css";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 
 import TagAction from "@/components/common/TagAction/TagAction";
-import CreateTagBtn from "../CreateTagBtn/CreateTagBtn";
-
-import TagProps from "@/types/TagProps";
-
 import useTag from "@/hooks/createTag/useTag";
 import { useAppSelector } from "@/hooks/redux/hooks";
+import TagProps from "@/types/TagProps";
+
+import CreateTagBtn from "../CreateTagBtn/CreateTagBtn";
+import styles from "./EditTagField.module.css";
 
 const EditTagField = ({
   tags,

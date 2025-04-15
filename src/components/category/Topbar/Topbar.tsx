@@ -1,15 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "./Topbar.module.css";
-import { usePathname, useSearchParams } from "next/navigation";
 
-import Icon from "@/components/common/Icon/Icon";
-import Menu from "../Menu/Menu";
-import { ManageTags } from "../ManageTags/ManageTags";
-import Sidebar from "../Sidebar/Sidebar";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import {
   faBars,
@@ -18,6 +10,15 @@ import {
   faMagnifyingGlass,
   faTags,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { usePathname, useSearchParams } from "next/navigation";
+
+import Icon from "@/components/common/Icon/Icon";
+
+import { ManageTags } from "../ManageTags/ManageTags";
+import Menu from "../Menu/Menu";
+import Sidebar from "../Sidebar/Sidebar";
+import styles from "./Topbar.module.css";
 
 export default function Topbar() {
   const [isManageTagsOpen, setIsManageTagsOpen] = useState(false);

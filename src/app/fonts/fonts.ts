@@ -1,4 +1,4 @@
-import { Roboto, Literata, Inter, Noto_Serif } from "next/font/google";
+import { Inter, Literata, Noto_Serif, Roboto } from "next/font/google";
 
 export const literata = Literata({
   subsets: ["latin", "latin-ext"],

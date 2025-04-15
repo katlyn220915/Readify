@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import styles from "./ActionIcon.module.css";
+
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Prompt from "../Prompt/Prompt";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import styles from "./ActionIcon.module.css";
 
 interface ActionIconProps {
   iconProp: IconDefinition;

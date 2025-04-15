@@ -1,8 +1,9 @@
 import React, { Suspense } from "react";
+
 import type { Metadata } from "next";
 
-import SigninForm from "@/components/auth/SigninForm/SigninForm";
 import { Header } from "@/components/auth/Header/Header";
+import SigninForm from "@/components/auth/SigninForm/SigninForm";
 
 import Loading from "../loading";
 

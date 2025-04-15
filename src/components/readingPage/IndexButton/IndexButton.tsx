@@ -1,15 +1,15 @@
 "use client";
+
 import React from "react";
-import styles from "./IndexButton.module.css";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
-import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAuth } from "@/context/AuthContext";
-
+import useFirestore from "@/hooks/firebase_db/useFirestore";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { setCurrentChapter } from "@/lib/redux/features/readSlice";
+import IndexItemProp from "@/types/IndexItemProp";
 import { decode, scrollIntoScreen } from "@/utils/helper";
 
-import IndexItemProp from "@/types/IndexItemProp";
+import styles from "./IndexButton.module.css";
 
 const IndexButton = ({
   contentItem,

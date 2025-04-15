@@ -1,4 +1,5 @@
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
+
 import app from "@/lib/firebase/initialize";
 
 // Create a reference with an initial file path and name

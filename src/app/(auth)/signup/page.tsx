@@ -1,8 +1,9 @@
 import React, { Suspense } from "react";
+
 import type { Metadata } from "next";
 
-import SignupForm from "@/components/auth/SignupForm/SignupForm";
 import { Header } from "@/components/auth/Header/Header";
+import SignupForm from "@/components/auth/SignupForm/SignupForm";
 
 import Loading from "../loading";
 
