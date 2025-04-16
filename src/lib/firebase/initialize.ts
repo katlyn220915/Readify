@@ -1,6 +1,5 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { env } from "node:process";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -8,10 +7,10 @@ import { env } from "node:process";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: "readify-a6b8f.firebaseapp.com",
-  projectId: "readify-a6b8f",
-  storageBucket: "readify-a6b8f.appspot.com",
-  messagingSenderId: "581359855282",
+  authDomain: "readify-e648e.firebaseapp.com",
+  projectId: "readify-e648e",
+  storageBucket: "readify-e648e.firebasestorage.app",
+  messagingSenderId: "459614676419",
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 

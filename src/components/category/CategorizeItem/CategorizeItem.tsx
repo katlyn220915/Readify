@@ -1,7 +1,7 @@
 import React from "react";
 
 import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch } from "@/hooks/redux/hooks";
 import { deleteBook, resetSuccessful } from "@/lib/redux/features/bookSlice";
@@ -16,7 +16,7 @@ export const CategorizeItem = ({
   item: { title: string; iconProp?: any; path: string };
   book: BookProps;
 }) => {
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const firestore = useFirestore();
   const dispatch = useAppDispatch();
   const isCurrentCategory = book.category === item.path;

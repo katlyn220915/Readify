@@ -12,7 +12,7 @@ import { usePathname } from "next/navigation";
 import { fromRange } from "xpath-range";
 
 import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { addHighlight, deleteHighlight } from "@/lib/redux/features/noteSlice";
@@ -47,7 +47,7 @@ const ActionMenu = () => {
   const bookId = usePathname().split("/").pop();
   const { highlightList } = useAppSelector((state) => state.note);
   const { transform } = useAppSelector((state) => state.bookMark);
-  const { user } = useAuth();
+  const { user } = useAuthContext();
 
   const handleHighlight = async () => {
     const selectionData = getSelectionData();

@@ -10,7 +10,7 @@ import * as yup from "yup";
 
 import ButtonCta from "@/components/common/ButtonCta/ButtonCta";
 import Spinner from "@/components/common/Spinner/Spinner";
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 import useFireStore from "@/hooks/firebase_db/useFirestore";
 
@@ -34,7 +34,7 @@ const schema = yup.object().shape({
 export default function SignupForm() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
-  const { setIsLogin } = useAuth();
+  const { setIsLogin } = useAuthContext();
 
   const firebaseAuth = useFirebaseAuth();
   const firestore = useFireStore();

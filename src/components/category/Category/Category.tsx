@@ -12,14 +12,14 @@ import Topbar from "@/components/category/Topbar/Topbar";
 import UploadFile from "@/components/category/UploadFile/UploadFile";
 import Logo from "@/components/common/Logo/Logo";
 import Spinner from "@/components/common/Spinner/Spinner";
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 
 import styles from "./Category.module.css";
 
 const paths = ["mylibrary", "search", "later", "archive"];
 
 const Category = () => {
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const url = useParams<{ category: string }>();
   const path = useSearchParams();
   const tag = path.get("tag");
@@ -29,6 +29,7 @@ const Category = () => {
   useEffect(() => {
     if (user === undefined) return;
     if (user === null) redirect("/signin");
+    console.log("user: ", user);
   }, [user]);
 
   return (

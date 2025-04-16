@@ -9,12 +9,12 @@ import BookIndices from "@/components/readingPage/BookIndices/BookIndices";
 import Notebook from "@/components/readingPage/Notebook/Notebook";
 import ReadingArea from "@/components/readingPage/ReadingArea/ReadingArea";
 import ReadingNavigation from "@/components/readingPage/ReadingNavigation/ReadingNavigation";
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 
 import styles from "./Read.module.css";
 
 const Read = () => {
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const [isNotebookOpen, setIsNotebookOpen] = useState(false);
   const [isContentListOpen, setIsContentListOpen] = useState(false);
 

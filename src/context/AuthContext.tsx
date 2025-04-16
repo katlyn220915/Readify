@@ -31,7 +31,7 @@ const AuthContext = createContext<defultValue>({
   user: null,
 });
 
-function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUserName, setCurrentUserName] = useState<string | null>(null);
   const [isLogin, setIsLogin] = useState(false);
   const [pending, setPending] = useState(true);
@@ -72,11 +72,12 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-function useAuth() {
+export function useAuthContext() {
   const context = useContext(AuthContext);
-  if (context === undefined)
-    throw new Error("AuthContext was used outside of AuthProvider");
+
+  if (!context) {
+    throw new Error("useAuthContext must be used within an AuthProvider");
+  }
+
   return context;
 }
-
-export { AuthProvider, useAuth };

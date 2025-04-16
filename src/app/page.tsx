@@ -7,12 +7,12 @@ import Link from "next/link";
 import ButtonCta from "@/components/common/ButtonCta/ButtonCta";
 import Navbar from "@/components/common/Navbar/Navbar";
 import Spinner from "@/components/common/Spinner/Spinner";
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 
 import styles from "./page.module.css";
 
 export default function Home() {
-  const { pending, isLogin } = useAuth();
+  const { pending, isLogin } = useAuthContext();
 
   return (
     <>
@@ -23,14 +23,14 @@ export default function Home() {
           <Navbar />
           <div className={`container ${styles.banner} `}>
             <h2 className={styles.slogan}>
-              Where Books Come to Life at Your Fingertips
+              Where books come alive at your fingertips.
             </h2>
             <div className={styles.descriptions}>
               <h3 className={styles.description}>
-                Read and take notes simultaneously -{" "}
+                Read and take notes seamlessly -{" "}
               </h3>
               <h3 className={styles.description}>
-                Readify helps you remeber what the books say
+                Readify helps you remember what matters.
               </h3>
             </div>
             {isLogin && (

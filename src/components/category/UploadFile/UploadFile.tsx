@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 /* COMPONENT */
 import ActionPrompt from "@/components/common/ActionPrompt/ActionPrompt";
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 import useEpubJs from "@/hooks/epubjs/useEpubJs";
 /* CUSTOM_HOOK */
 import useFirestore from "@/hooks/firebase_db/useFirestore";
@@ -25,7 +25,7 @@ import storeFiles from "@/server-actions/store/storeFiles";
 import styles from "./Upload.module.css";
 
 export default function UploadFile() {
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const firestore = useFirestore();
   const epubJS = useEpubJs();
   const dispatch = useAppDispatch();

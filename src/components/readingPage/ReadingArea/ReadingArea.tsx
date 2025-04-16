@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 import Spinner from "@/components/common/Spinner/Spinner";
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch } from "@/hooks/redux/hooks";
 import { setHighlight } from "@/lib/redux/features/noteSlice";
@@ -33,7 +33,7 @@ export default function ReadingArea({
   const category = arrPath[1];
   const bookId = arrPath[arrPath.length - 1];
 
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const dispatch = useAppDispatch();
 
   const parserMemo = useCallback(parseEpub, [parseEpub]);

@@ -4,7 +4,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "next/navigation";
 
 import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import {
@@ -34,7 +34,7 @@ export default function Highlight({
   const { editNoteFieldOpen } = useAppSelector((state) => state.note);
   const params = useParams<{ category: string; bookId: string }>();
   const dispatch = useAppDispatch();
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const firestore = useFirestore();
 
   return (

@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { setCurrentChapter } from "@/lib/redux/features/readSlice";
@@ -19,7 +19,7 @@ const IndexButton = ({
   isSubitem?: boolean;
 }) => {
   const { currentChapter, currentBook } = useAppSelector((state) => state.read);
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const dispatch = useAppDispatch();
   const firebase = useFirestore();
 

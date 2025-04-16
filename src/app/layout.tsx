@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 
-import { AuthProvider } from "@/context/AuthContext";
-import StoreProvider from "@/lib/redux/StoreProvider";
+import Providers from "@/components/providers";
 
 import "./globals.css";
 
@@ -40,9 +39,7 @@ export default function RootLayout({
               : "root"
           }`}
         >
-          <AuthProvider>
-            <StoreProvider>{children}</StoreProvider>
-          </AuthProvider>
+          <Providers>{children}</Providers>
         </div>
       </body>
     </html>

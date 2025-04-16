@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { usePathname } from "next/navigation";
 import * as yup from "yup";
 
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import {
@@ -48,7 +48,7 @@ const NoteForm = ({
 
   const { highlightList } = useAppSelector((state) => state.note);
   const firestore = useFirestore();
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const {
     register,
     handleSubmit,
