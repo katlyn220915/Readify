@@ -32,31 +32,30 @@ const AuthContext = createContext<defultValue>({
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const auth = getAuth(app);
+
   const [currentUserName, setCurrentUserName] = useState<string | null>(null);
   const [isLogin, setIsLogin] = useState(false);
   const [pending, setPending] = useState(true);
-  const [user, setUser] = useState<any>();
-  const auth = getAuth(app);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    try {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          setIsLogin(true);
-          setUser(user);
-          setCurrentUserName(user.displayName);
-        } else {
-          setIsLogin(false);
-          setUser(null);
-          setCurrentUserName(null);
-        }
-      });
-    } catch (e) {
-      console.error(e);
-    } finally {
+    setPending(true);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLogin(true);
+        setUser(user);
+        setCurrentUserName(user.displayName);
+      } else {
+        setIsLogin(false);
+        setUser(null);
+        setCurrentUserName(null);
+      }
       setPending(false);
-    }
-  }, [isLogin, auth]);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const contextValue: defultValue = {
     currentUserName,
