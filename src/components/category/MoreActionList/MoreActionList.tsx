@@ -4,7 +4,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { useParams } from "next/navigation";
 
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 import useCloudStorage from "@/hooks/firebase_db/useCloudStorage";
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 /* Custom_hook */
@@ -51,7 +51,7 @@ export default function MoreActionList({
   const dispatch = useAppDispatch();
   const firestore = useFirestore();
   const cloudStorage = useCloudStorage();
-  const { user } = useAuth();
+  const { user } = useAuthContext();
 
   const handleDelete = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const isDataDeletedFromStore = await firestore.deleteDocument(

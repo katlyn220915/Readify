@@ -19,9 +19,5 @@ export const generateMetadata = ({ params }: Props): Metadata => {
 };
 
 export default function Page({ params }: Props) {
-  return (
-    <>
-      <Category />
-    </>
-  );
+  return <Category />;
 }

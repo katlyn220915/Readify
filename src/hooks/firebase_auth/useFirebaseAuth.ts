@@ -25,6 +25,7 @@ const useFirebaseAuth = () => {
         })
         .catch((error) => {
           console.error(error.code);
+          return null;
         });
       return userUid;
     } catch (e) {
@@ -85,7 +86,7 @@ const useFirebaseAuth = () => {
         errorMessage = "User hasn't login.";
         return errorMessage;
       }
-      updateProfile(user, {
+      await updateProfile(user, {
         displayName: firstName,
       })
         .then(() => {

@@ -6,7 +6,7 @@ import { useParams, useSearchParams } from "next/navigation";
 
 import ActionPrompt from "@/components/common/ActionPrompt/ActionPrompt";
 import Spinner from "@/components/common/Spinner/Spinner";
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 /* CUSTOM-HOOKS */
 import useFirestore from "@/hooks/firebase_db/useFirestore";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
@@ -34,7 +34,7 @@ export default function BookList() {
     (state) => state.book
   );
   const { isUploadSuccessful } = useAppSelector((state) => state.upload);
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const firestoreCached = useCallback(useFirestore, [useFirestore]);
   const dispatch = useAppDispatch();
 

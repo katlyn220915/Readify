@@ -6,7 +6,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { usePathname } from "next/navigation";
 
 import ActionIcon from "@/components/common/ActionIcon/ActionIcon";
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux/hooks";
 import { useRWD } from "@/hooks/useRWD/useRWD";
 import { resetNotes } from "@/lib/redux/features/noteSlice";
@@ -25,7 +25,7 @@ export default function Notebook({
   const category = arrPath[1];
   const bookId = arrPath[arrPath.length - 1];
 
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const { screenWidth } = useRWD();
   const { currentCategory, currentBook } = useAppSelector(
     (state) => state.read

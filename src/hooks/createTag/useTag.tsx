@@ -4,7 +4,7 @@ import { useCallback, useEffect } from "react";
 
 import { arrayRemove, arrayUnion } from "firebase/firestore";
 
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 import {
   onCreateTag,
   onDeleteTag,
@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 const useTag = () => {
   const firestore = useFirestore();
   const firestoreCached = useCallback(useFirestore, [useFirestore]);
-  const { user }: { user: any } = useAuth();
+  const { user }: { user: any } = useAuthContext();
   const dispatch = useAppDispatch();
 
   const { allUserTags } = useAppSelector((state) => state.tag);

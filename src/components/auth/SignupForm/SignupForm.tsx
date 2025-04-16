@@ -10,7 +10,7 @@ import * as yup from "yup";
 
 import ButtonCta from "@/components/common/ButtonCta/ButtonCta";
 import Spinner from "@/components/common/Spinner/Spinner";
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 import useFireStore from "@/hooks/firebase_db/useFirestore";
 
@@ -34,7 +34,7 @@ const schema = yup.object().shape({
 export default function SignupForm() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
-  const { setIsLogin } = useAuth();
+  const { login } = useAuthContext();
 
   const firebaseAuth = useFirebaseAuth();
   const firestore = useFireStore();
@@ -50,28 +50,36 @@ export default function SignupForm() {
     resolver: yupResolver(schema),
   });
 
+  async function createUserDataInDatabase(userUid: string, data: dataType) {
+    await firestore.setDocument("users", userUid, { email: data.email });
+    await firebaseAuth.userSignin(data.email, data.password);
+    await firebaseAuth.userUpdateFirstName(data.firstName);
+  }
+
   const onSubmit: SubmitHandler<dataType> = async (data) => {
     setIsProcessing(true);
     setErrorMessage(null);
     try {
       const userUid = await firebaseAuth.userSignUp(data.email, data.password);
-      if (userUid !== undefined) {
-        await firestore.setDocument("users", userUid, { email: data.email });
-        const isUserSignIn = await firebaseAuth.userSignin(
-          data.email,
-          data.password
-        );
-        await firebaseAuth.userUpdateFirstName(data.firstName);
-        if (isUserSignIn) {
-          setIsLogin(true);
-          router.push("/");
-        }
-        if (!isUserSignIn) setErrorMessage("Please sign in manually");
-      } else {
+
+      if (!userUid) {
         setErrorMessage(
           "A user is already registered with this e-mail address."
         );
+
+        return;
       }
+
+      await createUserDataInDatabase(userUid, data);
+      const user = await firebaseAuth.getCurrentUser();
+      if (user) {
+        login({ displayName: data.firstName, email: data.email });
+        router.push("/");
+
+        return;
+      }
+
+      router.push("/signin");
     } catch (e) {
       console.error(e);
     } finally {

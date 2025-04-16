@@ -11,60 +11,84 @@ import {
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 import app from "@/lib/firebase/initialize";
 
-interface defultValue {
+interface AuthContextValue {
   currentUserName: null | string;
   isLogin: boolean;
   setIsLogin: Dispatch<SetStateAction<boolean>>;
   setCurrentUserName: Dispatch<SetStateAction<string | null>>;
   pending: boolean;
   user: any;
+  logout: () => void;
+  login: (user: any) => void;
 }
 
-const AuthContext = createContext<defultValue>({
+const AuthContext = createContext<AuthContextValue>({
   currentUserName: null,
   isLogin: false,
   setIsLogin: () => {},
   setCurrentUserName: () => {},
   pending: false,
   user: null,
+  logout: () => {},
+  login: () => {},
 });
 
-function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const auth = getAuth(app);
+  const firebaseAuth = useFirebaseAuth();
+
   const [currentUserName, setCurrentUserName] = useState<string | null>(null);
   const [isLogin, setIsLogin] = useState(false);
   const [pending, setPending] = useState(true);
-  const [user, setUser] = useState<any>();
-  const auth = getAuth(app);
+  const [user, setUser] = useState<any>(null);
 
-  useEffect(() => {
+  function logout() {
     try {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          setIsLogin(true);
-          setUser(user);
-          setCurrentUserName(user.displayName);
-        } else {
-          setIsLogin(false);
-          setUser(null);
-          setCurrentUserName(null);
-        }
-      });
+      firebaseAuth.userSignout();
+      setIsLogin(false);
+      setUser(null);
+      setCurrentUserName(null);
     } catch (e) {
       console.error(e);
-    } finally {
-      setPending(false);
     }
-  }, [isLogin, auth]);
+  }
 
-  const contextValue: defultValue = {
+  function login(user: any) {
+    setIsLogin(true);
+    setUser(user);
+    setCurrentUserName(user.displayName);
+  }
+
+  useEffect(() => {
+    setPending(true);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLogin(true);
+        setUser(user);
+        setCurrentUserName(user.displayName);
+      } else {
+        setIsLogin(false);
+        setUser(null);
+        setCurrentUserName(null);
+      }
+      setPending(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const contextValue: AuthContextValue = {
     currentUserName,
     isLogin,
     setIsLogin,
     setCurrentUserName,
     pending,
     user,
+    logout,
+    login,
   };
 
   return (
@@ -72,11 +96,12 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-function useAuth() {
+export function useAuthContext() {
   const context = useContext(AuthContext);
-  if (context === undefined)
-    throw new Error("AuthContext was used outside of AuthProvider");
+
+  if (!context) {
+    throw new Error("useAuthContext must be used within an AuthProvider");
+  }
+
   return context;
 }
-
-export { AuthProvider, useAuth };

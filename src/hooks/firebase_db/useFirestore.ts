@@ -12,10 +12,11 @@ import {
   where,
 } from "firebase/firestore";
 
-import app from "../../lib/firebase/initialize";
+import app from "@/lib/firebase/initialize";
 
 const useFirestore = () => {
   const db = getFirestore(app);
+
   const setDocument = async (
     collectionName: string,
     documentName: string,
@@ -29,7 +30,6 @@ const useFirestore = () => {
       return true;
     } catch (e) {
       throw new Error("Firestore Set Data Error: " + e);
-      return false;
     }
   };
 

@@ -10,7 +10,7 @@ import * as yup from "yup";
 
 import ButtonCta from "@/components/common/ButtonCta/ButtonCta";
 import Spinner from "@/components/common/Spinner/Spinner";
-import { useAuth } from "@/context/AuthContext";
+import { useAuthContext } from "@/context";
 import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 
 import styles from "./SigninForm.module.css";
@@ -20,7 +20,7 @@ type dataType = {
   password: string;
 };
 
-const defaultValue = {
+const defaultValues = {
   email: "test@test.com",
   password: "123456",
 };
@@ -36,7 +36,7 @@ const schema = yup.object().shape({
 export default function SigninForm() {
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
-  const { setIsLogin } = useAuth();
+  const { setIsLogin } = useAuthContext();
   const firebaseAuth = useFirebaseAuth();
   const router = useRouter();
 
@@ -47,10 +47,7 @@ export default function SigninForm() {
     reset,
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      email: "test@test.com",
-      password: "123456",
-    },
+    defaultValues,
   });
 
   const onSubmit: SubmitHandler<dataType> = async ({ email, password }) => {
