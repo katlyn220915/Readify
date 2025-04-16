@@ -20,7 +20,7 @@ type dataType = {
   password: string;
 };
 
-const defaultValue = {
+const defaultValues = {
   email: "test@test.com",
   password: "123456",
 };
@@ -47,10 +47,7 @@ export default function SigninForm() {
     reset,
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      email: "test@test.com",
-      password: "123456",
-    },
+    defaultValues,
   });
 
   const onSubmit: SubmitHandler<dataType> = async ({ email, password }) => {

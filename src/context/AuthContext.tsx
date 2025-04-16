@@ -11,33 +11,61 @@ import {
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 import app from "@/lib/firebase/initialize";
 
-interface defultValue {
+interface User {
+  displayName: string | null;
+  email: string | null;
+}
+
+interface AuthContextValue {
   currentUserName: null | string;
   isLogin: boolean;
   setIsLogin: Dispatch<SetStateAction<boolean>>;
   setCurrentUserName: Dispatch<SetStateAction<string | null>>;
   pending: boolean;
-  user: any;
+  user: User | null;
+  logout: () => void;
+  login: (user: any) => void;
 }
 
-const AuthContext = createContext<defultValue>({
+const AuthContext = createContext<AuthContextValue>({
   currentUserName: null,
   isLogin: false,
   setIsLogin: () => {},
   setCurrentUserName: () => {},
   pending: false,
   user: null,
+  logout: () => {},
+  login: () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const auth = getAuth(app);
+  const firebaseAuth = useFirebaseAuth();
 
   const [currentUserName, setCurrentUserName] = useState<string | null>(null);
   const [isLogin, setIsLogin] = useState(false);
   const [pending, setPending] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
+
+  function logout() {
+    try {
+      firebaseAuth.userSignout();
+      setIsLogin(false);
+      setUser(null);
+      setCurrentUserName(null);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function login(user: User) {
+    setIsLogin(true);
+    setUser(user);
+    setCurrentUserName(user.displayName);
+  }
 
   useEffect(() => {
     setPending(true);
@@ -57,13 +85,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => unsubscribe();
   }, []);
 
-  const contextValue: defultValue = {
+  const contextValue: AuthContextValue = {
     currentUserName,
     isLogin,
     setIsLogin,
     setCurrentUserName,
     pending,
     user,
+    logout,
+    login,
   };
 
   return (

@@ -7,10 +7,10 @@ import { usePathname, useRouter } from "next/navigation";
 import Spinner from "@/components/common/Spinner/Spinner";
 import { useAuthContext } from "@/context/AuthContext";
 
-const publicRoutes = ["/signin", "signup", "/"];
+const publicRoutes = ["/signin", "/signup", "/"];
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
-  const { user, pending, isLogin } = useAuthContext();
+  const { pending, isLogin } = useAuthContext();
   const router = useRouter();
   const pathname = usePathname();
 

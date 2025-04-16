@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 允許已認證的用戶讀寫自己的文檔
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // 允許所有已認證的用戶讀取公共文檔
+    match /public/{document=**} {
+      allow read: if request.auth != null;
+    }
+  }
+} 
