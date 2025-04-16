@@ -14,18 +14,13 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import useFirebaseAuth from "@/hooks/firebase_auth/useFirebaseAuth";
 import app from "@/lib/firebase/initialize";
 
-interface User {
-  displayName: string | null;
-  email: string | null;
-}
-
 interface AuthContextValue {
   currentUserName: null | string;
   isLogin: boolean;
   setIsLogin: Dispatch<SetStateAction<boolean>>;
   setCurrentUserName: Dispatch<SetStateAction<string | null>>;
   pending: boolean;
-  user: User | null;
+  user: any;
   logout: () => void;
   login: (user: any) => void;
 }
@@ -48,7 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUserName, setCurrentUserName] = useState<string | null>(null);
   const [isLogin, setIsLogin] = useState(false);
   const [pending, setPending] = useState(true);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<any>(null);
 
   function logout() {
     try {
@@ -61,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  function login(user: User) {
+  function login(user: any) {
     setIsLogin(true);
     setUser(user);
     setCurrentUserName(user.displayName);
